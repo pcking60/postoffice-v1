@@ -48,7 +48,7 @@ namespace PostOffice.Web.Api
                 foreach (var item in responseData)
                 {
                     item.Name = _tkbdHistoryService.GetByAccount(item.Account).FirstOrDefault().Name;
-                    item.Money = _tkbdHistoryService.GetByAccount(item.Account).Sum(x => x.Money);
+                    item.Money = _tkbdHistoryService.GetByAccount(item.Account).Where(x=>x.TransactionDate.Value.Month<=item.Month).Sum(x => x.Money);
                     var s =_tkbdHistoryService.GetByAccount(item.Account).Where(x => x.TransactionDate.Value.Month == item.Month).FirstOrDefault();
                     if (s == null)
                     {
@@ -249,54 +249,59 @@ namespace PostOffice.Web.Api
                 else
                 {
                     int days = 0;
-                    var tkbdHistories = _tkbdHistoryService.GetAllDistinct().Where(x=>x.TransactionDate.Value.Month==DateTime.Now.Month-1);
+                    var tkbdHistories = _tkbdHistoryService.GetAllDistinct().Where(x=>x.Status==true && x.TransactionDate.Value.Month<=DateTime.Now.Month-1);
                     int c = tkbdHistories.Count();             
                     foreach (var item in tkbdHistories)
                     {
-                        TimeSpan s = new TimeSpan();
-                        DateTimeOffset lastDay = new DateTime(item.TransactionDate.Value.Year, item.TransactionDate.Value.Month + 1, 1).AddDays(-1);
-                        if (lastDay > DateTime.Now)
-                        {
-                            s = DateTimeOffset.UtcNow.Subtract(item.TransactionDate ?? DateTimeOffset.UtcNow);
-                        }
-                        else
-                        {                            
-                            s = lastDay.Subtract(item.TransactionDate??DateTimeOffset.UtcNow);
-                        }
+                        decimal money = _tkbdHistoryService.GetByAccount(item.Account).Where(x => x.Status == true && x.TransactionDate.Value.Month <= DateTime.Now.Month - 1).Sum(x => x.Money) ?? 0;
                         
-                        days = (int)s.TotalDays;                        
-                        TKBDAmountViewModel vm = new TKBDAmountViewModel();
-                        vm.Status = true;
-                        vm.Account = item.Account;
-                        vm.CreatedBy = User.Identity.Name;
-                        vm.UserId = item.UserId;
-                        vm.Month = DateTime.Now.Month;
-                        decimal money = _tkbdHistoryService.GetByAccount(item.Account).Sum(x => x.Money) ?? 0;
-
-                        if (money > 0)
+                        if (item.Money <= 0)
                         {
-                            if (days >= 30)
+                            var oldTransaction = _tkbdHistoryService.GetByAccount(item.Account);
+                            foreach (var item1 in oldTransaction)
                             {
-                                vm.Amount = money * item.Rate * 20 / 1200 ?? 0;
-                            }
-                            else
-                            {
-                                vm.Amount = money * item.Rate * 20 * days / 1200 / 30 ?? 0;
+                                item1.Status = false;
                             }
                         }
                         else
                         {
-                            continue;
+                            TimeSpan s = new TimeSpan();
+                            DateTimeOffset lastDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddDays(-1);
+                            DateTimeOffset firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month-1, 1);
+                            s = lastDay.Subtract(item.TransactionDate??DateTimeOffset.UtcNow);
+                            days = (int)s.TotalDays;
+                            if (days > 31)
+                            {
+                                days = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month-1);
+                            }                           
+                           
+                            //if (firstDayOfMonth > item.TransactionDate)
+                            //{
+                            //    s = lastDay.Subtract(firstDayOfMonth);
+                            //}
+                            //else
+                            //{
+                            //    s = lastDay.Subtract(item.TransactionDate ?? DateTimeOffset.UtcNow);
+                            //}
+                            
+                            //days = (int)s.TotalDays;
+                            TKBDAmountViewModel vm = new TKBDAmountViewModel();
+                            vm.Status = true;
+                            vm.Account = item.Account;
+                            vm.CreatedBy = User.Identity.Name;
+                            vm.UserId = item.UserId;
+                            vm.Month = DateTime.Now.Month-1;
+                            vm.Amount = money * item.Rate * 20 * days / 1200 / 30 ?? 0;
+                            TKBDAmount tkbd = new TKBDAmount();
+                            tkbd.UpdateTKBD(vm);
+                            if (_tkbdService.CheckExist(vm.Account, vm.Month))
+                            {
+                                continue;
+                            }
+                            _tkbdService.Add(tkbd);
                         }
-                        TKBDAmount tkbd = new TKBDAmount();
-                        tkbd.UpdateTKBD(vm);
-                        if(_tkbdService.CheckExist(vm.Account, vm.Month))
-                        {
-                            continue;
-                        }
-                        _tkbdService.Add(tkbd);   
-                    }
-                    _tkbdService.Save();
+                        _tkbdService.Save();
+                    }                       
 
                     response = request.CreateResponse(HttpStatusCode.Created, tkbdHistories.Count());
                 }
