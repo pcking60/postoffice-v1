@@ -17,7 +17,7 @@
                     $state.go('main_service_groups');
                 }, function (error) {
                     notificationService.displayError('Thêm mới thất bại');
-            });
+                });
         }
     }
 })(angular.module('postoffice.main_service_groups'));

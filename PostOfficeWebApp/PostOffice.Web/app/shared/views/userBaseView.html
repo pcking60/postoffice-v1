@@ -97,19 +97,30 @@
       <ul class="sidebar-menu" >
         <li class="header">MAIN NAVIGATION</li>     
       </ul>
-        <ul class="sidebar-menu" ng-controller="serviceGroupsListController" >         
-            <li class="treeview" ng-repeat="item in serviceGroups" >
-                <a href="javascript:void(0);" ng-if="item.ParentID==null">
+        <ul class="sidebar-menu" ng-controller="mainServiceGroupsListController" >         
+            <li class="treeview" ng-repeat="item in mainServiceGroups" >
+                <a href="javascript:void(0);">
                     <i class="fa fa-files-o"></i>
                     <span>{{item.Name}}</span>
                     <span class="pull-right"><i class="fa fa-chevron-down text-aqua" ></i></span>
                 </a>
-                <ul class="treeview-menu" ng-controller="serviceListController">
-                    <li ng-repeat="item1 in services" ng-if="item1.GroupID==item.ID">
-                        <a href="javascript:void(0);">
+                <!--List ServiceGroup by MainServiceGroupId-->
+                <ul class="treeview-menu" ng-controller="serviceGroupsListController">
+                    <li ng-repeat="item1 in serviceGroups">
+                        <a href="javascript:void(0);" ng-if="item1.MainServiceGroupId==item.Id">
                             <i class="fa fa-angle-double-right text-aqua"></i>
                             <span>{{item1.Name}}</span>
+                            <span class="pull-right" ng-if="item1.NoService>0"><i class="fa fa-hand-o-down"></i></span>
                         </a>
+                        <!--List Service by ServiceGroupId-->
+                        <ul class="treeview-menu" ng-controller="serviceListController">
+                            <li ng-repeat="item2 in services" ng-if="item2.GroupID==item1.ID">
+                                <a href="javascript:void(0);">
+                                    <i class="fa fa-angle-double-right text-aqua"></i>
+                                    <span>{{item2.Name}}</span>
+                                </a>
+                            </li>
+                        </ul>
 
                     </li>
                 </ul> 

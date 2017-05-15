@@ -37,10 +37,10 @@
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-3 control-label">Danh mục cha</label>
                         <div class="col-sm-9">
-                            <select name="parentId" class="form-control" ng-model="serviceGroup.ParentID" ng-options="option.ID as option.Name for option in parentGroups">
+                            <select name="parentId" class="form-control" ng-model="serviceGroup.MainServiceGroupId" ng-options="option.Id as option.Name for option in parentGroups">
                                 <option value="">Danh mục gốc</option>
                             </select>
-                            <input type="hidden" name="parentId" ng-model="serviceGroup.ParentID" />
+                            <input type="hidden" name="parentId" ng-model="serviceGroup.MainServiceGroupId" />
                         </div>
                     </div>
                     <div class="form-group">

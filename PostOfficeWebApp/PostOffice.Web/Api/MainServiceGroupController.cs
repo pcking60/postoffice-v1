@@ -68,6 +68,21 @@ namespace PostOffice.Web.Api
             });
         }
 
+        [Route("getallparents")]
+        [HttpGet]
+        public HttpResponseMessage GetAll(HttpRequestMessage request)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _mainServiceGroupService.GetAll();
+
+                var responseData = Mapper.Map<IEnumerable<MainServiceGroup>, IEnumerable<MainServiceGroupViewModel>>(model);
+
+                var response = request.CreateResponse(HttpStatusCode.OK, responseData);
+                return response;
+            });
+        }
+
         [Route("update")]
         [HttpPut]
         [AllowAnonymous]

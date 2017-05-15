@@ -11,7 +11,7 @@
         $scope.changeSomething = changeSomething;
         function changeSomething() {
             $scope.serviceGroup.Alias = commonService.getSeoTitle($scope.serviceGroup.Name);
-            $scope.serviceGroup.Name = commonService.toTitleCase($scope.serviceGroup.Name);
+            //$scope.serviceGroup.Name = commonService.toTitleCase($scope.serviceGroup.Name);
         }
         $scope.AddServiceGroup = AddServiceGroup;
         function AddServiceGroup() {
@@ -23,8 +23,9 @@
                     notificationService.displayError('Thêm mới thất bại');
             });
         }
+        
         function loadparentGroup() {
-            apiService.get('/api/servicegroup/getallparents', null, function (result) {
+            apiService.get('/api/mainservicegroup/getallparents', null, function (result) {
                 $scope.parentGroups = result.data;
             }, function () {
                 console.log('Can not load Parent Group');

@@ -111,6 +111,7 @@
     <Compile Include="Repositories\ErrorRepository.cs" />
     <Compile Include="Repositories\MainServiceGroupRepository.cs" />
     <Compile Include="Repositories\PORepository.cs" />
+    <Compile Include="Repositories\PropertyServiceRepository.cs" />
     <Compile Include="Repositories\ServiceGroupRepository.cs" />
     <Compile Include="Repositories\ServiceRepository.cs" />
     <Compile Include="Repositories\TransactionRepository.cs" />
