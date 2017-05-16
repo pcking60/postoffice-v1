@@ -123,7 +123,22 @@ namespace PostOffice.Web.Infrastructure.Extensions
             service.UpdatedDate = serviceVM.UpdatedDate;
         }
 
-        
+        public static void UpdatePropertyService(this PropertyService prop, PropertyServiceViewModel vm)
+        {
+            prop.CreatedBy = vm.CreatedBy;
+            prop.CreatedDate = vm.CreatedDate;
+            prop.ID = vm.ID;
+            prop.MetaDescription = vm.MetaDescription;
+            prop.MetaKeyWord = vm.MetaKeyWord;
+            prop.Name = vm.Name;
+            prop.Percent = vm.Percent;
+            prop.ServiceID = vm.ServiceID;
+            prop.UpdatedBy = vm.UpdatedBy;
+            prop.Status = vm.Status;
+            prop.UpdatedDate = vm.UpdatedDate;
+        }
+
+
         public static void UpdatePaymentMethod(this PaymentMethod payment, PaymentMethodViewModel paymentVM)
         {
             payment.CreatedBy = paymentVM.CreatedBy;

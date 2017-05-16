@@ -1,7 +1,7 @@
 ﻿(function (app) {
     app.controller('serviceAddController', serviceAddController);
-    serviceAddController.$inject = ['$scope', 'apiService', 'notificationService', '$state', 'commonService'];
-    function serviceAddController($scope, apiService, notificationService, $state, commonService) {
+    serviceAddController.$inject = ['$scope', 'apiService', 'notificationService', '$state', 'commonService', '$rootScope'];
+    function serviceAddController($scope, apiService, notificationService, $state, commonService, $rootScope) {
         $scope.service = {
             CreatedDate: new Date(),
             Status: true
@@ -20,6 +20,8 @@
                     notificationService.displayError('Thêm mới thất bại');
                 });
         }
+        
+
         function loadparentGroup() {
             apiService.get('/api/servicegroup/getallparents', null, function (result) {
                 $scope.parentGroups = result.data;

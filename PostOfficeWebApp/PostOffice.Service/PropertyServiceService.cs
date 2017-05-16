@@ -34,6 +34,12 @@ namespace PostOffice.Service
         private IPropertyServiceRepository _propertyServiceRepository;
         private IUnitOfWork _unitOfWork;
 
+        public PropertyServiceService (IPropertyServiceRepository prop, IUnitOfWork unit)
+        {
+            this._propertyServiceRepository = prop;
+            this._unitOfWork = unit;
+        }
+
         public PropertyService Add(PropertyService pro)
         {
             return _propertyServiceRepository.Add(pro);
@@ -74,7 +80,7 @@ namespace PostOffice.Service
 
         public void Save()
         {
-            throw new NotImplementedException();
+            _unitOfWork.Commit();
         }
 
         public IEnumerable<PropertyService> Search(string keyword, int page, int pageSize, string sort, out int totalRow)
@@ -88,7 +94,7 @@ namespace PostOffice.Service
 
         public void Update(PropertyService pro)
         {
-            _unitOfWork.Commit();
+            _propertyServiceRepository.Update(pro);
         }
     }
 }

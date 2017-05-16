@@ -3,8 +3,8 @@
 
     
     app.controller('serviceGroupAddController', serviceGroupAddController);
-    serviceGroupAddController.$inject = ['$scope', 'apiService', 'notificationService', '$state', 'commonService'];
-    function serviceGroupAddController($scope, apiService, notificationService, $state, commonService) {
+    serviceGroupAddController.$inject = ['$scope', 'apiService', 'notificationService', '$state', 'commonService', '$rootScope'];
+    function serviceGroupAddController($scope, apiService, notificationService, $state, commonService, $rootScope) {
         $scope.serviceGroup = {
             Status: true
         }
@@ -22,7 +22,7 @@
                 }, function (error) {
                     notificationService.displayError('Thêm mới thất bại');
             });
-        }
+        }       
         
         function loadparentGroup() {
             apiService.get('/api/mainservicegroup/getallparents', null, function (result) {

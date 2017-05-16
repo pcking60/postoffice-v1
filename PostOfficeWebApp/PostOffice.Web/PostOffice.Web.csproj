@@ -211,6 +211,13 @@
     <Content Include="app\components\application_users\applicationUserListController.js" />
     <Content Include="app\components\application_users\applicationUserListView.html" />
     <Content Include="app\components\application_users\applicationUsers.module.js" />
+    <Content Include="app\components\property_services\propertyServiceAddController.js" />
+    <Content Include="app\components\property_services\propertyServiceAddView.html" />
+    <Content Include="app\components\property_services\propertyServiceEditController.js" />
+    <Content Include="app\components\property_services\propertyServiceEditView.html" />
+    <Content Include="app\components\property_services\propertyServicesListController.js" />
+    <Content Include="app\components\property_services\propertyServicesListView.html" />
+    <Content Include="app\components\property_services\propertyServices.module.js" />
     <Content Include="app\components\districts\districtAddController.js" />
     <Content Include="app\components\districts\districtAddView.html" />
     <Content Include="app\components\districts\districtEditController.js" />
@@ -5310,6 +5317,7 @@
     <Compile Include="Api\DistrictService.cs" />
     <Compile Include="Api\MainServiceGroupController.cs" />
     <Compile Include="Api\PoController.cs" />
+    <Compile Include="Api\PropertyServiceController.cs" />
     <Compile Include="Api\ServiceController.cs" />
     <Compile Include="Api\ServiceGroupController.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -5332,6 +5340,7 @@
     <Compile Include="Models\MainServiceGroupViewModel.cs" />
     <Compile Include="Models\PaymentMethodViewModel.cs" />
     <Compile Include="Models\POViewModel.cs" />
+    <Compile Include="Models\PropertyServiceViewModel.cs" />
     <Compile Include="Models\ServiceGroupViewModel.cs" />
     <Compile Include="Models\ServiceViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -5711,12 +5720,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
     <TypeScriptCompile Include="Assets\admin\libs\ngBootbox\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Assets\admin\libs\ngBootbox\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Assets\admin\libs\ngBootbox\typings\tsd.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

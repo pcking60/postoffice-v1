@@ -141,5 +141,19 @@ namespace PostOffice.Web.Api
                 return response;
             });
         }
+
+        [Route("getallparents")]
+        [HttpGet]
+        public HttpResponseMessage GetAllParentID(HttpRequestMessage request)
+        {
+            return CreateHttpResponse(request, () =>
+            {//ham nay la sao ban
+                var model = _serviceService.Getall();
+                var responseData = Mapper.Map<IEnumerable<Model.Models.Service>, IEnumerable<ServiceViewModel>>(model);
+
+                var response = request.CreateResponse(HttpStatusCode.OK, responseData);
+                return response;
+            });
+        }
     }
 }
