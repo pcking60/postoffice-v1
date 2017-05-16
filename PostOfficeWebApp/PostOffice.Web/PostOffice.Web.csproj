@@ -211,6 +211,13 @@
     <Content Include="app\components\application_users\applicationUserListController.js" />
     <Content Include="app\components\application_users\applicationUserListView.html" />
     <Content Include="app\components\application_users\applicationUsers.module.js" />
+    <Content Include="app\components\transactions\transactionAddController.js" />
+    <Content Include="app\components\transactions\transactionAddView.html" />
+    <Content Include="app\components\transactions\transactionEditController.js" />
+    <Content Include="app\components\transactions\transactionEditView.html" />
+    <Content Include="app\components\transactions\transactions.module.js" />
+    <Content Include="app\components\transactions\transactionsListController.js" />
+    <Content Include="app\components\transactions\transactionsListView.html" />
     <Content Include="app\components\property_services\propertyServiceAddController.js" />
     <Content Include="app\components\property_services\propertyServiceAddView.html" />
     <Content Include="app\components\property_services\propertyServiceEditController.js" />
