@@ -70,6 +70,8 @@
     <Compile Include="PropertyServiceService.cs" />
     <Compile Include="ServiceGroupService.cs" />
     <Compile Include="ServiceService.cs" />
+    <Compile Include="TransactionDetailService.cs" />
+    <Compile Include="TransactionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PostOffice.Model\PostOffice.Model.csproj">

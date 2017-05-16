@@ -1,14 +1,11 @@
 ﻿using PostOffice.Model.Models;
 using PostOfiice.DAta.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PostOfiice.DAta.Repositories
 {
     public interface ITransactionRepository : IRepository<Transaction>
     {
-        IEnumerable<Transaction> GetAllByTag(string tag, int index, int pageSize, out int total);
     }
 
     public class TransactionRepository : RepositoryBase<Transaction>, ITransactionRepository
@@ -17,9 +14,16 @@ namespace PostOfiice.DAta.Repositories
         {
         }
 
-        public IEnumerable<Transaction> GetAllByTag(string tag, int index, int pageSize, out int total)
+        public override Transaction Add(Transaction entity)
         {
-            throw new NotImplementedException();
+            entity.CreatedDate = DateTime.Now;
+            return base.Add(entity);
+        }
+
+        public override void Update(Transaction entity)
+        {
+            entity.UpdatedDate = DateTime.Now;
+            base.Update(entity);
         }
     }
 }

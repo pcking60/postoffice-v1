@@ -93,7 +93,7 @@ namespace PostOffice.Web.App_Start
                 {
                     user = await userManager.FindAsync(context.UserName, context.Password);
                 }
-                catch
+                catch(Exception ex)
                 {
                     // Could not retrieve the user due to error.
                     context.SetError("server_error");
