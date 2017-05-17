@@ -118,7 +118,7 @@ namespace PostOffice.Web.Api
         [Route("create")]
         [HttpPost]
         [AllowAnonymous]
-        public HttpResponseMessage Create(HttpRequestMessage request, TransactionViewModel transactionVM)
+        public HttpResponseMessage Create(HttpRequestMessage request, Transaction transaction)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -129,12 +129,10 @@ namespace PostOffice.Web.Api
                 }
                 else
                 {
-                    var newTransaction = new Transaction();
-                    newTransaction.UpdateTransaction(transactionVM);
-                    newTransaction.CreatedBy = User.Identity.Name;
-                    _transactionService.Add(newTransaction);
+                    transaction.CreatedBy = User.Identity.Name;
+                    _transactionService.Add(transaction);
                     _transactionService.Save();
-                    var responseData = Mapper.Map<Transaction, TransactionViewModel>(newTransaction);
+                    var responseData = Mapper.Map<Transaction, TransactionViewModel>(transaction);
                     response = request.CreateResponse(HttpStatusCode.Created, responseData);
                 }
                 return response;

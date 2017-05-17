@@ -5,18 +5,16 @@
         $scope.transaction = {
             Status: true,
             Service: null,
-            Properties: null
-        }
-        $scope.transactionDetail = {
-            TransactionId: null,
-            PropertyServiceId: null,
-            Money: null
+            Quantity: null,
+            TransactionDate : null,
+            Status: null,
+            transactionDetails: []
         }
        
         $scope.AddTransaction = AddTransaction;
         function AddTransaction() {
-            $scope.transaction.ServiceId = $scope.service.ID;
-            apiService.post('/api/transaction/create', $scope.transaction,
+            $scope.transaction.ServiceId = $scope.transaction.Service.ID;
+            apiService.post('/api/transactions/create', $scope.transaction,
                 function (result) {
                     notificationService.displaySuccess('Giao dịch thành công!');
                     $state.go('transactions');
@@ -27,7 +25,15 @@
 
         function getPropertyServices() {
             apiService.get('/api/property_services/getbyserviceid/' + $stateParams.id, null, function (result) {
-                $scope.transaction.Properties = result.data
+                $scope.transaction.Properties = result.data;
+                result.data.forEach(function (item, index) {
+                    $scope.transaction.transactionDetails.push({
+                        Money: null,
+                        PropertyServiceId: item.PropertyServiceId,
+                        PropertyService: item,
+                        TransactionId: null
+                    });
+                });
             }, function (error) {
                 notificationService.displayError(error.data)
             });
