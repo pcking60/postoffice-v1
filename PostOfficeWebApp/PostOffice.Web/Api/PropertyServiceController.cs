@@ -5,6 +5,7 @@ using PostOffice.Web.Infrastructure.Core;
 using PostOffice.Web.Infrastructure.Extensions;
 using PostOffice.Web.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -105,6 +106,21 @@ namespace PostOffice.Web.Api
                 var model = _propertyServiceSerivce.GetById(id);
 
                 var responseData = Mapper.Map<PropertyService, PropertyServiceViewModel>(model);
+
+                var response = request.CreateResponse(HttpStatusCode.OK, responseData);
+                return response;
+            });
+        }
+
+        [Route("getbyserviceid/{id:int}")]
+        [HttpGet]
+        public HttpResponseMessage GetByServiceId(HttpRequestMessage request, int id)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _propertyServiceSerivce.GetListPropertyByServiceId(id);
+
+                var responseData = Mapper.Map<IEnumerable<PropertyService>, IEnumerable<PropertyServiceViewModel>>(model);
 
                 var response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;

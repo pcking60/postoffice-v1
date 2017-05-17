@@ -1,12 +1,12 @@
 ﻿'use strict';
-angular.module('postoffice.transactions')
-    .controller('transactionListController',
+angular.module('postoffice.property_services')
+    .controller('propertyServicesListController',
         ['$scope', 'apiService', 'notificationService', '$ngBootbox','$filter', 
             function($scope, apiService, notificationService, $ngBootbox, $filter) {            
                 $scope.page = 0;
                 $scope.pagesCount = 0;
-                $scope.transactions = [];
-                $scope.getTransactions = getTransactions;
+                $scope.propertyServices = [];
+                $scope.getPropertyServices = getPropertyServices;
                 $scope.keyword = '';
                 $scope.search = search;
                 $scope.selectAll = selectAll;
@@ -20,12 +20,12 @@ angular.module('postoffice.transactions')
                     });
                     var config = {
                         params: {
-                            checkedTransactions: JSON.stringify(listId)
+                            checkedPropertyServices: JSON.stringify(listId)
                         }
                     }
                     $ngBootbox.confirm('Bạn có chắc xóa không?').then(
                         function () {
-                            apiService.del('/api/transactions/deletemulti', config, function (result) {
+                            apiService.del('/api/property_services/deletemulti', config, function (result) {
                                 notificationService.displaySuccess('Xóa thành công ' + result.data + ' bản ghi.');
                                 search();
                             }, function (error) {
@@ -39,19 +39,19 @@ angular.module('postoffice.transactions')
                 $scope.isAll = false;
                 function selectAll() {
                     if ($scope.isAll === false) {
-                        angular.forEach($scope.transactions, function (item) {
+                        angular.forEach($scope.propertyServices, function (item) {
                             item.checked = true;
                         });
                         $scope.isAll = true;
                     } else {
-                        angular.forEach($scope.transactions, function (item) {
+                        angular.forEach($scope.propertyServices, function (item) {
                             item.checked = false;
                         });
                         $scope.isAll = false;
                     }
                 }
 
-                $scope.$watch("transactions", function (n, o) {
+                $scope.$watch("propertyServices", function (n, o) {
                     var checked = $filter("filter")(n, { checked: true });
                     if (checked.length) {
                         $scope.selected = checked;
@@ -61,17 +61,17 @@ angular.module('postoffice.transactions')
                     }
                 }, true);
                 function search() {
-                    getTransactions();
+                    getPropertyServices();
                 }
-                $scope.deleteTransaction = deleteTransaction;
-                function deleteTransaction(id) {
+                $scope.deletePropertyService = deletePropertyService;
+                function deletePropertyService(id) {
                     $ngBootbox.confirm('Bạn có chắc muốn xóa?').then(function () {
                         var config = {
                             params: {
                                 id: id
                             }
                         }
-                        apiService.del('/api/transactions/delete', config,
+                        apiService.del('/api/property_services/delete', config,
                         function () {
                             notificationService.displaySuccess('Xóa dữ liệu thành công');
                             search();
@@ -85,7 +85,7 @@ angular.module('postoffice.transactions')
                     });
                 }
 
-                function getTransactions(page) {
+                function getPropertyServices(page) {
                     page = page || 0;
                     var config = {
                         params: {
@@ -94,21 +94,21 @@ angular.module('postoffice.transactions')
                             pageSize: 20
                         }
                     }
-                    apiService.get('/api/transactions/getall', config, function (result) {
+                    apiService.get('/api/property_services/getall', config, function (result) {
                         if (result.data.TotalCount == 0) {
                             notificationService.displayWarning("Không tìm thấy bản ghi nào!");
                         }
                         $scope.loading = false;
-                        $scope.transactions = result.data.Items;
+                        $scope.propertyServices = result.data.Items;
                         $scope.page = result.data.Page;
                         $scope.pagesCount = result.data.TotalPages;
                         $scope.totalCount = result.data.TotalCount;
                     },
                     function () {
                         $scope.loading = false;
-                        console.log('Load transactions failed');
+                        console.log('Load property services failed');
                     });
-                } $scope.getTransactions();
+                } $scope.getPropertyServices();
 
                 //function loadServices() {
                 //    apiService.get('/api/service/getallparents', null, function (result) {

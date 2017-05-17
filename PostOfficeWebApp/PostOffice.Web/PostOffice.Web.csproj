@@ -5327,6 +5327,7 @@
     <Compile Include="Api\PropertyServiceController.cs" />
     <Compile Include="Api\ServiceController.cs" />
     <Compile Include="Api\ServiceGroupController.cs" />
+    <Compile Include="Api\TransactionController.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
@@ -5350,6 +5351,8 @@
     <Compile Include="Models\PropertyServiceViewModel.cs" />
     <Compile Include="Models\ServiceGroupViewModel.cs" />
     <Compile Include="Models\ServiceViewModel.cs" />
+    <Compile Include="Models\TransactionDetailViewModel.cs" />
+    <Compile Include="Models\TransactionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

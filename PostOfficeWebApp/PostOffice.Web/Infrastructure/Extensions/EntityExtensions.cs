@@ -138,6 +138,20 @@ namespace PostOffice.Web.Infrastructure.Extensions
             prop.UpdatedDate = vm.UpdatedDate;
         }
 
+        public static void UpdateTransaction(this Transaction transaction, TransactionViewModel vm)
+        {
+            transaction.CreatedBy = vm.CreatedBy;
+            transaction.CreatedDate = vm.CreatedDate;
+            transaction.ID = vm.ID;
+            transaction.MetaDescription = vm.MetaDescription;
+            transaction.MetaKeyWord = vm.MetaKeyWord;
+            transaction.ServiceId = vm.ServiceId;
+            transaction.Status = vm.Status;
+            transaction.TransactionDate = vm.TransactionDate;
+            transaction.UpdatedBy = vm.UpdatedBy;
+            transaction.UpdatedDate = vm.UpdatedDate;
+            transaction.UserId = vm.UserId;
+        }
 
         public static void UpdatePaymentMethod(this PaymentMethod payment, PaymentMethodViewModel paymentVM)
         {

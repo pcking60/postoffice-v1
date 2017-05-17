@@ -17,6 +17,8 @@ namespace PostOffice.Web.Mappings
             Mapper.CreateMap<PostOffice.Model.Models.Service, ServiceViewModel>();
             Mapper.CreateMap<MainServiceGroup, MainServiceGroupViewModel>();
             Mapper.CreateMap<PropertyService, PropertyServiceViewModel>();
+            Mapper.CreateMap<Transaction, TransactionViewModel>();
+            Mapper.CreateMap<TransactionDetail, TransactionDetailViewModel>();
         }
     }
 }

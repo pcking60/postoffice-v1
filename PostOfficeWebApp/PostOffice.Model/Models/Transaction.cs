@@ -17,6 +17,8 @@ namespace PostOffice.Model.Models
 
         public string UserId { get; set; }        
 
+        public int? Quantity { get; set; }
+
         [ForeignKey("UserId")]
         public virtual ApplicationUser ApplicationUser { get; set; }
 

@@ -115,7 +115,7 @@
                         <!--List Service by ServiceGroupId-->
                         <ul class="treeview-menu" ng-controller="serviceListController">
                             <li ng-repeat="item2 in services" ng-if="item2.GroupID==item1.ID">
-                                <a href="javascript:void(0);">
+                                <a ui-sref="add_transaction({id:item2.ID})">
                                     <i class="fa fa-angle-double-right text-aqua"></i>
                                     <span>{{item2.Name}}</span>
                                 </a>

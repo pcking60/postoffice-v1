@@ -114,6 +114,7 @@
     <Compile Include="Repositories\PropertyServiceRepository.cs" />
     <Compile Include="Repositories\ServiceGroupRepository.cs" />
     <Compile Include="Repositories\ServiceRepository.cs" />
+    <Compile Include="Repositories\TransactionDetailRepository.cs" />
     <Compile Include="Repositories\TransactionRepository.cs" />
   </ItemGroup>
   <ItemGroup>

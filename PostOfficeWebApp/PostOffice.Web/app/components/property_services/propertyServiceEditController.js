@@ -30,6 +30,14 @@ angular.module('postoffice.property_services')
                         });
                 }
 
+                function loadListServices() {
+                    apiService.get('/api/service/getallparents', null, function (result) {
+                        $scope.listServices = result.data
+                    }, function (error) {
+                        notificationService.displayError(error.data)
+                    });
+                }
+                loadListServices();
                 loadPropertyServiceDetail();
     }]);
    
