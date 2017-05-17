@@ -7,10 +7,12 @@
             Service: null,
             Properties: null
         }
-        $scope.changeSomething = changeSomething;
-        function changeSomething() {            
-            //$scope.mainServiceGroup.Name = commonService.toTitleCase($scope.mainServiceGroup.Name);
+        $scope.transactionDetail = {
+            TransactionId: null,
+            PropertyServiceId: null,
+            Money: null
         }
+       
         $scope.AddTransaction = AddTransaction;
         function AddTransaction() {
             $scope.transaction.ServiceId = $scope.service.ID;
