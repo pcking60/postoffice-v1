@@ -24,15 +24,23 @@ namespace PostOffice.Service
         
         TransactionDetail GetById(int id);
 
+        decimal? GetTotalMoneyByTransactionId(int id);
+
+        decimal? GetTotalEarnMoneyByTransactionId(int id);
+
         void Save();
     }
     public class TransactionDetailService : ITransactionDetailService
     {
         private ITransactionDetailRepository _transactionDetailRepository;
+        private ITransactionRepository _transactionRepository;
+        private IPropertyServiceRepository _propertyServiceRepository;
         private IUnitOfWork _unitOfWork;
 
-        public TransactionDetailService(ITransactionDetailRepository transactionDetailRepository, IUnitOfWork unitOfWork) {
+        public TransactionDetailService(ITransactionDetailRepository transactionDetailRepository, IPropertyServiceRepository propertyServiceRepository, ITransactionRepository transactionRepository, IUnitOfWork unitOfWork) {
             this._transactionDetailRepository = transactionDetailRepository;
+            _propertyServiceRepository = propertyServiceRepository;
+            _transactionRepository = transactionRepository;
             this._unitOfWork = unitOfWork;
         }
         public TransactionDetail Add(TransactionDetail transactionDetail)
@@ -66,7 +74,24 @@ namespace PostOffice.Service
         {
             return _transactionDetailRepository.GetSingleByID(id);
         }
-        
+
+        public decimal? GetTotalEarnMoneyByTransactionId(int id)
+        {
+            decimal? earnTotal = 0;
+            var listTransactionDetail = _transactionDetailRepository.GetMulti(x => x.TransactionId == id).ToList();
+            foreach (var item in listTransactionDetail)
+            {
+                decimal? percent = _propertyServiceRepository.GetSingleByID(item.PropertyServiceId).Percent;
+                earnTotal = earnTotal + percent * item.Money;
+            }
+            int? quantity = _transactionRepository.GetSingleByID(id).Quantity;
+            return earnTotal * quantity;
+        }
+
+        public decimal? GetTotalMoneyByTransactionId(int id)
+        {
+            return _transactionDetailRepository.GetMulti(x => x.TransactionId == id).Sum(x => x.Money);
+        }
 
         public void Save()
         {

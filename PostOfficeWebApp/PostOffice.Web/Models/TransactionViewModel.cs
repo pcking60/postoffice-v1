@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PostOffice.Model.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PostOffice.Web.Models
@@ -11,9 +13,16 @@ namespace PostOffice.Web.Models
 
         public string UserId { get; set; }
 
+        public int? Quantity { get; set; }       
+
+        public decimal? TotalMoney { get; set; }
+
+        public decimal? EarnMoney { get; set; }
+
         [Required]
         public DateTimeOffset TransactionDate { get; set; }
 
+        public virtual ICollection<TransactionDetail> TransactionDetails { get; set; }
         #region
 
         public string ServiceName { get; set; }

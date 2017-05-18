@@ -151,6 +151,8 @@ namespace PostOffice.Web.Infrastructure.Extensions
             transaction.UpdatedBy = vm.UpdatedBy;
             transaction.UpdatedDate = vm.UpdatedDate;
             transaction.UserId = vm.UserId;
+            transaction.TransactionDetails = vm.TransactionDetails;
+            transaction.Quantity = vm.Quantity;
         }
 
         public static void UpdateTransactionDetail(this TransactionDetail transactionDetail, TransactionDetailViewModel vm)

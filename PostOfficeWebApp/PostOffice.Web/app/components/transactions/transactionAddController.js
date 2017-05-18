@@ -18,6 +18,7 @@
             var d = new Date()
             var n = d.getTimezoneOffset();
             console.log(n);
+            $scope.transaction.TransactionDate = $("#datetimepicker1").find("input").val();
             //var date = $scope.transaction.TransactionDate;
             //$scope.transaction.TransactionDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
             $scope.transaction.Properties.forEach(function (item, index) {

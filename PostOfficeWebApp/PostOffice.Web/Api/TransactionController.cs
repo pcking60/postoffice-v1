@@ -63,6 +63,8 @@ namespace PostOffice.Web.Api
                 foreach (var item in responseData)
                 {
                     item.ServiceName = _serviceService.GetById(item.ServiceId).Name;
+                    item.TotalMoney = _transactionDetailService.GetTotalMoneyByTransactionId(item.ID);
+                    item.EarnMoney = _transactionDetailService.GetTotalEarnMoneyByTransactionId(item.ID);
                 }
 
                 var paginationSet = new PaginationSet<TransactionViewModel>
@@ -120,7 +122,7 @@ namespace PostOffice.Web.Api
         [Route("create")]
         [HttpPost]
         [AllowAnonymous]
-        public IHttpActionResult Create(HttpRequestMessage request, Transaction transaction)
+        public IHttpActionResult Create(HttpRequestMessage request, TransactionViewModel transactionVM)
         {
             if (!ModelState.IsValid)
             {
@@ -129,15 +131,17 @@ namespace PostOffice.Web.Api
             }
             else
             {
-                var transactionDetails = transaction.TransactionDetails;
-                transaction.TransactionDetails = new List<TransactionDetail>();
-                transaction.UserId = _userService.getByUserName(User.Identity.Name).Id;
-                transaction.CreatedBy = User.Identity.Name;
+                var transaction = new Transaction();
+                var transactionDetails = transactionVM.TransactionDetails;
+                transactionVM.TransactionDetails = new List<TransactionDetail>();
+                transactionVM.UserId = _userService.getByUserName(User.Identity.Name).Id;
+                transactionVM.CreatedBy = User.Identity.Name;                
+                transaction.UpdateTransaction(transactionVM);
                 _transactionService.Add(transaction);
                 foreach (var item in transactionDetails)
                 {
-                    item.TransactionId = transaction.ID;
-                    transaction.TransactionDetails.Add(item);
+                    item.TransactionId = transactionVM.ID;
+                    transactionVM.TransactionDetails.Add(item);
                 }
                 _transactionService.Save();
                 return Json(transaction.ID);

@@ -39,15 +39,25 @@
                             <input type="text" class="form-control"  ng-model="transaction.Quantity">
                         </div>
                     </div>
-                     
+
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">Ngày giao dịch</label>
+                        <div class='input-group date col-sm-9' id='datetimepicker1'>
+                            <input type='text' class="form-control" ng-model="transaction.TransactionDate"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                     
+                    <!--<div class="form-group">
                         <label class="col-sm-3 control-label">Ngày giao dịch</label>
                         <div class="col-sm-9" ng-cloak>
                             <md-content>
                                 <md-datepicker format="HH:mm:ss" ng-model="transaction.TransactionDate" md-placeholder="Enter date"></md-datepicker>
                             </md-content>                           
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-9">
                             <div class="checkbox">
@@ -68,3 +78,9 @@
         </form>
     </div>
 </section>
+
+<script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+</script>
