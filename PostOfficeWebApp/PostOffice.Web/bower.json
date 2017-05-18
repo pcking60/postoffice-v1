@@ -1,9 +1,0 @@
-{
-  "name": "ASP.NET",
-  "private": true,
-  "dependencies": {
-    "ngprogress": "~1.1.3",
-    "ng-loading": "~0.0.5",
-    "ng-bs-daterangepicker": "~0.0.6"
-  }
-}
