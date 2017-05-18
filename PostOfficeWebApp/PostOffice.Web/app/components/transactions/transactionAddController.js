@@ -7,20 +7,14 @@
             Service: null,
             Quantity: null,
             TransactionDate: null,
-            Status: null,
             Properties: [],
             TransactionDetails: []
         }
 
         $scope.AddTransaction = AddTransaction;
         function AddTransaction() {
-            $scope.transaction.ServiceId = $scope.transaction.Service.ID;
-            var d = new Date()
-            var n = d.getTimezoneOffset();
-            console.log(n);
+            $scope.transaction.ServiceId = $scope.transaction.Service.ID;           
             $scope.transaction.TransactionDate = $("#datetimepicker1").find("input").val();
-            //var date = $scope.transaction.TransactionDate;
-            //$scope.transaction.TransactionDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
             $scope.transaction.Properties.forEach(function (item, index) {
                 $scope.transaction.TransactionDetails.push({
                     Money: item.Money,

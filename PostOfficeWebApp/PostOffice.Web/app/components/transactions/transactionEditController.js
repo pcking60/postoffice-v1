@@ -1,33 +1,53 @@
 ﻿(function (app) {
-    app.controller('mainServiceGroupEditController', mainServiceGroupEditController);
-    mainServiceGroupEditController.$inject = ['$scope', 'apiService', 'notificationService', '$state', '$stateParams', 'commonService'];
-    function mainServiceGroupEditController($scope, apiService, notificationService, $state, $stateParams, commonService) {
-        $scope.mainServiceGroup = {
-            Status: true
+    app.controller('transactionEditController', transactionEditController);
+    transactionEditController.$inject = ['$scope', 'apiService', 'notificationService', '$state', '$stateParams', 'commonService'];
+    function transactionEditController($scope, apiService, notificationService, $state, $stateParams, commonService) {
+        $scope.transaction = {
+            Status: true,
+            TransactionDetails: [],
+            Service: null
         }
-        $scope.EditMainServiceGroup = EditMainServiceGroup;
-        $scope.changeSomething = changeSomething;
-        function changeSomething()
-        {
-            $scope.mainServiceGroup.Name = commonService.toTitleCase($scope.mainServiceGroup.Name);
-        }
+        $scope.EditTransaction = EditTransaction;
+        //$scope.changeSomething = changeSomething;
+        //function changeSomething()
+        //{
+        //    $scope.mainServiceGroup.Name = commonService.toTitleCase($scope.mainServiceGroup.Name);
+        //}
 
-        function loadMainServiceGroupDetail() {
-            apiService.get('/api/mainservicegroup/getbyid/' + $stateParams.id, null, function (result) {
-                $scope.mainServiceGroup = result.data
+        function loadTransactionDetail()
+        {
+            apiService.get('/api/transactions/getbyid/' + $stateParams.id, null, function (result) {
+                $scope.transaction = result.data;
+                apiService.get('/api/transactiondetails/getbytransactionid/' + $stateParams.id, null, function (result) {
+                    $scope.transaction.TransactionDetails = result.data;
+
+                }, function (error) {
+                    notificationService.displayError(error.data)
+                });
             }, function (error) {
                 notificationService.displayError(error.data)
             });
         }
-        function EditMainServiceGroup() {
-            apiService.put('/api/mainservicegroup/update', $scope.mainServiceGroup,
+
+        //function getTransactionDetail() {
+        //    apiService.get('/api/transactiondetails/getbytransactionid/' + $stateParams.id, null, function (result) {
+        //        $scope.transaction.TransactionDetails = result.data;
+
+        //    }, function (error) {
+        //        notificationService.displayError(error.data)
+        //    });
+        //}
+        function EditTransaction() {
+            apiService.put('/api/mainservicegroup/update', $scope.transaction,
                 function (result) {
-                    notificationService.displaySuccess(result.data.Name + ' cập nhật thành công');
-                    $state.go('main_service_groups');
+                    notificationService.displaySuccess('Cập nhật thành công');
+                    $state.go('transactions');
                 }, function (error) {
-                    notificationService.displayError('cập nhật thất bại');
+                    notificationService.displayError('Cập nhật thất bại');
                 });
-        }       
-        loadMainServiceGroupDetail();
+        }
+        //getTransactionDetail();
+        loadTransactionDetail();
+        
     }
-})(angular.module('postoffice.main_service_groups'));
+})(angular.module('postoffice.transactions'));

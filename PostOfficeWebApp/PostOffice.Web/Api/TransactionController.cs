@@ -79,29 +79,30 @@ namespace PostOffice.Web.Api
             });
         }
 
-        [Route("update")]
-        [HttpPut]
+        [Route("delete")]
+        [HttpDelete]
         [AllowAnonymous]
-        public HttpResponseMessage Update(HttpRequestMessage request, TransactionViewModel propVM)
+        public IHttpActionResult Delete(HttpRequestMessage request, int id)
         {
-            return CreateHttpResponse(request, () =>
+            if (!ModelState.IsValid)
             {
-                HttpResponseMessage response = null;
-                if (!ModelState.IsValid)
+                return Json("302");
+            }
+            else
+            {
+                var oldTransaction = _transactionService.GetById(id);
+                oldTransaction.Status = false;
+                var transactionDetails = _transactionDetailService.GetAllByTransactionId(oldTransaction.ID);                
+                _transactionService.Update(oldTransaction);
+                foreach (var item in transactionDetails)
                 {
-                    response = request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+                    item.Status = false;
                 }
-                else
-                {
-                    var dbTransaction = _transactionService.GetById(propVM.ID);
-                    dbTransaction.UpdateTransaction(propVM);
-                    _transactionService.Update(dbTransaction);
-                    _transactionService.Save();
-                    var responseData = Mapper.Map<Transaction, TransactionViewModel>(dbTransaction);
-                    response = request.CreateResponse(HttpStatusCode.Created, responseData);
-                }
-                return response;
-            });
+                _transactionService.Save();
+                return Json(oldTransaction.ID);
+                     
+            }
+            
         }
 
         [Route("getbyid/{id:int}")]
@@ -110,10 +111,12 @@ namespace PostOffice.Web.Api
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _transactionService.GetById(id);
+                var model = _transactionService.GetById(id);                
 
                 var responseData = Mapper.Map<Transaction, TransactionViewModel>(model);
 
+                responseData.ServiceName = _serviceService.GetById(model.ServiceId).Name;
+                
                 var response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;
             });
@@ -132,44 +135,34 @@ namespace PostOffice.Web.Api
             else
             {
                 var transaction = new Transaction();
-                var transactionDetails = transactionVM.TransactionDetails;
-                transactionVM.TransactionDetails = new List<TransactionDetail>();
+                //var transactionDetails = transactionVM.TransactionDetails;
+                
+                ICollection<TransactionDetail> transactionDetails = transactionVM.TransactionDetails;
+                var responseData = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(transactionDetails);
+                //transactionVM.TransactionDetails = new List<TransactionDetail>();
                 transactionVM.UserId = _userService.getByUserName(User.Identity.Name).Id;
-                transactionVM.CreatedBy = User.Identity.Name;                
+                transactionVM.CreatedBy = User.Identity.Name;
                 transaction.UpdateTransaction(transactionVM);
                 _transactionService.Add(transaction);
-                foreach (var item in transactionDetails)
+                //foreach (var item in transactionDetails)
+                //{
+                //    item.TransactionId = transactionVM.ID;
+                //    transactionVM.TransactionDetails.Add(item);
+                //}
+
+                foreach (var item in responseData)
                 {
-                    item.TransactionId = transactionVM.ID;
-                    transactionVM.TransactionDetails.Add(item);
+                    var dbTransactionDetail = new TransactionDetail();
+                    dbTransactionDetail.UpdateTransactionDetail(item);                    
+                    dbTransactionDetail.TransactionId = item.ID;
+                    //_transactionDetailService.Add(dbTransactionDetail);
                 }
                 _transactionService.Save();
                 return Json(transaction.ID);
             }
         }
 
-        [Route("delete")]
-        [HttpDelete]
-        [AllowAnonymous]
-        public HttpResponseMessage Delete(HttpRequestMessage request, int id)
-        {
-            return CreateHttpResponse(request, () =>
-            {
-                HttpResponseMessage response = null;
-                if (!ModelState.IsValid)
-                {
-                    response = request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
-                }
-                else
-                {
-                    var oldTransaction = _transactionService.Delete(id);
-                    _transactionService.Save();
-                    var responseData = Mapper.Map<Transaction, TransactionViewModel>(oldTransaction);
-                    response = request.CreateResponse(HttpStatusCode.Created, responseData);
-                }
-                return response;
-            });
-        }
+        
 
         [Route("deletemulti")]
         [HttpDelete]

@@ -21,6 +21,8 @@ namespace PostOffice.Web.Models
 
         public string ServiceName { get; set; }
 
+        public string PropertyServiceName { get; set; }
+
         public string CreatedBy
         {
             get; set;

@@ -99,7 +99,7 @@
       </ul>
         <ul class="sidebar-menu" ng-controller="mainServiceGroupsListController" >         
             <li class="treeview" ng-repeat="item in mainServiceGroups" >
-                <a href="javascript:void(0);">
+                <a href="">
                     <i class="fa fa-files-o"></i>
                     <span>{{item.Name}}</span>
                     <span class="pull-right"><i class="fa fa-chevron-down text-aqua" ></i></span>
@@ -107,7 +107,7 @@
                 <!--List ServiceGroup by MainServiceGroupId-->
                 <ul class="treeview-menu" ng-controller="serviceGroupsListController">
                     <li ng-repeat="item1 in serviceGroups">
-                        <a href="javascript:void(0);" ng-if="item1.MainServiceGroupId==item.Id">
+                        <a href="" ng-if="item1.MainServiceGroupId==item.Id">
                             <i class="fa fa-angle-double-right text-aqua"></i>
                             <span>{{item1.Name}}</span>
                             <span class="pull-right" ng-if="item1.NoService>0"><i class="fa fa-hand-o-down"></i></span>

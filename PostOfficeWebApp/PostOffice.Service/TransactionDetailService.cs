@@ -20,6 +20,8 @@ namespace PostOffice.Service
 
         IEnumerable<TransactionDetail> GetAll(string keyword);
 
+        IEnumerable<TransactionDetail> GetAllByTransactionId(int transactionId);
+
         IEnumerable<TransactionDetail> Search(string keyword, int page, int pageSize, string sort, out int totalRow);
         
         TransactionDetail GetById(int id);
@@ -110,6 +112,11 @@ namespace PostOffice.Service
         public void Update(TransactionDetail transactionDetail)
         {
             _transactionDetailRepository.Update(transactionDetail);
+        }
+
+        public IEnumerable<TransactionDetail> GetAllByTransactionId(int transactionId)
+        {
+           return _transactionDetailRepository.GetMulti(x => x.TransactionId == transactionId);
         }
     }
 }

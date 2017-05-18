@@ -1,9 +1,5 @@
 namespace PostOfiice.DAta.Migrations
 {
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using PostOffice.Model.Models;
-    using System;
     using System.Data.Entity.Migrations;
 
     internal sealed class Configuration : DbMigrationsConfiguration<PostOfiice.DAta.PostOfficeDbContext>

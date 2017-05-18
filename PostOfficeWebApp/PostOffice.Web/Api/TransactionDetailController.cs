@@ -21,10 +21,12 @@ namespace PostOffice.Web.Api
     {
         private ITransactionDetailService _transactionDetailService;
         private IErrorService _errorService;
+        private IPropertyServiceService _propertyServiceService;
 
-        public TransactionDetailController(IErrorService errorService, ITransactionDetailService transactionDetailService) : base(errorService)
+        public TransactionDetailController(IErrorService errorService, IPropertyServiceService propertyServiceService, ITransactionDetailService transactionDetailService) : base(errorService)
         {
             this._transactionDetailService = transactionDetailService;
+            this._propertyServiceService = propertyServiceService;
             this._errorService = errorService;
         }
 
@@ -91,15 +93,20 @@ namespace PostOffice.Web.Api
             });
         }
 
-        [Route("getbyid/{id:int}")]
+        [Route("getbytransactionid/{id:int}")]
         [HttpGet]
-        public HttpResponseMessage GetById(HttpRequestMessage request, int id)
+        public HttpResponseMessage GetByTransactionId(HttpRequestMessage request, int id)
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _transactionDetailService.GetById(id);
+                var model = _transactionDetailService.GetAllByTransactionId(id);
 
-                var responseData = Mapper.Map<TransactionDetail, TransactionDetailViewModel>(model);
+                var responseData = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(model);
+
+                foreach (var item in responseData)
+                {
+                    item.PropertyServiceName = _propertyServiceService.GetById(item.PropertyServiceId).Name;
+                }
 
                 var response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;
