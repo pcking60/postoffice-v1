@@ -1,15 +1,15 @@
 ﻿(function (app) {
-    app.controller('mainServiceGroupsListController', mainServiceGroupsListController);
-    mainServiceGroupsListController.$inject = ['$scope', 'apiService', 'notificationService', '$ngBootbox', '$filter'];
-    function mainServiceGroupsListController($scope, apiService, notificationService, $ngBootbox, $filter) {
+    app.controller('transactionsListController', transactionsListController);
+    transactionsListController.$inject = ['$scope', 'apiService', 'notificationService', '$ngBootbox', '$filter'];
+    function transactionsListController($scope, apiService, notificationService, $ngBootbox, $filter) {
              
         $scope.page = 0;
         $scope.pagesCount = 0;
-        $scope.mainServiceGroups = [];
-        $scope.getMainServiceGroups = getMainServiceGroups;
+        $scope.transactions = [];
+        $scope.getTransactions = getTransactions;
         $scope.keyword = '';
         $scope.search = search;
-        $scope.deleteMainServiceGroup = deleteMainServiceGroup;
+        $scope.deleteTransaction = deleteTransaction;
         $scope.selectAll = selectAll;
         $scope.deleteMulti = deleteMulti;
         $scope.loading = true;
@@ -21,7 +21,7 @@
             });
             var config = {
                 params: {
-                    checkedMainServiceGroups: JSON.stringify(listId)
+                    checkedTransactions: JSON.stringify(listId)
                 }
             }
             $ngBootbox.confirm('Bạn có chắc xóa không?').then(
@@ -40,19 +40,19 @@
         $scope.isAll = false;
         function selectAll() {
             if ($scope.isAll === false) {
-                angular.forEach($scope.mainServiceGroups, function (item) {
+                angular.forEach($scope.transactions, function (item) {
                     item.checked = true;
                 });
                 $scope.isAll = true;
             } else {
-                angular.forEach($scope.mainServiceGroups, function (item) {
+                angular.forEach($scope.transactions, function (item) {
                     item.checked = false;
                 });
                 $scope.isAll = false;
             }
         }
 
-        $scope.$watch("mainServiceGroups", function (n, o) {
+        $scope.$watch("transactions", function (n, o) {
             var checked = $filter("filter")(n, { checked: true });
             if (checked.length) {
                 $scope.selected = checked;
@@ -61,14 +61,14 @@
                 $('#btnDelete').attr('disabled', 'disabled');
             }
         }, true);
-        function deleteMainServiceGroup(id) {
+        function deleteTransaction(id) {
             $ngBootbox.confirm('Bạn có chắc muốn xóa?').then(function () {
                 var config = {
                     params: {
                         id: id
                     }
                 }
-                apiService.del('/api/mainservicegroup/delete', config, function () {
+                apiService.del('/api/transactions/delete', config, function () {
                     notificationService.displaySuccess('Xóa mẫu tin thành công');
                     search();
                 }, function () {
@@ -79,9 +79,9 @@
             });
         }
         function search() {
-            getMainServiceGroups();
+            getTransactions();
         }
-        function getMainServiceGroups(page) {
+        function getTransactions(page) {
             page = page || 0;
             var config = {
                 params: {
@@ -90,24 +90,24 @@
                     pageSize: 20
                 }
             }
-            apiService.get('/api/mainservicegroup/getall', config, function (result) {
+            apiService.get('/api/transactions/getall', config, function (result) {
                 if (result.data.TotalCount == 0) {
                     notificationService.displayWarning("Chưa có dữ liệu");
                     
                 }
                 $scope.loading = false;
-                $scope.mainServiceGroups = result.data.Items;
+                $scope.transactions = result.data.Items;
                 $scope.page = result.data.Page;
                 $scope.pagesCount = result.data.TotalPages;
                 $scope.totalCount = result.data.TotalCount;
             },
             function () {
                 $scope.loading = false;
-                console.log('Load mainservicegroups failed');
+                console.log('Load transactions failed');
             });
 
         }
-        $scope.getMainServiceGroups();
+        $scope.getTransactions();
         
     }
-})(angular.module('postoffice.main_service_groups'));
+})(angular.module('postoffice.transactions'));

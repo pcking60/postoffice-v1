@@ -21,13 +21,17 @@ namespace PostOffice.Web.Api
     public class TransactionController : ApiControllerBase
     {
         private ITransactionService _transactionService;
+        private ITransactionDetailService _transactionDetailService;
         private IApplicationUserService _userService;
+        private IServiceService _serviceService;
         private IErrorService _errorService;
 
-        public TransactionController(IErrorService errorService, ITransactionService transactionService, IApplicationUserService userService) : base(errorService)
+        public TransactionController(IErrorService errorService, IServiceService serviceService, ITransactionDetailService transactionDetailService, ITransactionService transactionService, IApplicationUserService userService) : base(errorService)
         {
             this._transactionService = transactionService;
+            _transactionDetailService = transactionDetailService;
             this._errorService = errorService;
+            _serviceService = serviceService;
             _userService = userService;
         }
 
@@ -56,7 +60,11 @@ namespace PostOffice.Web.Api
 
                 var responseData = Mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionViewModel>>(query);
 
-             
+                foreach (var item in responseData)
+                {
+                    item.ServiceName = _serviceService.GetById(item.ServiceId).Name;
+                }
+
                 var paginationSet = new PaginationSet<TransactionViewModel>
                 {
                     Items = responseData,
@@ -112,27 +120,28 @@ namespace PostOffice.Web.Api
         [Route("create")]
         [HttpPost]
         [AllowAnonymous]
-        public HttpResponseMessage Create(HttpRequestMessage request, TransactionViewModel transactionVM)
+        public IHttpActionResult Create(HttpRequestMessage request, Transaction transaction)
         {
-            return CreateHttpResponse(request, () =>
+            if (!ModelState.IsValid)
             {
-                HttpResponseMessage response = null;
-                if (!ModelState.IsValid)
+                //return request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+                return Json("301");
+            }
+            else
+            {
+                var transactionDetails = transaction.TransactionDetails;
+                transaction.TransactionDetails = new List<TransactionDetail>();
+                transaction.UserId = _userService.getByUserName(User.Identity.Name).Id;
+                transaction.CreatedBy = User.Identity.Name;
+                _transactionService.Add(transaction);
+                foreach (var item in transactionDetails)
                 {
-                    response = request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+                    item.TransactionId = transaction.ID;
+                    transaction.TransactionDetails.Add(item);
                 }
-                else
-                {
-                    var newTransaction = new Transaction();
-                    newTransaction.UpdateTransaction(transactionVM);
-                    newTransaction.UserId = _userService.getByUserName(User.Identity.Name).Id;
-                    _transactionService.Add(newTransaction);
-                    _transactionService.Save();
-                    var responseData = Mapper.Map<Transaction, TransactionViewModel>(newTransaction);
-                    response = request.CreateResponse(HttpStatusCode.Created, responseData);
-                }
-                return response;
-            });
+                _transactionService.Save();
+                return Json(transaction.ID);
+            }
         }
 
         [Route("delete")]

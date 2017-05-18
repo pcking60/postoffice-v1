@@ -26,7 +26,7 @@
                             <input type="text" class="form-control" name="metaDescription" ng-model="transaction.Service.Name" />                            
                         </div>
                     </div>                                       
-                    <div class="form-group" ng-repeat="prop in Properties">
+                    <div class="form-group" ng-repeat="prop in transaction.Properties">
                         <label for="inputPassword3" class="col-sm-3 control-label">{{prop.Name}}</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="metaDescription" ng-model="prop.Money"/>
@@ -44,7 +44,7 @@
                         <label class="col-sm-3 control-label">Ngày giao dịch</label>
                         <div class="col-sm-9" ng-cloak>
                             <md-content>
-                                <md-datepicker ng-model="transaction.TransactionDate" md-placeholder="Enter date"></md-datepicker>
+                                <md-datepicker format="HH:mm:ss" ng-model="transaction.TransactionDate" md-placeholder="Enter date"></md-datepicker>
                             </md-content>                           
                         </div>
                     </div>

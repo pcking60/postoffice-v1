@@ -12,14 +12,14 @@ namespace PostOffice.Model.Models
         public int ID { get; set; }
 
         [Required]
-        public int TransactionID { get; set; }
+        public int TransactionId { get; set; }
 
         [Required]
         public int PropertyServiceId { get; set; }
         
         public decimal? Money { get; set; }
 
-        [ForeignKey("TransactionID")]
+        [ForeignKey("TransactionId")]
         [Column(Order =1)]
         public virtual Transaction Transaction { get; set; }
 

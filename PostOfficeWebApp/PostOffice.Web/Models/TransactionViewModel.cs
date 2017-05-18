@@ -12,7 +12,7 @@ namespace PostOffice.Web.Models
         public string UserId { get; set; }
 
         [Required]
-        public DateTime TransactionDate { get; set; }
+        public DateTimeOffset TransactionDate { get; set; }
 
         #region
 

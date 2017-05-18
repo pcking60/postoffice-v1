@@ -163,7 +163,7 @@ namespace PostOffice.Web.Infrastructure.Extensions
             transactionDetail.Money = vm.Money;
             transactionDetail.PropertyServiceId = vm.PropertyServiceId;
             transactionDetail.Status = vm.Status;
-            transactionDetail.TransactionID = vm.TransactionID;
+            transactionDetail.TransactionId = vm.TransactionID;
             transactionDetail.UpdatedBy = vm.UpdatedBy;
             transactionDetail.UpdatedDate = vm.UpdatedDate;
         }

@@ -11,11 +11,11 @@ namespace PostOffice.Model.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }        
+        public int ID { get; set; }
 
         public int ServiceId { get; set; }
 
-        public string UserId { get; set; }        
+        public string UserId { get; set; }
 
         public int? Quantity { get; set; }
 
@@ -23,6 +23,8 @@ namespace PostOffice.Model.Models
         public virtual ApplicationUser ApplicationUser { get; set; }
 
         [Required]
-        public DateTime TransactionDate { get; set; }
+        public DateTimeOffset TransactionDate { get; set; }
+
+        public virtual ICollection<TransactionDetail> TransactionDetails { get; set; }
     }
 }
