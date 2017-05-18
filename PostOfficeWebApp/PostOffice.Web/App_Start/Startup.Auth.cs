@@ -2,12 +2,14 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using PostOffice.Model.Models;
 using PostOfiice.DAta;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -105,7 +107,13 @@ namespace PostOffice.Web.App_Start
                     ClaimsIdentity identity = await userManager.CreateIdentityAsync(
                                                            user,
                                                            DefaultAuthenticationTypes.ExternalBearer);
-                    context.Validated(identity);
+                    identity.AddClaim(new Claim("fullName", user.FullName));
+                    identity.AddClaim(new Claim("userId", user.Id));
+                    var props = new AuthenticationProperties(new Dictionary<string, string> {
+                        { "fullName", user.FullName },
+                        { "userId", user.Id}
+                    });
+                    context.Validated(new AuthenticationTicket(identity, props));
                 }
                 else
                 {

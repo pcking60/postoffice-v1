@@ -1,4 +1,5 @@
-﻿using PostOfiice.DAta.Infrastructure;
+﻿using PostOffice.Model.Models;
+using PostOfiice.DAta.Infrastructure;
 using PostOfiice.DAta.Repositories;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace PostOffice.Service
     public interface IApplicationUserService {
         int getNoUserByPoID(int PoID);
 
-        string getIdByUserName(string userName);
+        ApplicationUser getByUserName(string userName);
     }
     public class ApplicationUserService: IApplicationUserService
     {
@@ -29,9 +30,9 @@ namespace PostOffice.Service
             return _userRepository.getNoUserByPoID(PoID);
         }
 
-        public string getIdByUserName(string userName)
+        public ApplicationUser getByUserName(string userName)
         {
-            return _userRepository.getIdByUserName(userName);
+            return _userRepository.getByUserName(userName);
         }
     }
 }

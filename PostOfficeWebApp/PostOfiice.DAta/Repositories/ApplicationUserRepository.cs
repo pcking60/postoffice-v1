@@ -9,7 +9,7 @@ namespace PostOfiice.DAta.Repositories
     {
         int getNoUserByPoID(int PoID);
         int getNoUserByGroup(int GroupId);
-        string getIdByUserName(string userName);
+        ApplicationUser getByUserName(string userName);
     }
 
     public class ApplicationUserRepository : RepositoryBase<ApplicationUser>, IApplicationUserRepository
@@ -18,10 +18,10 @@ namespace PostOfiice.DAta.Repositories
         {
         }
 
-        public string getIdByUserName(string userName)
+        public ApplicationUser getByUserName(string userName)
         {
             var user = this.DbContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefault();
-            return user.Id;
+            return user;
         }
 
         public int getNoUserByGroup(int GroupId)

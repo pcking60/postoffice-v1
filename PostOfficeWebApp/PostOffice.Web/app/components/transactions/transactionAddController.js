@@ -8,32 +8,42 @@
             Quantity: null,
             TransactionDate : null,
             Status: null,
+            Properties: [],
             transactionDetails: []
         }
        
         $scope.AddTransaction = AddTransaction;
         function AddTransaction() {
             $scope.transaction.ServiceId = $scope.transaction.Service.ID;
+            $scope.transaction.TransactionDate = new Date($scope.transaction.TransactionDate);
             apiService.post('/api/transactions/create', $scope.transaction,
                 function (result) {
-                    notificationService.displaySuccess('Giao dịch thành công!');
-                    $state.go('transactions');
+                    console.log('Giao dịch thành công!');                    
                 }, function (error) {
                     notificationService.displayError('Giao dịch thất bại');
                 });
+            apiService.post('/api/transactiondetails/create', $scope.transaction.transactionDetails,
+               function (result) {
+                   //$scope.transaction.Properties.forEach(function (item, index) {
+                   //    $scope.transaction.transactionDetails.push({
+                   //        Money: item.Money,
+                   //        PropertyServiceId: item.ID,
+                   //        Status: true,
+                   //        TransactionId: null
+                   //    });
+                   //});
+                   //notificationService.displaySuccess('Giao dịch thành công!');
+                   $state.go('transactions');
+               }, function (error) {
+                   notificationService.displayError('Giao dịch thất bại');
+               });
+
         }
 
         function getPropertyServices() {
             apiService.get('/api/property_services/getbyserviceid/' + $stateParams.id, null, function (result) {
                 $scope.transaction.Properties = result.data;
-                result.data.forEach(function (item, index) {
-                    $scope.transaction.transactionDetails.push({
-                        Money: null,
-                        PropertyServiceId: item.PropertyServiceId,
-                        PropertyService: item,
-                        TransactionId: null
-                    });
-                });
+               
             }, function (error) {
                 notificationService.displayError(error.data)
             });

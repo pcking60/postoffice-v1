@@ -10,25 +10,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
 namespace PostOffice.Web.Api
 {
-    [RoutePrefix("api/transactions")]
+    [RoutePrefix("api/transactiondetails")]
     [Authorize]
-    public class TransactionController : ApiControllerBase
+    public class TransactionDetailController : ApiControllerBase
     {
-        private ITransactionService _transactionService;
-        private IApplicationUserService _userService;
+        private ITransactionDetailService _transactionDetailService;
         private IErrorService _errorService;
 
-        public TransactionController(IErrorService errorService, ITransactionService transactionService, IApplicationUserService userService) : base(errorService)
+        public TransactionDetailController(IErrorService errorService, ITransactionDetailService transactionDetailService) : base(errorService)
         {
-            this._transactionService = transactionService;
+            this._transactionDetailService = transactionDetailService;
             this._errorService = errorService;
-            _userService = userService;
         }
 
         [Route("getallparents")]
@@ -37,8 +34,8 @@ namespace PostOffice.Web.Api
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _transactionService.GetAll();
-                var responseData = Mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionViewModel>>(model);
+                var model = _transactionDetailService.GetAll();
+                var responseData = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(model);
                 var response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;
             });
@@ -50,14 +47,14 @@ namespace PostOffice.Web.Api
             return CreateHttpResponse(request, () =>
             {
                 int totalRow = 0;
-                var model = _transactionService.GetAll();
+                var model = _transactionDetailService.GetAll();
                 totalRow = model.Count();
                 var query = model.OrderBy(x => x.ID).Skip(page * pageSize).Take(pageSize);
 
-                var responseData = Mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionViewModel>>(query);
+                var responseData = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(query);
 
-             
-                var paginationSet = new PaginationSet<TransactionViewModel>
+
+                var paginationSet = new PaginationSet<TransactionDetailViewModel>
                 {
                     Items = responseData,
                     Page = page,
@@ -72,7 +69,7 @@ namespace PostOffice.Web.Api
         [Route("update")]
         [HttpPut]
         [AllowAnonymous]
-        public HttpResponseMessage Update(HttpRequestMessage request, TransactionViewModel propVM)
+        public HttpResponseMessage Update(HttpRequestMessage request, TransactionDetailViewModel propVM)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -83,11 +80,11 @@ namespace PostOffice.Web.Api
                 }
                 else
                 {
-                    var dbTransaction = _transactionService.GetById(propVM.ID);
-                    dbTransaction.UpdateTransaction(propVM);
-                    _transactionService.Update(dbTransaction);
-                    _transactionService.Save();
-                    var responseData = Mapper.Map<Transaction, TransactionViewModel>(dbTransaction);
+                    var dbTransactionDetail = _transactionDetailService.GetById(propVM.ID);
+                    dbTransactionDetail.UpdateTransactionDetail(propVM);
+                    _transactionDetailService.Update(dbTransactionDetail);
+                    _transactionDetailService.Save();
+                    var responseData = Mapper.Map<TransactionDetail, TransactionDetailViewModel>(dbTransactionDetail);
                     response = request.CreateResponse(HttpStatusCode.Created, responseData);
                 }
                 return response;
@@ -100,9 +97,9 @@ namespace PostOffice.Web.Api
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _transactionService.GetById(id);
+                var model = _transactionDetailService.GetById(id);
 
-                var responseData = Mapper.Map<Transaction, TransactionViewModel>(model);
+                var responseData = Mapper.Map<TransactionDetail, TransactionDetailViewModel>(model);
 
                 var response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;
@@ -112,7 +109,7 @@ namespace PostOffice.Web.Api
         [Route("create")]
         [HttpPost]
         [AllowAnonymous]
-        public HttpResponseMessage Create(HttpRequestMessage request, TransactionViewModel transactionVM)
+        public HttpResponseMessage Create(HttpRequestMessage request, TransactionDetailViewModel transactionDetailVM)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -123,12 +120,11 @@ namespace PostOffice.Web.Api
                 }
                 else
                 {
-                    var newTransaction = new Transaction();
-                    newTransaction.UpdateTransaction(transactionVM);
-                    newTransaction.UserId = _userService.getByUserName(User.Identity.Name).Id;
-                    _transactionService.Add(newTransaction);
-                    _transactionService.Save();
-                    var responseData = Mapper.Map<Transaction, TransactionViewModel>(newTransaction);
+                    var newTransactionDetail = new TransactionDetail();
+                    newTransactionDetail.UpdateTransactionDetail(transactionDetailVM);
+                    _transactionDetailService.Add(newTransactionDetail);
+                    _transactionDetailService.Save();
+                    var responseData = Mapper.Map<TransactionDetail, TransactionDetailViewModel>(newTransactionDetail);
                     response = request.CreateResponse(HttpStatusCode.Created, responseData);
                 }
                 return response;
@@ -149,9 +145,9 @@ namespace PostOffice.Web.Api
                 }
                 else
                 {
-                    var oldTransaction = _transactionService.Delete(id);
-                    _transactionService.Save();
-                    var responseData = Mapper.Map<Transaction, TransactionViewModel>(oldTransaction);
+                    var oldTransactionDetail = _transactionDetailService.Delete(id);
+                    _transactionDetailService.Save();
+                    var responseData = Mapper.Map<TransactionDetail, TransactionDetailViewModel>(oldTransactionDetail);
                     response = request.CreateResponse(HttpStatusCode.Created, responseData);
                 }
                 return response;
@@ -161,7 +157,7 @@ namespace PostOffice.Web.Api
         [Route("deletemulti")]
         [HttpDelete]
         [AllowAnonymous]
-        public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string checkedTransactions)
+        public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string checkedTransactionDetails)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -172,15 +168,15 @@ namespace PostOffice.Web.Api
                 }
                 else
                 {
-                    var listTransactions = new JavaScriptSerializer().Deserialize<List<int>>(checkedTransactions);
-                    foreach (var item in listTransactions)
+                    var listTransactionDetails = new JavaScriptSerializer().Deserialize<List<int>>(checkedTransactionDetails);
+                    foreach (var item in listTransactionDetails)
                     {
-                        _transactionService.Delete(item);
+                        _transactionDetailService.Delete(item);
                     }
 
-                    _transactionService.Save();
+                    _transactionDetailService.Save();
 
-                    response = request.CreateResponse(HttpStatusCode.OK, listTransactions.Count);
+                    response = request.CreateResponse(HttpStatusCode.OK, listTransactionDetails.Count);
                 }
 
                 return response;

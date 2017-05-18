@@ -153,6 +153,21 @@ namespace PostOffice.Web.Infrastructure.Extensions
             transaction.UserId = vm.UserId;
         }
 
+        public static void UpdateTransactionDetail(this TransactionDetail transactionDetail, TransactionDetailViewModel vm)
+        {
+            transactionDetail.CreatedBy = vm.CreatedBy;
+            transactionDetail.CreatedDate = vm.CreatedDate;
+            transactionDetail.ID = vm.ID;
+            transactionDetail.MetaDescription = vm.MetaDescription;
+            transactionDetail.MetaKeyWord = vm.MetaKeyWord;
+            transactionDetail.Money = vm.Money;
+            transactionDetail.PropertyServiceId = vm.PropertyServiceId;
+            transactionDetail.Status = vm.Status;
+            transactionDetail.TransactionID = vm.TransactionID;
+            transactionDetail.UpdatedBy = vm.UpdatedBy;
+            transactionDetail.UpdatedDate = vm.UpdatedDate;
+        }
+
         public static void UpdatePaymentMethod(this PaymentMethod payment, PaymentMethodViewModel paymentVM)
         {
             payment.CreatedBy = paymentVM.CreatedBy;

@@ -5328,6 +5328,7 @@
     <Compile Include="Api\ServiceController.cs" />
     <Compile Include="Api\ServiceGroupController.cs" />
     <Compile Include="Api\TransactionController.cs" />
+    <Compile Include="Api\TransactionDetailController.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
