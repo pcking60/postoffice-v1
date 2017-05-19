@@ -48,6 +48,15 @@ namespace PostOffice.Web.Api
             });
         }
 
+        [Route("getEarnMoneyByUserName")]
+        [HttpGet]
+        public decimal? GetEarnMoneyByUserName(string userName)
+        {
+            
+            decimal? totalEarn = _transactionDetailService.GetTotalEarnMoneyByUsername(userName);
+            return totalEarn;    
+        }
+
         [Route("getall")]
         public HttpResponseMessage GetAll(HttpRequestMessage request, int page, int pageSize = 20)
         {
@@ -99,10 +108,51 @@ namespace PostOffice.Web.Api
                     item.Status = false;
                 }
                 _transactionService.Save();
-                return Json(oldTransaction.ID);
-                     
+                return Json(oldTransaction.ID);                     
+            }            
+        }
+
+        [Route("update")]
+        [HttpPut]
+        [AllowAnonymous]
+        public IHttpActionResult Update(HttpRequestMessage request, TransactionViewModel transactionVM)
+        {
+           
+            if (!ModelState.IsValid)
+            {
+                return Json("301");
             }
-            
+            else
+            {
+                var dbTransaction = _transactionService.GetById(transactionVM.ID);
+                ICollection<TransactionDetail> transactionDetails = transactionVM.TransactionDetails;
+                var responseTransactionDetail = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(transactionDetails);
+                transactionVM.UpdatedBy = User.Identity.Name;
+                dbTransaction.UpdateTransaction(transactionVM);
+                _transactionService.Update(dbTransaction);
+                _transactionService.Save();
+                foreach (var item in responseTransactionDetail)
+                {
+                    item.UpdatedDate = DateTime.Now;
+                    item.UpdatedBy = User.Identity.Name;
+                    var transactionDetail = new TransactionDetail();
+                    transactionDetail.UpdateTransactionDetail(item);
+                    _transactionDetailService.Update(transactionDetail);
+                    _transactionDetailService.Save();
+                }
+                //var responseData = Mapper.Map<Transaction, TransactionViewModel>(dbTransaction);
+                //response = request.CreateResponse(HttpStatusCode.OK, responseData);
+
+                //update total earn money by username
+
+                //ApplicationUser user = _userService.getByUserName(User.Identity.Name);
+                //var responseData = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user);
+                //responseData.TotalEarn = _transactionDetailService.GetTotalEarnMoneyByUsername(user.UserName);                
+
+                return Json(dbTransaction.ID);
+            }
+                
+
         }
 
         [Route("getbyid/{id:int}")]
@@ -135,8 +185,7 @@ namespace PostOffice.Web.Api
             else
             {
                 var transaction = new Transaction();
-                //var transactionDetails = transactionVM.TransactionDetails;
-                
+                //var transactionDetails = transactionVM.TransactionDetails;                
                 ICollection<TransactionDetail> transactionDetails = transactionVM.TransactionDetails;
                 var responseData = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(transactionDetails);
                 //transactionVM.TransactionDetails = new List<TransactionDetail>();
@@ -144,20 +193,33 @@ namespace PostOffice.Web.Api
                 transactionVM.CreatedBy = User.Identity.Name;
                 transaction.UpdateTransaction(transactionVM);
                 _transactionService.Add(transaction);
+                _transactionService.Save();
+                foreach (var item in responseData)
+                {
+                    item.TransactionID = transaction.ID;
+                    item.CreatedBy = User.Identity.Name;
+                    item.CreatedDate = DateTime.Now;
+                    var dbTransactionDetail = new TransactionDetail();
+                    dbTransactionDetail.UpdateTransactionDetail(item);
+                    _transactionDetailService.Add(dbTransactionDetail);
+                    _transactionDetailService.Save();               
+
+                }
+                
                 //foreach (var item in transactionDetails)
                 //{
                 //    item.TransactionId = transactionVM.ID;
                 //    transactionVM.TransactionDetails.Add(item);
                 //}
 
-                foreach (var item in responseData)
-                {
-                    var dbTransactionDetail = new TransactionDetail();
-                    dbTransactionDetail.UpdateTransactionDetail(item);                    
-                    dbTransactionDetail.TransactionId = item.ID;
-                    //_transactionDetailService.Add(dbTransactionDetail);
-                }
-                _transactionService.Save();
+                //foreach (var item in responseData)
+                //{
+                //    var dbTransactionDetail = new TransactionDetail();
+                //    dbTransactionDetail.UpdateTransactionDetail(item);                    
+                //    dbTransactionDetail.TransactionId = item.ID;
+                //    //_transactionDetailService.Add(dbTransactionDetail);
+                //}
+               
                 return Json(transaction.ID);
             }
         }

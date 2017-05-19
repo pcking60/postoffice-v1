@@ -21,6 +21,8 @@ namespace PostOffice.Web.Models
         #region
         public string POName { get; set; }
         public string GroupName { get; set; }
+
+        public decimal? TotalEarn { get; set; }
         #endregion
     }
 }

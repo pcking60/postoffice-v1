@@ -27,8 +27,10 @@
             // trong cái này mình đã chứa đủ dữ liệu rồi 
             apiService.post('/api/transactions/create', $scope.transaction,
                 function (result) {
-                    $state.go('transactions');
-                    console.log('Giao dịch thành công!');
+                    notificationService.displaySuccess('Giao dịch thành công');                    
+                    $state.go('transactions', {}, {reload: true});
+                    //$state.reload();
+                    
                 }, function (error) {
                     notificationService.displayError('Giao dịch thất bại');
                 });

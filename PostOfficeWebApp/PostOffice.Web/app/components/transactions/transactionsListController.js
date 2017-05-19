@@ -1,7 +1,8 @@
 ﻿(function (app) {
     app.controller('transactionsListController', transactionsListController);
-    transactionsListController.$inject = ['$scope', 'apiService', 'notificationService', '$ngBootbox', '$filter', '$state'];
-    function transactionsListController($scope, apiService, notificationService, $ngBootbox, $filter, $state) {
+    transactionsListController.$inject = ['$scope', 'apiService', 'notificationService',
+            '$ngBootbox', '$filter', '$state', 'authService'];
+    function transactionsListController($scope, apiService, notificationService, $ngBootbox, $filter, $state, authService) {
              
         $scope.page = 0;
         $scope.pagesCount = 0;
@@ -62,23 +63,23 @@
         //    }
         //}, true);
 
-        function deleteTransaction(id) {
-            $ngBootbox.confirm('Bạn có chắc muốn xóa?').then(function () {
-                var config = {
-                    params: {
-                        id: id
-                    }
-                }
-                apiService.del('/api/transactions/delete', config, function () {
-                    notificationService.displaySuccess('Xóa mẫu tin thành công');
-                    search();
-                }, function () {
-                    notificationService.displayError('Xóa mẫu tin thất bại!');
-                });
-            }, function () {
-                console.log('Command was cancel');
-            });
-        }
+        //function deleteTransaction(id) {
+        //    $ngBootbox.confirm('Bạn có chắc muốn xóa?').then(function () {
+        //        var config = {
+        //            params: {
+        //                id: id
+        //            }
+        //        }
+        //        apiService.del('/api/transactions/delete', config, function () {
+        //            notificationService.displaySuccess('Xóa mẫu tin thành công');
+        //            search();
+        //        }, function () {
+        //            notificationService.displayError('Xóa mẫu tin thất bại!');
+        //        });
+        //    }, function () {
+        //        console.log('Command was cancel');
+        //    });
+        //}
 
         
         function deleteTransaction(id) {
@@ -103,6 +104,7 @@
 
         function search() {
             getTransactions();
+            $state.go('userbase', {}, { reload: true });
         }
         function getTransactions(page) {
             page = page || 0;
@@ -117,12 +119,14 @@
                 if (result.data.TotalCount == 0) {
                     notificationService.displayWarning("Chưa có dữ liệu");
                     
-                }
-                $scope.loading = false;
+                }               
+                
                 $scope.transactions = result.data.Items;
                 $scope.page = result.data.Page;
                 $scope.pagesCount = result.data.TotalPages;
                 $scope.totalCount = result.data.TotalCount;
+                
+                $scope.loading = false;
             },
             function () {
                 $scope.loading = false;
@@ -131,7 +135,19 @@
 
         }
 
-        $scope.getTransactions();
+        $scope.authentication = authService.authentication;
+        var userName = $scope.authentication.userName;
+
+        function getUserInfo() {
+            apiService.get('/api/applicationUser/getuserinfo/' + userName, null, function (result) {
+                $scope.userInfo = result.data;
+            }, function () {
+                console.log('Can not load user info!');
+            });
+        }
+        getUserInfo();
+
+        getTransactions();
         
     }
 })(angular.module('postoffice.transactions'));

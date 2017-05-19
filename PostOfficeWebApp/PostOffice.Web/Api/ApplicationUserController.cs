@@ -21,6 +21,7 @@ namespace PostOffice.Web.Api
     {
         private ApplicationUserManager _userManager;
         private IApplicationGroupService _appGroupService;
+        private ITransactionDetailService _transactionDetailService;
         private IPOService _poService;
         private IApplicationRoleService _appRoleService;
         private IApplicationUserService _userService;
@@ -31,12 +32,14 @@ namespace PostOffice.Web.Api
             ApplicationUserManager userManager,
             IPOService poService,
             IApplicationUserService userService,
+            ITransactionDetailService transactionDetailService,
             IErrorService errorService)
             : base(errorService)
         {
             _appRoleService = appRoleService;
             _appGroupService = appGroupService;
             _userManager = userManager;
+            _transactionDetailService = transactionDetailService;
             _poService = poService;
             _userService = userService;
         }
@@ -68,6 +71,22 @@ namespace PostOffice.Web.Api
                 response = request.CreateResponse(HttpStatusCode.OK, pagedSet);
 
                 return response;
+            });
+        }
+
+        [Route("getuserinfo/{userName}")]
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage getUserByUsername(HttpRequestMessage request, string userName)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                ApplicationUser user = _userService.getByUserName(userName);
+                decimal? totalEarn = _transactionDetailService.GetTotalEarnMoneyByUsername(userName);
+                var response = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user);
+                response.TotalEarn = totalEarn;
+                var responseData = request.CreateResponse(HttpStatusCode.OK, response);
+                return responseData;
             });
         }
 
