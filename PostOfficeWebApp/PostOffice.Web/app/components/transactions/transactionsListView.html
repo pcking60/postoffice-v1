@@ -16,15 +16,15 @@
                     <table class="table table-bordered ">
                         <thead>
                             <tr>
-                                <th style="width: 3%;vertical-align: middle" class="text-center text-bold">ID</th>
-                                <th style="width: 20%;vertical-align: middle" class="text-center text-bold">Tên dịch vụ</th>
+                                <th style="width: 5%;vertical-align: middle" class="text-center text-bold">ID</th>
+                                <th style="width: 18%;vertical-align: middle" class="text-center text-bold">Tên dịch vụ</th>
                                 <th style="width: 13%; vertical-align: middle" class="text-center text-bold">Ngày giao dịch</th>
                                 <th style="width: 13%; vertical-align: middle" class="text-center text-bold">Ngày nhập</th>
                                 <th style="width: 5%; vertical-align: middle" class="text-center text-bold">Số lượng</th>
                                 <th style="width: 13%; vertical-align: middle" class="text-center text-bold">Số tiền nộp</th>
                                 <th style="width: 13%; vertical-align: middle" class="text-center text-bold">Số tiền nhận</th>  
-                                <th style="width: 10%; vertical-align: middle" class="text-center text-bold">Trạng thái</th>
-                                <th style="width: 10%;vertical-align: middle" class="text-center text-bold">Thao tác</th>
+                                <th style="width: 11%; vertical-align: middle" class="text-center text-bold">Trạng thái</th>
+                                <th style="width: 9%;vertical-align: middle" class="text-center text-bold">Thao tác</th>
                             </tr>
                             <tr>
                                 <th></th>
@@ -35,12 +35,12 @@
                                 <th></th>
                                 <th></th>                               
                                 <th>  
-                                    <select style="width:100%; border-color: #cecece;" name="parentId" class="form-control input-sm" ng-model="SmartSearch.Status" >
+                                    <select style="width:100%; border-color: #cecece;" name="parentId" class="form-control input-sm" ng-model="SmartSearch.Status" ng-init="SmartSearch.Status='true'">
                                         <option value="">Tất cả</option>
-                                        <option value="true">Kích hoạt</option>
-                                        <option value="false">Khóa</option>
+                                        <option value="true" >Kích hoạt</option>
+                                        <option value="false">Khóa</option>                                        
                                     </select>
-                                    <input type="hidden" name="status" ng-model="SmartSearch.Status" />                                   
+                                    <!--<input type="hidden" name="status" ng-model="SmartSearch.Status"/>-->                                   
                                 </th>
                                 <th></th>
                             </tr>

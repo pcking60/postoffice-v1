@@ -19,6 +19,8 @@ namespace PostOffice.Service
 
         IEnumerable<Transaction> GetAll();
 
+        IEnumerable<Transaction> GetAllByUserName(string userName);
+
         IEnumerable<Transaction> GetAll(string keyword);
 
         IEnumerable<Transaction> Search(string keyword, int page, int pageSize, string sort, out int totalRow);
@@ -31,11 +33,13 @@ namespace PostOffice.Service
     {
         private ITransactionRepository _transactionRepository;
         private IUnitOfWork _unitOfWork;
+        private IApplicationUserRepository _userRepository;
 
-        public TransactionService(ITransactionRepository transactionRepository, IUnitOfWork unitOfWork)
+        public TransactionService(ITransactionRepository transactionRepository, IUnitOfWork unitOfWork, IApplicationUserRepository userRepository)
         {
             _transactionRepository = transactionRepository;
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
 
         public Transaction Add(Transaction transaction)
@@ -63,6 +67,12 @@ namespace PostOffice.Service
             {
                 return _transactionRepository.GetAll();
             }
+        }
+
+        public IEnumerable<Transaction> GetAllByUserName(string userName)
+        {
+            var userId = _userRepository.getByUserName(userName).Id;
+            return _transactionRepository.GetMulti(x => x.UserId == userId).ToList();
         }
 
         public Transaction GetById(int id)

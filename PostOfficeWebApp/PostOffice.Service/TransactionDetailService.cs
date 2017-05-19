@@ -91,11 +91,13 @@ namespace PostOffice.Service
                 earnTotal = earnTotal + percent * item.Money;
             }
             int? quantity = _transactionRepository.GetSingleByID(id).Quantity;
-            return earnTotal * quantity;
+            return earnTotal;
         }
 
         public decimal? GetTotalMoneyByTransactionId(int id)
         {
+            //int? quantity = _transactionRepository.GetSingleByID(id).Quantity;
+            //decimal? totalMoney = quantity * _transactionDetailRepository.GetMulti(x => x.TransactionId == id).Sum(x => x.Money);
             return _transactionDetailRepository.GetMulti(x => x.TransactionId == id).Sum(x => x.Money);
         }
 
@@ -136,8 +138,7 @@ namespace PostOffice.Service
                     decimal? percent = _propertyServiceRepository.GetSingleByID(item1.PropertyServiceId).Percent;
                     earnTotal = earnTotal + percent * item1.Money;
                 }
-                int? quantity = _transactionRepository.GetSingleByID(item.ID).Quantity;
-                earnTotal = earnTotal * quantity;
+                int? quantity = _transactionRepository.GetSingleByID(item.ID).Quantity;                
             }
             return earnTotal;
         }

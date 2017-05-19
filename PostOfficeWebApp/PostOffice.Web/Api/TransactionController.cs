@@ -63,7 +63,8 @@ namespace PostOffice.Web.Api
             return CreateHttpResponse(request, () =>
             {
                 int totalRow = 0;
-                var model = _transactionService.GetAll();
+                var userName = User.Identity.Name;
+                var model = _transactionService.GetAllByUserName(userName);
                 totalRow = model.Count();
                 var query = model.OrderBy(x => x.ID).Skip(page * pageSize).Take(pageSize);
 
