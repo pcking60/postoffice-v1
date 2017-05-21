@@ -121,6 +121,14 @@ namespace PostOffice.Web.App_Start
                     context.Rejected();
                 }
             }
+            public override Task TokenEndpoint(OAuthTokenEndpointContext context)
+            {
+                foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
+                {
+                    context.AdditionalResponseParameters.Add(property.Key, property.Value);
+                }
+                return Task.FromResult<object>(null);
+            }
         }
 
         private static UserManager<ApplicationUser> CreateManager(IdentityFactoryOptions<UserManager<ApplicationUser>> options, IOwinContext context)

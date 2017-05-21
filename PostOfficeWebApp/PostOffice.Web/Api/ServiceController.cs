@@ -27,7 +27,7 @@ namespace PostOffice.Web.Api
 
         [Route("edit")]
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(Roles = "UpdateService")]
         public HttpResponseMessage Update(HttpRequestMessage request, ServiceViewModel serviceVm)
         {
             return CreateHttpResponse(request, () =>
@@ -52,7 +52,7 @@ namespace PostOffice.Web.Api
 
         [Route("delete")]
         [HttpDelete]
-        [AllowAnonymous]
+        [Authorize(Roles = "DeleteService")]
         public HttpResponseMessage Delete(HttpRequestMessage request, int id)
         {
             return CreateHttpResponse(request, () =>
@@ -90,6 +90,7 @@ namespace PostOffice.Web.Api
 
         [Route("add")]
         [HttpPost]
+        [Authorize(Roles = "AddService")]
         public HttpResponseMessage Add(HttpRequestMessage request, ServiceViewModel serviceVM)
         {
             return CreateHttpResponse(request, () =>

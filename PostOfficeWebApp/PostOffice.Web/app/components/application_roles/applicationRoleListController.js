@@ -10,7 +10,7 @@
         $scope.data = [];
         $scope.page = 0;
         $scope.pageCount = 0;
-        $scope.search = search;
+        $scope.getRoles = getRoles;
         $scope.clearSearch = clearSearch;
         $scope.deleteItem = deleteItem;
         $scope.selectAll = selectAll;
@@ -76,14 +76,14 @@
                     });
                 });
         }
-        function search(page) {
+        function getRoles(page) {
             page = page || 0;
 
             $scope.loading = true;
             var config = {
                 params: {
                     page: page,
-                    pageSize: 10,
+                    pageSize: 20,
                     filter: $scope.keyword
                 }
             }
@@ -111,6 +111,6 @@
             search();
         }
 
-        $scope.search();
+        $scope.getRoles();
     }
 })(angular.module('postoffice.application_roles'));

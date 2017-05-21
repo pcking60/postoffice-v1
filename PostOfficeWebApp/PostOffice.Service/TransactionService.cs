@@ -34,12 +34,14 @@ namespace PostOffice.Service
         private ITransactionRepository _transactionRepository;
         private IUnitOfWork _unitOfWork;
         private IApplicationUserRepository _userRepository;
+        private IApplicationGroupRepository _groupRepository;
 
-        public TransactionService(ITransactionRepository transactionRepository, IUnitOfWork unitOfWork, IApplicationUserRepository userRepository)
+        public TransactionService(ITransactionRepository transactionRepository, IUnitOfWork unitOfWork, IApplicationUserRepository userRepository, IApplicationGroupRepository groupRepository)
         {
             _transactionRepository = transactionRepository;
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
+            _groupRepository = groupRepository;
         }
 
         public Transaction Add(Transaction transaction)
@@ -71,8 +73,41 @@ namespace PostOffice.Service
 
         public IEnumerable<Transaction> GetAllByUserName(string userName)
         {
-            var userId = _userRepository.getByUserName(userName).Id;
-            return _transactionRepository.GetMulti(x => x.UserId == userId).ToList();
+            var user = _userRepository.getByUserName(userName);
+            var listGroup = _groupRepository.GetListGroupByUserId(user.Id);
+
+            bool IsManager = false;
+            bool IsAdministrator = false;
+
+            foreach (var item in listGroup)
+            {
+                string name = item.Name;
+                if(name=="Manager")
+                {
+                    IsManager = true;
+                }
+                if (name == "Administrator")
+                {
+                    IsAdministrator = true;
+                }
+            }
+            if(IsAdministrator)
+            {
+                return _transactionRepository.GetAll();
+            }
+            else
+            {
+                if (IsManager)
+                {
+                   return  _transactionRepository.GetAllByUserName(userName);
+                    
+                }
+                else
+                {
+                    return _transactionRepository.GetMulti(x => x.UserId == user.Id).ToList();
+                }
+            }
+            
         }
 
         public Transaction GetById(int id)

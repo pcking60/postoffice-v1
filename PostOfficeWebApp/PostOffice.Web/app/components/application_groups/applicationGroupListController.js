@@ -10,7 +10,7 @@
         $scope.data = [];
         $scope.page = 0;
         $scope.pageCount = 0;
-        $scope.search = search;
+        $scope.getServiceGroups = getServiceGroups;
         $scope.clearSearch = clearSearch;
         $scope.deleteItem = deleteItem;
         $scope.selectAll = selectAll;
@@ -77,7 +77,7 @@
                     });
                 });
         }
-        function search(page) {
+        function getServiceGroups(page) {
             page = page || 0;
 
             $scope.loading = true;
@@ -112,6 +112,6 @@
             search();
         }
 
-        $scope.search();
+        $scope.getServiceGroups();
     }
 })(angular.module('postoffice.application_groups'));

@@ -17,9 +17,8 @@
             $http.delete(url, data).then(function (result) {
                 success(result);
             }, function (error) {
-                console.log(error.status)
                 if (error.status === 401) {
-                    notificationService.displayError('Authenticate is required.');
+                    console.log('Bạn không đủ quyền truy cập - mã lỗi: ' + error.status);
                 }
                 else if (failure != null) {
                     failure(error);
@@ -32,9 +31,8 @@
             $http.post(url, data).then(function (result) {
                 success(result);
             }, function (error) {
-                console.log(error.status)
                 if (error.status === 401) {
-                    notificationService.displayError('Authenticate is required.');
+                    console.log('Bạn không đủ quyền truy cập - mã lỗi: ' + error.status);
                 }
                 else if (failure != null) {
                     failure(error);
@@ -46,10 +44,9 @@
             
             $http.put(url, data).then(function (result) {
                 success(result);
-            }, function (error) {
-                console.log(error.status)
+            }, function (error) {                
                 if (error.status === 401) {
-                    notificationService.displayError('Authenticate is required.');
+                    console.log('Bạn không đủ quyền truy cập - mã lỗi: ' + error.status);
                 }
                 else if (failure != null) {
                     failure(error);
@@ -61,8 +58,13 @@
       
             $http.get(url, params).then(function (result) {
                 success(result);
-            }, function (error) {
-                failure(error);
+            }, function (error) {                
+                if (error.status === 401) {
+                    console.log('Bạn không đủ quyền truy cập - mã lỗi: ' + error.status);
+                }
+                else if (failure != null) {
+                    failure(error);
+                }
             });
         }
     }

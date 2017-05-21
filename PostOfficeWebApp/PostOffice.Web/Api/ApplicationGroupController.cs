@@ -19,6 +19,7 @@ namespace PostOffice.Web.Api
 {
     [RoutePrefix("api/applicationGroup")]
     [Authorize]
+
     public class ApplicationGroupController : ApiControllerBase
     {
         private IApplicationGroupService _appGroupService;
@@ -40,6 +41,7 @@ namespace PostOffice.Web.Api
 
         [Route("getlistpaging")]
         [HttpGet]
+        [Authorize(Roles ="ViewGroup")]
         public HttpResponseMessage GetListPaging(HttpRequestMessage request, int page, int pageSize, string filter = null)
         {
             return CreateHttpResponse(request, () =>
@@ -70,6 +72,7 @@ namespace PostOffice.Web.Api
 
         [Route("getlistall")]
         [HttpGet]
+        [Authorize(Roles ="ViewGroup")]
         public HttpResponseMessage GetAll(HttpRequestMessage request)
         {
             return CreateHttpResponse(request, () =>
@@ -87,6 +90,7 @@ namespace PostOffice.Web.Api
 
         [Route("detail/{id:int}")]
         [HttpGet]
+        [Authorize(Roles ="ViewGroup")]
         public HttpResponseMessage Details(HttpRequestMessage request, int id)
         {
             if (id == 0)
@@ -106,6 +110,7 @@ namespace PostOffice.Web.Api
 
         [HttpPost]
         [Route("add")]
+        [Authorize(Roles ="AddGroup")]
         public HttpResponseMessage Create(HttpRequestMessage request, ApplicationGroupViewModel appGroupViewModel)
         {
             if (ModelState.IsValid)
@@ -145,6 +150,7 @@ namespace PostOffice.Web.Api
 
         [HttpPut]
         [Route("update")]
+        [Authorize(Roles ="UpdateGroup")]
         public async Task<HttpResponseMessage> Update(HttpRequestMessage request, ApplicationGroupViewModel appGroupViewModel)
         {
             if (ModelState.IsValid)
@@ -196,6 +202,7 @@ namespace PostOffice.Web.Api
 
         [HttpDelete]
         [Route("delete")]
+        [Authorize(Roles ="DeleteGroup")]
         public HttpResponseMessage Delete(HttpRequestMessage request, int id)
         {
             var appGroup = _appGroupService.Delete(id);
@@ -205,6 +212,7 @@ namespace PostOffice.Web.Api
 
         [Route("deletemulti")]
         [HttpDelete]
+        [Authorize(Roles = "DeleteGroup")]
         public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string checkedList)
         {
             return CreateHttpResponse(request, () =>

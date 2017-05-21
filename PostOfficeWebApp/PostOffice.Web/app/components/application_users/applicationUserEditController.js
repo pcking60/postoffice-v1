@@ -6,8 +6,9 @@
     applicationUserEditController.$inject = ['$scope', 'apiService', 'notificationService', '$location', '$stateParams', '$filter'];
 
     function applicationUserEditController($scope, apiService, notificationService, $location, $stateParams, $filter) {
-        $scope.account = {}
 
+        $scope.account = {
+        };
 
         $scope.updateAccount = updateAccount;
 
@@ -46,7 +47,15 @@
                 });
 
         }
+        function loadPOs() {
+            apiService.get('/api/po/getallparents', null, function (result) {
+                $scope.pos = result.data;
+            }, function () {
+                console.log('Can not load list POs!');
+            });
+        }
 
+        loadPOs();
         loadGroups();
         loadDetail();
     }
