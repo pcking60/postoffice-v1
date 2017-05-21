@@ -52,6 +52,7 @@
                     $state.go('transactions', {}, {reload: true});
                 }, function (error) {
                     notificationService.displayError('Cập nhật thất bại');
+                    $state.go('transactions');
                 });
         }
         //getTransactionDetail();

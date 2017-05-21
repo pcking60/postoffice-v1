@@ -36,18 +36,25 @@
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-3 control-label">Số lượng</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control"  ng-model="transaction.Quantity">
+                            <input type="text" class="form-control"  ng-model="transaction.Quantity" name="quantity">
+                            <span ng-show="frmAddTransaction.quantity.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Ngày giao dịch</label>
                         <div class='input-group date col-sm-9' id='datetimepicker1'>
-                            <input type='text' class="form-control" ng-model="transaction.TransactionDate"/>
+                            <input type='text' name="transactionDate" class="form-control" required max="{{max}}" min="{{min}}" ng-model="transaction.TransactionDate"/>                            
+                            <span ng-show="frmAddTransaction.transactionDate.$dirty && frmAddTransaction.transactionDate.$invalid">
+                                <span ng-show="frmAddTransaction.transactionDate.$error.required">Start Date is required</span>
+                                <span ng-show="frmAddTransaction.transactionDate.$error.min">Start Date should not be less than current date</span>
+                            </span>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
+
                         </div>
+                        
                     </div>
                      
                     <!--<div class="form-group">
@@ -72,7 +79,7 @@
             <!-- /.box-body -->
             <div class="box-footer">
                 <button ui-sref="main_service_groups" class="btn btn-default">Hủy</button>
-                <button type="submit" ng-disabled="frmAddMainServiceGroup.$invalid" class="btn btn-info pull-right">Lưu</button>
+                <button type="submit" ng-disabled="frmAddTransaction.$invalid" class="btn btn-info pull-right">Lưu</button>
             </div>
             <!-- /.box-footer -->
         </form>

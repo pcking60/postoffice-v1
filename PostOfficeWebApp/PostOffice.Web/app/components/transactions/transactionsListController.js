@@ -11,6 +11,9 @@
         $scope.keyword = '';
         $scope.search = search;
         $scope.deleteTransaction = deleteTransaction;
+
+        //test gettime()
+        $scope.currentDate = new Date();     
         //$scope.selectAll = selectAll;
         //$scope.deleteMulti = deleteMulti;
         $scope.loading = true;
@@ -145,9 +148,19 @@
                 console.log('Can not load user info!');
             });
         }
+
+        const ACCEPTABLE_OFFSET = 86400*1000;
+
+        $scope.editEnabled = function(transaction)
+        {
+            return (new Date().getTime() - (new Date(transaction.TransactionDate)).getTime()) > ACCEPTABLE_OFFSET;
+        }
+
         getUserInfo();
 
         getTransactions();
         
     }
+
+    
 })(angular.module('postoffice.transactions'));

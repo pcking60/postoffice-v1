@@ -24,6 +24,9 @@
                 });
             });
 
+            $scope.max = new Date();
+            $scope.min = new Date() - 2;
+
             // trong cái này mình đã chứa đủ dữ liệu rồi 
             apiService.post('/api/transactions/create', $scope.transaction,
                 function (result) {

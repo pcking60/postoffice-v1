@@ -9,6 +9,7 @@ namespace PostOfiice.DAta.Repositories
     public interface ITransactionRepository : IRepository<Transaction>
     {
         IEnumerable<Transaction> GetAllByUserName(string userName);
+        
     }
 
     public class TransactionRepository : RepositoryBase<Transaction>, ITransactionRepository
@@ -41,6 +42,7 @@ namespace PostOfiice.DAta.Repositories
             return listTransaction;
         }
 
+        
         public override void Update(Transaction entity)
         {
             entity.UpdatedDate = DateTime.Now;

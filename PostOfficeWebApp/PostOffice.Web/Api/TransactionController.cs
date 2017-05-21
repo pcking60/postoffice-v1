@@ -116,41 +116,56 @@ namespace PostOffice.Web.Api
         [Route("update")]
         [HttpPut]
         [AllowAnonymous]
-        public IHttpActionResult Update(HttpRequestMessage request, TransactionViewModel transactionVM)
+        public HttpResponseMessage Update(HttpRequestMessage request, TransactionViewModel transactionVM)
         {
            
             if (!ModelState.IsValid)
             {
-                return Json("301");
+                return request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+                //return Json("301");
             }
             else
             {
-                var dbTransaction = _transactionService.GetById(transactionVM.ID);
-                ICollection<TransactionDetail> transactionDetails = transactionVM.TransactionDetails;
-                var responseTransactionDetail = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(transactionDetails);
-                transactionVM.UpdatedBy = User.Identity.Name;
-                dbTransaction.UpdateTransaction(transactionVM);
-                _transactionService.Update(dbTransaction);
-                _transactionService.Save();
-                foreach (var item in responseTransactionDetail)
+                var currentDate = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+
+                var transactionDate = transactionVM.TransactionDate.Ticks / TimeSpan.TicksPerMillisecond;
+
+                bool isValid = (currentDate - transactionDate) > 86400 * 1000;
+               
+                if (isValid)
                 {
-                    item.UpdatedDate = DateTime.Now;
-                    item.UpdatedBy = User.Identity.Name;
-                    var transactionDetail = new TransactionDetail();
-                    transactionDetail.UpdateTransactionDetail(item);
-                    _transactionDetailService.Update(transactionDetail);
-                    _transactionDetailService.Save();
+                    return request.CreateResponse(HttpStatusCode.BadRequest);
                 }
-                //var responseData = Mapper.Map<Transaction, TransactionViewModel>(dbTransaction);
-                //response = request.CreateResponse(HttpStatusCode.OK, responseData);
+                else
+                {
+                    var dbTransaction = _transactionService.GetById(transactionVM.ID);
+                    ICollection<TransactionDetail> transactionDetails = transactionVM.TransactionDetails;
+                    var responseTransactionDetail = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(transactionDetails);
+                    transactionVM.UpdatedBy = User.Identity.Name;
+                    dbTransaction.UpdateTransaction(transactionVM);
+                    _transactionService.Update(dbTransaction);
+                    _transactionService.Save();
+                    foreach (var item in responseTransactionDetail)
+                    {
+                        item.UpdatedDate = DateTime.Now;
+                        item.UpdatedBy = User.Identity.Name;
+                        var transactionDetail = new TransactionDetail();
+                        transactionDetail.UpdateTransactionDetail(item);
+                        _transactionDetailService.Update(transactionDetail);
+                        _transactionDetailService.Save();
+                    }
+                    //var responseData = Mapper.Map<Transaction, TransactionViewModel>(dbTransaction);
+                    //response = request.CreateResponse(HttpStatusCode.OK, responseData);
 
-                //update total earn money by username
+                    //update total earn money by username
 
-                //ApplicationUser user = _userService.getByUserName(User.Identity.Name);
-                //var responseData = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user);
-                //responseData.TotalEarn = _transactionDetailService.GetTotalEarnMoneyByUsername(user.UserName);                
-
-                return Json(dbTransaction.ID);
+                    //ApplicationUser user = _userService.getByUserName(User.Identity.Name);
+                    //var responseData = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user);
+                    //responseData.TotalEarn = _transactionDetailService.GetTotalEarnMoneyByUsername(user.UserName);                
+                    return request.CreateResponse(HttpStatusCode.OK, responseTransactionDetail);
+                   // return Json(dbTransaction.ID);
+                }
+                
             }
                 
 
