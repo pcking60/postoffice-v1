@@ -20,12 +20,17 @@ namespace PostOffice.Web.Api
     {
         private IMainServiceGroupService _mainServiceGroupService;
         private IServiceService _serviceService;
+        private IServiceGroupService _serviceGroupService;
 
-        public MainServiceGroupController(IErrorService errorService, IServiceService serviceService, IMainServiceGroupService mainServiceGroupService)
+        public MainServiceGroupController(IErrorService errorService, 
+                IServiceService serviceService, 
+                IMainServiceGroupService mainServiceGroupService,
+                IServiceGroupService serviceGroupService)
            : base(errorService)
         {
             this._mainServiceGroupService = mainServiceGroupService;
             this._serviceService = serviceService;
+            _serviceGroupService = serviceGroupService;
         }
 
         [Route("getbyid/{id:int}")]
@@ -63,6 +68,11 @@ namespace PostOffice.Web.Api
                     TotalCount = totalRow,
                     TotalPages = (int)Math.Ceiling((decimal)totalRow / pageSize)
                 };
+
+                foreach (var item in responseData)
+                {
+                    item.NoGroupService = _serviceGroupService.GetAllByParentId(item.Id).Count();
+                }
                 var response = request.CreateResponse(HttpStatusCode.OK, paginationSet);
                 return response;
             });

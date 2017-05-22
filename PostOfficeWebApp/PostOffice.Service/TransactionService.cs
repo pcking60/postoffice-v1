@@ -1,4 +1,5 @@
-﻿using PostOffice.Model.Models;
+﻿using PostOffice.Common.ViewModels;
+using PostOffice.Model.Models;
 using PostOfiice.DAta.Infrastructure;
 using PostOfiice.DAta.Repositories;
 using System;
@@ -24,6 +25,8 @@ namespace PostOffice.Service
         IEnumerable<Transaction> GetAll(string keyword);
 
         IEnumerable<Transaction> Search(string keyword, int page, int pageSize, string sort, out int totalRow);
+
+        
 
         Transaction GetById(int id);
 
@@ -133,5 +136,7 @@ namespace PostOffice.Service
         {
             _transactionRepository.Update(transaction);
         }
+
+        
     }
 }

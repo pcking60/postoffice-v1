@@ -4,7 +4,9 @@
   "dependencies": {
     "ngprogress": "~1.1.3",
     "ng-loading": "~0.0.5",
-    "eonasdan-bootstrap-datetimepicker": "~4.17.47"
+    "eonasdan-bootstrap-datetimepicker": "~4.17.47",
+    "angular-ui-select": "~0.19.8",
+    "angular-sanitize": "~1.6.4"
   },
   "resolutions": {
     "moment": ">=2.10.5",

@@ -53,7 +53,7 @@
                     <input type="hidden" name="paymentMethod" ng-model="service.PayMethodID" />
                 </div>
             </div>-->
-                        <div class="form-group">
+                        <!--<div class="form-group">
                             <label for="inputPassword3" class="col-sm-3 control-label">Danh mục cha</label>
                             <div class="col-sm-9">
                                 <select name="parentId" class="form-control" ng-model="service.GroupID" ng-options="option.ID as option.Name for option in parentGroups">
@@ -61,11 +61,26 @@
                                 </select>
                                 <input type="hidden" name="parentId" ng-model="service.GroupID" />
                             </div>
+                        </div>-->
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">Danh mục cha</label>
+                            <div class="col-sm-9">
+                                <ui-select ng-model="service.GroupID" ng-disabled="ctrl.disabled"   title="Chọn dịch vụ">
+                                    <ui-select-match placeholder="chọn or tìm kiếm dịch vụ trong nhóm..">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices repeat="item.ID as item in parentGroups | filter: $select.search">
+                                        
+                                        <small>
+                                            {{item.Name}}                                           
+                                        </small>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
                         </div>
+                        
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-3 control-label">Giá vốn</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" name="buyin" ng-model="service.BuyIn" placeholder="order by">
+                                <input type="number" class="form-control" name="buyin" ng-model="service.BuyIn" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">

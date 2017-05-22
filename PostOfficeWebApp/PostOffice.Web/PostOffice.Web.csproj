@@ -211,6 +211,9 @@
     <Content Include="app\components\application_users\applicationUserListController.js" />
     <Content Include="app\components\application_users\applicationUserListView.html" />
     <Content Include="app\components\application_users\applicationUsers.module.js" />
+    <Content Include="app\components\statistic\revenueStatisticController.js" />
+    <Content Include="app\components\statistic\revenueStatisticView.html" />
+    <Content Include="app\components\statistic\statistic.module.js" />
     <Content Include="app\components\transactions\transactionAddController.js" />
     <Content Include="app\components\transactions\transactionAddView.html" />
     <Content Include="app\components\transactions\transactionEditController.js" />
@@ -277,6 +280,7 @@
     <Content Include="app\shared\services\authService.js" />
     <Content Include="app\shared\services\commonService.js" />
     <Content Include="app\shared\services\notificationService.js" />
+    <Content Include="app\shared\views\sideBarBaseView.html" />
     <Content Include="app\shared\views\userBaseView.html" />
     <Content Include="app\shared\views\baseView.html" />
     <Content Include="Assets\admin\css\AdminLTE.css" />
@@ -351,6 +355,12 @@
     <Content Include="Assets\admin\libs\angular-bootstrap\ui-bootstrap-tpls.min.js" />
     <Content Include="Assets\admin\libs\angular-bootstrap\ui-bootstrap.js" />
     <Content Include="Assets\admin\libs\angular-bootstrap\ui-bootstrap.min.js" />
+    <Content Include="Assets\admin\libs\angular-chart.js\angular-chart.js" />
+    <Content Include="Assets\admin\libs\angular-chart.js\dist\angular-chart.css" />
+    <Content Include="Assets\admin\libs\angular-chart.js\dist\angular-chart.js" />
+    <Content Include="Assets\admin\libs\angular-chart.js\dist\angular-chart.min.css" />
+    <Content Include="Assets\admin\libs\angular-chart.js\dist\angular-chart.min.js" />
+    <Content Include="Assets\admin\libs\angular-chart.js\gulpfile.js" />
     <Content Include="Assets\admin\libs\angular-cookies\angular-cookies.js" />
     <Content Include="Assets\admin\libs\angular-cookies\angular-cookies.min.js" />
     <Content Include="Assets\admin\libs\angular-cookies\index.js" />
@@ -403,6 +413,9 @@
     <Content Include="Assets\admin\libs\angular-material\angular-material.min.css" />
     <Content Include="Assets\admin\libs\angular-material\angular-material.min.js" />
     <Content Include="Assets\admin\libs\angular-material\angular-messages.min.js" />
+    <Content Include="Assets\admin\libs\angular-sanitize\angular-sanitize.js" />
+    <Content Include="Assets\admin\libs\angular-sanitize\angular-sanitize.min.js" />
+    <Content Include="Assets\admin\libs\angular-sanitize\index.js" />
     <Content Include="Assets\admin\libs\angular-ui-router\release\angular-ui-router.js" />
     <Content Include="Assets\admin\libs\angular-ui-router\release\angular-ui-router.min.js" />
     <Content Include="Assets\admin\libs\angular-ui-router\src\common.js" />
@@ -416,6 +429,18 @@
     <Content Include="Assets\admin\libs\angular-ui-router\src\view.js" />
     <Content Include="Assets\admin\libs\angular-ui-router\src\viewDirective.js" />
     <Content Include="Assets\admin\libs\angular-ui-router\src\viewScroll.js" />
+    <Content Include="Assets\admin\libs\angular-ui-select\dist\select.css" />
+    <Content Include="Assets\admin\libs\angular-ui-select\dist\select.js" />
+    <Content Include="Assets\admin\libs\angular-ui-select\dist\select.min.css" />
+    <Content Include="Assets\admin\libs\angular-ui-select\dist\select.min.js" />
+    <Content Include="Assets\admin\libs\angular-ui-select\docs\assets\app.js" />
+    <Content Include="Assets\admin\libs\angular-ui-select\docs\assets\demo.js" />
+    <Content Include="Assets\admin\libs\angular-ui-select\docs\assets\docs.css" />
+    <Content Include="Assets\admin\libs\angular-ui-select\docs\assets\plunkr.js" />
+    <Content Include="Assets\admin\libs\angular-ui-select\docs\index.html" />
+    <Content Include="Assets\admin\libs\angular-ui-select\docs\partials\_footer.html" />
+    <Content Include="Assets\admin\libs\angular-ui-select\docs\partials\_header.html" />
+    <Content Include="Assets\admin\libs\angular-ui-select\index.js" />
     <Content Include="Assets\admin\libs\angular\angular-csp.css" />
     <Content Include="Assets\admin\libs\angular\angular.js" />
     <Content Include="Assets\admin\libs\angular\angular.min.js" />
@@ -449,6 +474,7 @@
     <Content Include="Assets\admin\libs\bootstrap\js\tooltip.js" />
     <Content Include="Assets\admin\libs\bootstrap\js\transition.js" />
     <Content Include="Assets\admin\libs\bootstrap\package.js" />
+    <Content Include="Assets\admin\libs\Chart.js\Chart.js" />
     <Content Include="Assets\admin\libs\checklist-model\checklist-model.js" />
     <Content Include="Assets\admin\libs\checklist-model\LICENSE.txt" />
     <Content Include="Assets\admin\libs\ckeditor\adapters\jquery.js" />
@@ -5366,6 +5392,7 @@
     <Compile Include="Api\PropertyServiceController.cs" />
     <Compile Include="Api\ServiceController.cs" />
     <Compile Include="Api\ServiceGroupController.cs" />
+    <Compile Include="Api\StatisticController.cs" />
     <Compile Include="Api\TransactionController.cs" />
     <Compile Include="Api\TransactionDetailController.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -5765,6 +5792,38 @@
     <Content Include="Assets\admin\libs\eonasdan-bootstrap-datetimepicker\src\nuget\install.ps1" />
     <Content Include="Assets\admin\libs\eonasdan-bootstrap-datetimepicker\src\sass\bootstrap-datetimepicker-build.scss" />
     <Content Include="Assets\admin\libs\eonasdan-bootstrap-datetimepicker\src\sass\_bootstrap-datetimepicker.scss" />
+    <Content Include="Assets\admin\libs\angular-sanitize\.bower.json" />
+    <Content Include="Assets\admin\libs\angular-sanitize\angular-sanitize.min.js.map" />
+    <Content Include="Assets\admin\libs\angular-sanitize\bower.json" />
+    <Content Include="Assets\admin\libs\angular-sanitize\LICENSE.md" />
+    <Content Include="Assets\admin\libs\angular-sanitize\package.json" />
+    <Content Include="Assets\admin\libs\angular-sanitize\README.md" />
+    <Content Include="Assets\admin\libs\angular-ui-select\.bower.json" />
+    <Content Include="Assets\admin\libs\angular-ui-select\bower.json" />
+    <Content Include="Assets\admin\libs\angular-ui-select\CHANGELOG.md" />
+    <Content Include="Assets\admin\libs\angular-ui-select\composer.json" />
+    <Content Include="Assets\admin\libs\angular-ui-select\CONTRIBUTING.md" />
+    <Content Include="Assets\admin\libs\angular-ui-select\deploy-docs.sh" />
+    <Content Include="Assets\admin\libs\angular-ui-select\dist\select.min.css.map" />
+    <Content Include="Assets\admin\libs\angular-ui-select\dist\select.min.js.map" />
+    <Content Include="Assets\admin\libs\angular-ui-select\LICENSE" />
+    <Content Include="Assets\admin\libs\angular-ui-select\package.json" />
+    <Content Include="Assets\admin\libs\angular-ui-select\README.md" />
+    <Content Include="Assets\admin\libs\angular-chart.js\.bower.json" />
+    <Content Include="Assets\admin\libs\angular-chart.js\angular-chart.less" />
+    <Content Include="Assets\admin\libs\angular-chart.js\bower.json" />
+    <Content Include="Assets\admin\libs\angular-chart.js\CONTRIBUTING.md" />
+    <Content Include="Assets\admin\libs\angular-chart.js\dist\angular-chart.js.tar.gz" />
+    <Content Include="Assets\admin\libs\angular-chart.js\dist\angular-chart.min.css.map" />
+    <Content Include="Assets\admin\libs\angular-chart.js\dist\angular-chart.min.js.map" />
+    <Content Include="Assets\admin\libs\angular-chart.js\Dockerfile" />
+    <Content Include="Assets\admin\libs\angular-chart.js\ISSUE_TEMPLATE.md" />
+    <Content Include="Assets\admin\libs\angular-chart.js\LICENSE" />
+    <Content Include="Assets\admin\libs\angular-chart.js\package.json" />
+    <Content Include="Assets\admin\libs\angular-chart.js\PULL_REQUEST_TEMPLATE.md" />
+    <Content Include="Assets\admin\libs\angular-chart.js\README.md" />
+    <Content Include="Assets\admin\libs\Chart.js\.bower.json" />
+    <Content Include="Assets\admin\libs\Chart.js\bower.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5780,6 +5839,10 @@
     <Folder Include="Views\Service\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PostOffice.Common\PostOffice.Common.csproj">
+      <Project>{34c2a845-792d-41fa-9a23-f239797073d6}</Project>
+      <Name>PostOffice.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PostOffice.Model\PostOffice.Model.csproj">
       <Project>{8ae2fe9e-cffa-4e55-a236-062952315084}</Project>
       <Name>PostOffice.Model</Name>

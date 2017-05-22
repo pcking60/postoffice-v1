@@ -9,7 +9,7 @@
             $state.go('login');
         }
         $scope.authentication = authService.authentication;
-        
+        $scope.sideBarBaseView = 'app/shared/views/sideBarBaseView.html';
         
         //authenticationService.validateRequest();
     }

@@ -61,9 +61,8 @@
                                 <td>{{item.Name}}</td>
                                 <td style="vertical-align:middle" class="text-center">{{item.CreatedDate | date: 'dd/MM/yyyy HH:mm:ss   '}}</td>
                                 <td style="vertical-align:middle" class="text-center">{{item.CreatedBy}}</td>
-                                <td style="vertical-align:middle" class="text-center">{{item.UpdatedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
-                                
-                                <td style="vertical-align:middle" class="text-center">{{item.NoServiceGroup}}</td>
+                                <td style="vertical-align:middle" class="text-center">{{item.UpdatedDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>                                
+                                <td style="vertical-align:middle" class="text-center">{{item.NoGroupService}}</td>
                                 <td style="vertical-align:middle" class="text-center"><span ng-class="{'badge bg-red': item.Status==false, 'badge bg-green':item.Status==true}">{{item.Status | statusFilter}}</span></td>
                                 <td style="vertical-align:middle" class="text-center">
                                     <button class="btn btn-sm btn-primary" ui-sref="edit_main_service_groups({id:item.Id})"><i class="fa fa-pencil"></i></button>
