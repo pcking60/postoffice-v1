@@ -21,15 +21,15 @@
                 $scope.tabledata = response.data;
                 var labels = [];
                 var chartData = [];
-                var revenues = [];
-                var benefits = [];
+                var totalMoney = [];
+                
                 $.each(response.data, function (i, item) {
-                    labels.push($filter('date')(item.Date, 'dd/MM/yyyy'));
-                    revenues.push(item.Revenues);
-                    benefits.push(item.Benefit);
+                    labels.push($filter('date')(item.CreatedDate, 'dd/MM/yyyy'));
+                    totalMoney.push(item.totalMoney);
+                    
                 });
-                chartData.push(revenues);
-                chartData.push(benefits);
+                chartData.push(totalMoney);
+               
 
                 $scope.chartdata = chartData;
                 $scope.labels = labels;

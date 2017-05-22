@@ -53,10 +53,10 @@
                         <tbody>
                             <tr ng-repeat="item in tabledata">
                                 <td>
-                                    {{item.Date | date}}
+                                    {{item.CreatedDate | date:'dd/MM/yyyy'}}
                                 </td>
                                 <td>
-                                    {{item.Revenues | number}}
+                                    {{item.totalMoney | number}}
                                 </td>
                                 
                             </tr>
