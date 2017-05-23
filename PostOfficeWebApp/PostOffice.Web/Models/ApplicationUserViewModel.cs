@@ -7,7 +7,7 @@ namespace PostOffice.Web.Models
     {
         public string Id { set; get; }
         public string FullName { set; get; }
-        public DateTime? BirthDay { set; get; }
+        public DateTimeOffset? BirthDay { set; get; }
         public string Bio { set; get; }
         public string Email { set; get; }
         public string Password { set; get; }

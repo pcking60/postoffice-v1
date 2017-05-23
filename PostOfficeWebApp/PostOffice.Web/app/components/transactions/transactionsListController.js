@@ -149,7 +149,7 @@
             });
         }
 
-        const ACCEPTABLE_OFFSET = 86400*1000;
+        const ACCEPTABLE_OFFSET = 172800*1000;
 
         $scope.editEnabled = function(transaction)
         {

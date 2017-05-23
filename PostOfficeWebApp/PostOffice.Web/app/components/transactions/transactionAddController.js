@@ -15,28 +15,34 @@
         function AddTransaction() {
             $scope.transaction.ServiceId = $scope.transaction.Service.ID;           
             $scope.transaction.TransactionDate = $("#datetimepicker1").find("input").val();
-            $scope.transaction.Properties.forEach(function (item, index) {
-                $scope.transaction.TransactionDetails.push({
-                    Money: item.Money,
-                    PropertyServiceId: item.ID,
-                    Status: true,
-                    TransactionId: -1
+            
+            const ACCEPTABLE_OFFSET = 172800 * 1000;
+            if ((new Date().getTime() - new Date($scope.transaction.TransactionDate).getTime()) > ACCEPTABLE_OFFSET)
+            {
+                notificationService.displayError('Ngày giao dịch đã chậm quá 2 ngày');
+            }
+            else
+            {
+                $scope.transaction.Properties.forEach(function (item, index) {
+                    $scope.transaction.TransactionDetails.push({
+                        Money: item.Money,
+                        PropertyServiceId: item.ID,
+                        Status: true,
+                        TransactionId: -1
+                    });
                 });
-            });
+               
+                // trong cái này mình đã chứa đủ dữ liệu rồi 
+                apiService.post('/api/transactions/create', $scope.transaction,
+                    function (result) {
+                        notificationService.displaySuccess('Giao dịch thành công');
+                        $state.go('transactions', {}, { reload: true });
+                        //$state.reload();
 
-            $scope.max = new Date();
-            $scope.min = new Date() - 2;
-
-            // trong cái này mình đã chứa đủ dữ liệu rồi 
-            apiService.post('/api/transactions/create', $scope.transaction,
-                function (result) {
-                    notificationService.displaySuccess('Giao dịch thành công');                    
-                    $state.go('transactions', {}, {reload: true});
-                    //$state.reload();
-                    
-                }, function (error) {
-                    notificationService.displayError('Giao dịch thất bại');
-                });
+                    }, function (error) {
+                        notificationService.displayError('Giao dịch thất bại');
+                    });
+            }            
         }
 
         function getPropertyServices() {
@@ -55,6 +61,9 @@
                 notificationService.displayError(error.data)
             });
         }
+        var dateTo = new Date();
+
+        
         loadServiceDetail();
         getPropertyServices();
     }

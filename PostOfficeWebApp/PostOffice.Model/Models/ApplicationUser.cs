@@ -17,10 +17,10 @@ namespace PostOffice.Model.Models
         [MaxLength(256)]
         public string Address { set; get; }
 
-        public DateTime? BirthDay { set; get; }
+        public DateTimeOffset? BirthDay { set; get; }
 
-        public DateTime? CreatedDate { get; set; }
-        public DateTime? UpdatedDate { get; set; }
+        public DateTimeOffset? CreatedDate { get; set; }
+        public DateTimeOffset? UpdatedDate { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public string MetaKeyWord { get; set; }

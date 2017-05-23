@@ -22,9 +22,11 @@ namespace PostOffice.Web.Api
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _statisticService.GetRevenueStatistic(fromDate, toDate);
+                var model = _statisticService.GetRevenueStatistic(fromDate, toDate);                
+               
                 HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, model);
                 return response;
+               
             });
         }
     }

@@ -5,7 +5,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a ui-sref="transactions">Nhóm chính</a></li>
+        <li><a ui-sref="transactions">Giao dịch</a></li>
         <li class="active">Thêm mới</li>
     </ol>
 </section>
@@ -23,20 +23,23 @@
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-3 control-label">Dịch vụ</label>
                         <div class="col-sm-9">                                                     
-                            <input type="text" class="form-control" name="metaDescription" ng-model="transaction.Service.Name" />                            
+                            <input type="text" class="form-control" name="service" readonly ng-model="transaction.Service.Name" />                            
                         </div>
                     </div>                                       
                     <div class="form-group" ng-repeat="prop in transaction.Properties">
-                        <label for="inputPassword3" class="col-sm-3 control-label">{{prop.Name}}</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="metaDescription" ng-model="prop.Money"/>
-                        </div>
+                        <ng-form name="userFieldForm">
+                            <label for="inputPassword3" class="col-sm-3 control-label">{{prop.Name}}</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" name="propertyValue" ng-model="prop.Money" required />
+                                <span ng-show="userFieldForm.propertyValue.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
+                            </div>
+                        </ng-form>                        
                     </div>      
                     <!-- Quantity-->
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-3 control-label">Số lượng</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control"  ng-model="transaction.Quantity" name="quantity">
+                            <input type="number" class="form-control" ng-model="transaction.Quantity" required name="quantity">
                             <span ng-show="frmAddTransaction.quantity.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                         </div>
                     </div>
@@ -44,17 +47,12 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Ngày giao dịch</label>
                         <div class='input-group date col-sm-9' id='datetimepicker1'>
-                            <input type='text' name="transactionDate" class="form-control" required max="{{max}}" min="{{min}}" ng-model="transaction.TransactionDate"/>                            
-                            <span ng-show="frmAddTransaction.transactionDate.$dirty && frmAddTransaction.transactionDate.$invalid">
-                                <span ng-show="frmAddTransaction.transactionDate.$error.required">Start Date is required</span>
-                                <span ng-show="frmAddTransaction.transactionDate.$error.min">Start Date should not be less than current date</span>
-                            </span>
+                            <input type='datetime' name="transactionDate" class="form-control" ng-model="transaction.TransactionDate" />    
+                            <!--<span ng-show="frmAddTransaction.transactionDate.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>--> 
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
-
-                        </div>
-                        
+                        </div>                        
                     </div>
                      
                     <!--<div class="form-group">
@@ -88,6 +86,10 @@
 
 <script type="text/javascript">
             $(function () {
-                $('#datetimepicker1').datetimepicker();
+                $('#datetimepicker1').datetimepicker({
+                    maxDate: moment(),
+                    minDate: moment().subtract(2, 'day'),
+                    
+                });
             });
 </script>

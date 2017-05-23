@@ -191,53 +191,57 @@ namespace PostOffice.Web.Api
         [Route("create")]
         [HttpPost]
         [AllowAnonymous]
-        public IHttpActionResult Create(HttpRequestMessage request, TransactionViewModel transactionVM)
+        public HttpResponseMessage Create(HttpRequestMessage request, TransactionViewModel transactionVM)
         {
-            if (!ModelState.IsValid)
+            return CreateHttpResponse(request, () =>
             {
-                //return request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
-                return Json("301");
-            }
-            else
-            {
-                var transaction = new Transaction();
-                //var transactionDetails = transactionVM.TransactionDetails;                
-                ICollection<TransactionDetail> transactionDetails = transactionVM.TransactionDetails;
-                var responseData = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(transactionDetails);
-                //transactionVM.TransactionDetails = new List<TransactionDetail>();
-                transactionVM.UserId = _userService.getByUserName(User.Identity.Name).Id;
-                transactionVM.CreatedBy = User.Identity.Name;
-                transaction.UpdateTransaction(transactionVM);
-                _transactionService.Add(transaction);
-                _transactionService.Save();
-                foreach (var item in responseData)
+                if (!ModelState.IsValid)
                 {
-                    item.TransactionID = transaction.ID;
-                    item.CreatedBy = User.Identity.Name;
-                    item.CreatedDate = DateTime.Now;
-                    var dbTransactionDetail = new TransactionDetail();
-                    dbTransactionDetail.UpdateTransactionDetail(item);
-                    _transactionDetailService.Add(dbTransactionDetail);
-                    _transactionDetailService.Save();               
-
+                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
                 }
-                
-                //foreach (var item in transactionDetails)
-                //{
-                //    item.TransactionId = transactionVM.ID;
-                //    transactionVM.TransactionDetails.Add(item);
-                //}
+                else
+                {
+                    var transaction = new Transaction();
+                    //var transactionDetails = transactionVM.TransactionDetails;                
+                    ICollection<TransactionDetail> transactionDetails = transactionVM.TransactionDetails;
+                    var responseData = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(transactionDetails);
+                    //transactionVM.TransactionDetails = new List<TransactionDetail>();
+                    transactionVM.UserId = _userService.getByUserName(User.Identity.Name).Id;
+                    transactionVM.CreatedBy = User.Identity.Name;
+                    transaction.UpdateTransaction(transactionVM);
+                    _transactionService.Add(transaction);
+                    _transactionService.Save();
+                    foreach (var item in responseData)
+                    {
+                        item.TransactionID = transaction.ID;
+                        item.CreatedBy = User.Identity.Name;
+                        item.CreatedDate = DateTime.Now;
+                        var dbTransactionDetail = new TransactionDetail();
+                        dbTransactionDetail.UpdateTransactionDetail(item);
+                        _transactionDetailService.Add(dbTransactionDetail);
+                        _transactionDetailService.Save();
 
-                //foreach (var item in responseData)
-                //{
-                //    var dbTransactionDetail = new TransactionDetail();
-                //    dbTransactionDetail.UpdateTransactionDetail(item);                    
-                //    dbTransactionDetail.TransactionId = item.ID;
-                //    //_transactionDetailService.Add(dbTransactionDetail);
-                //}
-               
-                return Json(transaction.ID);
-            }
+                    }
+
+                    //foreach (var item in transactionDetails)
+                    //{
+                    //    item.TransactionId = transactionVM.ID;
+                    //    transactionVM.TransactionDetails.Add(item);
+                    //}
+
+                    //foreach (var item in responseData)
+                    //{
+                    //    var dbTransactionDetail = new TransactionDetail();
+                    //    dbTransactionDetail.UpdateTransactionDetail(item);                    
+                    //    dbTransactionDetail.TransactionId = item.ID;
+                    //    //_transactionDetailService.Add(dbTransactionDetail);
+                    //}
+
+                    return request.CreateErrorResponse(HttpStatusCode.OK, transaction.ID.ToString());
+                }
+            });
+            
+            
         }
 
         
