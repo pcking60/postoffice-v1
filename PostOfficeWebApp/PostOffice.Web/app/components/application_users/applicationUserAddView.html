@@ -61,52 +61,68 @@
                           ng-model="account.BirthDay">
                 </div>
               </div>-->
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label class="col-sm-3 control-label">Ngày giao dịch</label>
                     <div class='input-group date col-sm-9' id='datetimepicker1'>
                         <input type='datetime' name="transactionDate" class="form-control" ng-model="transaction.TransactionDate" />
-                        <!--<span ng-show="frmAddTransaction.transactionDate.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>-->
+                        <span ng-show="frmAddTransaction.transactionDate.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
-                </div>
+                </div>-->
                 <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-3 control-label">Đơn vị quản lý</label>
+                    <label class="col-sm-3 control-label">Ngày sinh</label>
                     <div class="col-sm-9">
-                        <select name="districtid" class="form-control" ng-model="account.POID" ng-options="option.ID as option.Name for option in pos">
-                            <option value="">Chọn đơn vị quản lý</option>
-                        </select>
-                        <input type="hidden" name="parentId" ng-model="account.POID" />
-                    </div>
+                        <datetimepicker ng-model="transaction.TransactionDate"
+                                        show-meridian="showMeridian"
+                                        date-format="{{format}}"
+                                        date-options="dateOptions"
+                                        datepicker-append-to-body="false"
+                                        name="datetimepicker"
+                                        show-spinners="true"
+                                        min-date="minDate"
+                                        max-date="maxDate">
+                            <!-- Use date-ng-click="open($event, opened)" to override date ng-click -->
+                        </datetimepicker>
+                    </div>                    
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-3 control-label">
-                        <label for="inputPassword3">Thuộc nhóm </label>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Đơn vị quản lý</label>
+                        <div class="col-sm-9">
+                            <select name="districtid" class="form-control" ng-model="account.POID" ng-options="option.ID as option.Name for option in pos">
+                                <option value="">Chọn đơn vị quản lý</option>
+                            </select>
+                            <input type="hidden" name="parentId" ng-model="account.POID" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3 control-label">
+                            <label for="inputPassword3">Thuộc nhóm </label>
+                        </div>
+
+                        <div class="checkbox col-sm-9">
+                            <label ng-repeat="group in groups" class="checkbox">
+                                <input type="checkbox" checklist-model="account.Groups" checklist-value="group"> {{group.Name}}
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="checkbox col-sm-9">
-                        <label ng-repeat="group in groups" class="checkbox">
-                            <input type="checkbox" checklist-model="account.Groups" checklist-value="group"> {{group.Name}}
-                        </label>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Trạng thái</label>
+                        <div class="checkbox col-sm-9">
+                            <label>
+                                <input type="checkbox" name="status" ng-model="account.Status" ng-checked="account.Status"> Kích hoạt
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-9">
+                            <a ui-sref="application_users" class="btn btn-default">Hủy bỏ</a>
+                            <input type="submit" ng-disabled="frmAddAccount.$invalid" class="btn btn-primary" value="Lưu lại" />
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">Trạng thái</label>
-                    <div class="checkbox col-sm-9">
-                        <label>
-                            <input type="checkbox" name="status" ng-model="account.Status" ng-checked="account.Status"> Kích hoạt
-                        </label>
-                    </div>
-                </div>
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-9">
-                  <a ui-sref="application_users" class="btn btn-default">Hủy bỏ</a>
-                  <input type="submit" ng-disabled="frmAddAccount.$invalid" class="btn btn-primary" value="Lưu lại" />
-                </div>
-              </div>
-            </div>
           </div><!-- /.box-body -->
         </form>
       </div><!-- /.box -->

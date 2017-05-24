@@ -214,6 +214,7 @@
     <Content Include="app\components\statistic\revenueStatisticController.js" />
     <Content Include="app\components\statistic\revenueStatisticView.html" />
     <Content Include="app\components\statistic\statistic.module.js" />
+    <Content Include="app\components\statistic\unitStatisticController.js" />
     <Content Include="app\components\transactions\transactionAddController.js" />
     <Content Include="app\components\transactions\transactionAddView.html" />
     <Content Include="app\components\transactions\transactionEditController.js" />

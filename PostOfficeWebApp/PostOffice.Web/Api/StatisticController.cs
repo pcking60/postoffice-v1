@@ -29,5 +29,19 @@ namespace PostOffice.Web.Api
                
             });
         }
+
+        [Route("getunit")]
+        [HttpGet]
+        public HttpResponseMessage GetUnitStatistic(HttpRequestMessage request, string fromDate, string toDate)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _statisticService.GetUnitStatistic(fromDate, toDate);
+
+                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, model);
+                return response;
+
+            });
+        }
     }
 }

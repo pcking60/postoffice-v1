@@ -103,6 +103,10 @@
     <Compile Include="Migrations\201705220920551_changeTransactionDetail.Designer.cs">
       <DependentUpon>201705220920551_changeTransactionDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705240937596_unitStatistic.cs" />
+    <Compile Include="Migrations\201705240937596_unitStatistic.Designer.cs">
+      <DependentUpon>201705240937596_unitStatistic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PostOfficeDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -118,6 +122,7 @@
     <Compile Include="Repositories\PropertyServiceRepository.cs" />
     <Compile Include="Repositories\ServiceGroupRepository.cs" />
     <Compile Include="Repositories\ServiceRepository.cs" />
+    <Compile Include="Repositories\StatisticRepository.cs" />
     <Compile Include="Repositories\TransactionDetailRepository.cs" />
     <Compile Include="Repositories\TransactionRepository.cs" />
   </ItemGroup>
@@ -144,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705220920551_changeTransactionDetail.resx">
       <DependentUpon>201705220920551_changeTransactionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705240937596_unitStatistic.resx">
+      <DependentUpon>201705240937596_unitStatistic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

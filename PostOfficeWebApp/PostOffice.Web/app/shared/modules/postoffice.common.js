@@ -7,5 +7,6 @@
             'ui.select',
             'ngSanitize',
             'chart.js'
+            
     ])
 })();

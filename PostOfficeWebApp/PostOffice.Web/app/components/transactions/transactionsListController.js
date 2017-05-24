@@ -106,8 +106,8 @@
          }
 
         function search() {
-            getTransactions();
-            $state.go('userbase', {}, { reload: true });
+            //getTransactions();
+            //$state.go('userbase', {}, { reload: true });
         }
         function getTransactions(page) {
             page = page || 0;
@@ -120,8 +120,7 @@
             }
             apiService.get('/api/transactions/getall', config, function (result) {
                 if (result.data.TotalCount == 0) {
-                    notificationService.displayWarning("Chưa có dữ liệu");
-                    
+                    notificationService.displayWarning("Chưa có dữ liệu");                    
                 }               
                 
                 $scope.transactions = result.data.Items;
