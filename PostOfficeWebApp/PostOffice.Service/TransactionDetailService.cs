@@ -32,6 +32,8 @@ namespace PostOffice.Service
 
         decimal? GetTotalEarnMoneyByUsername(string userName);
 
+        IEnumerable<TransactionDetail> GetAllByCondition(string condition);
+
         void Save();
     }
     public class TransactionDetailService : ITransactionDetailService
@@ -97,8 +99,15 @@ namespace PostOffice.Service
         public decimal? GetTotalMoneyByTransactionId(int id)
         {
             //int? quantity = _transactionRepository.GetSingleByID(id).Quantity;
-            //decimal? totalMoney = quantity * _transactionDetailRepository.GetMulti(x => x.TransactionId == id).Sum(x => x.Money);
-            return _transactionDetailRepository.GetMulti(x => x.TransactionId == id).Sum(x => x.Money);
+            //decimal? totalMoney = quantity * _transactionDetailRepository.GetMulti(x => x.TransactionId == id).Sum(x => x.Money); 
+            string condition = "Sản lượng";   
+            var listTransactionDetails = _transactionDetailRepository.GetAllByCondition(condition);
+            decimal? sum = 0;
+            foreach (var item in listTransactionDetails)
+            {
+                sum += _transactionDetailRepository.GetMulti(x => x.TransactionId == id && x.ID ==item.ID).Sum(x => x.Money);
+            }
+            return sum;
         }
 
         public void Save()
@@ -141,6 +150,11 @@ namespace PostOffice.Service
                 int? quantity = _transactionRepository.GetSingleByID(item.ID).Quantity;                
             }
             return earnTotal;
+        }
+
+        public IEnumerable<TransactionDetail> GetAllByCondition(string condition)
+        {
+            return _transactionDetailRepository.GetAllByCondition(condition);
         }
     }
 }

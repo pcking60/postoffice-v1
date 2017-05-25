@@ -11,6 +11,9 @@ namespace PostOfiice.DAta.Repositories
     public interface ITransactionRepository : IRepository<Transaction>
     {
         IEnumerable<Transaction> GetAllByUserName(string userName);
+        IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate);
+        IEnumerable<Transaction> GetAllByTimeAndUsername(DateTime fromDate, DateTime toDate, string Username);
+        IEnumerable<Transaction> GetAllByTimeAndPOID(DateTime fromDate, DateTime toDate, int id);
         IEnumerable<RevenueStatisticViewModel> GetRevenueStatistic(string fromDate, string toDate);
     }
 
@@ -57,6 +60,37 @@ namespace PostOfiice.DAta.Repositories
                 new SqlParameter("@toDate", toDate)
             };
             return DbContext.Database.SqlQuery<RevenueStatisticViewModel>("getRevenueStatistic @fromDate,@toDate", parameters);
+        }
+
+        public IEnumerable<Transaction> GetAllByTimeAndUsername(DateTime fromDate, DateTime toDate, string userName)
+        {
+            var query = from u in DbContext.Users
+                        join ts in DbContext.Transactions
+                        on u.Id equals ts.UserId
+                        where u.UserName==userName && (ts.TransactionDate >= fromDate && ts.TransactionDate <= toDate)
+                        select ts;
+            return query;
+        }
+
+        public IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate)
+        {
+            var query = from u in DbContext.Users
+                        join ts in DbContext.Transactions
+                        on u.Id equals ts.UserId
+                        where (ts.TransactionDate >= fromDate && ts.TransactionDate <= toDate)
+                        select ts;
+            return query;
+        }
+
+        public IEnumerable<Transaction> GetAllByTimeAndPOID(DateTime fromDate, DateTime toDate, int id)
+        {
+            var listTransaction = from u in this.DbContext.Users
+                                  join ts in this.DbContext.Transactions
+                                  on u.Id equals ts.UserId
+                                  where u.POID == id
+                                  select ts;
+
+            return listTransaction;
         }
     }
 }

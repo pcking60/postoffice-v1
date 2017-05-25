@@ -11,6 +11,13 @@
                 parent: 'base',
                 templateUrl: "/app/components/statistic/revenueStatisticView.html",
                 controller: "revenueStatisticController"
+            })
+            .state('timeStatistic', {
+                url: "/timeStatistic",
+                parent: 'userbase',
+                templateUrl: "/app/components/statistic/timeStatisticView.html",
+                controller: "timeStatisticController"
             });
+            
     }
 })();

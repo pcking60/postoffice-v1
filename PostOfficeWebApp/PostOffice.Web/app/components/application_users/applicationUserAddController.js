@@ -9,7 +9,9 @@
         $scope.account = {
             Groups: []
         }
-
+        $scope.test = {};
+        $scope.test.BirthDay = { startDate: null, endDate: null };        
+        
         $scope.addAccount = addAccount;
 
         function addAccount() {
@@ -18,7 +20,7 @@
 
         function addSuccessed() {
             notificationService.displaySuccess($scope.account.UserName + ' đã được thêm mới.');
-
+            console.log($scope.test.BirthDay.startDate.format('YYYY-MM-DD'));
             $location.url('application_users');
         }
         function addFailed(response) {

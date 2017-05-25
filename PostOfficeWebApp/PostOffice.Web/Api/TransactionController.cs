@@ -48,6 +48,25 @@ namespace PostOffice.Web.Api
             });
         }
 
+        [Route("getallbytime")]
+        [HttpGet]
+        public HttpResponseMessage GetAllByTime(HttpRequestMessage request, DateTime fromDate, DateTime toDate)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _transactionService.GetAllByTime(fromDate, toDate, User.Identity.Name);
+                var responseData = Mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionViewModel>>(model);
+                foreach (var item in responseData)
+                {
+                    item.ServiceName = _serviceService.GetById(item.ServiceId).Name;
+                    item.TotalMoney = _transactionDetailService.GetTotalMoneyByTransactionId(item.ID);
+                    item.EarnMoney = _transactionDetailService.GetTotalEarnMoneyByTransactionId(item.ID);
+                }
+                var response = request.CreateResponse(HttpStatusCode.OK, responseData);
+                return response;
+            });
+        }
+
         [Route("getEarnMoneyByUserName")]
         [HttpGet]
         public decimal? GetEarnMoneyByUserName(string userName)
@@ -88,6 +107,7 @@ namespace PostOffice.Web.Api
                 return response;
             });
         }
+        
 
         [Route("delete")]
         [HttpDelete]

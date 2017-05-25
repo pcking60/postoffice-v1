@@ -90,9 +90,9 @@
       </form>-->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" >
-        <li class="header">MAIN NAVIGATION</li>     
-      </ul>
+        <ul class="sidebar-menu" >
+            <li class="header">MAIN NAVIGATION</li>     
+        </ul>
         <ul class="sidebar-menu" ng-controller="mainServiceGroupsListController" >         
             <li class="treeview" ng-repeat="item in mainServiceGroups" >
                 <a href="">
@@ -141,6 +141,39 @@
                 </ul>-->
             </li>
 
+        </ul>
+        <ul class="sidebar-menu">
+            <li class="header">STATISTIC</li>
+        </ul>
+        <ul class="sidebar-menu">
+            <li class="treeview" >
+                <a href="">
+                    <i class="fa fa-files-o"></i>
+                    <span>Danh mục thống kê</span>
+                    <span class="pull-right"><i class="fa fa-chevron-down text-aqua"></i></span>
+                </a> 
+              
+                <ul class="treeview-menu">
+                    <!--<li>
+                        <a ui-sref="" >
+                            <i class="fa fa-angle-double-right text-aqua"></i>
+                            <span>Thống kê theo đơn vị</span>                            
+                        </a>                        
+                    </li>
+                    <li>
+                        <a ui-sref="">
+                            <i class="fa fa-angle-double-right text-aqua"></i>
+                            <span>Thống kê theo nhân viên</span>
+                        </a>
+                    </li>-->
+                    <li>
+                        <a ui-sref="timeStatistic">
+                            <i class="fa fa-angle-double-right text-aqua"></i>
+                            <span>Thống kê theo thời gian</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

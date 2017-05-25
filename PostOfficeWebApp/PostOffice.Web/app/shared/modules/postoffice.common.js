@@ -6,7 +6,7 @@
             'checklist-model',
             'ui.select',
             'ngSanitize',
-            'chart.js'
-            
+            'chart.js',
+            'daterangepicker'
     ])
 })();

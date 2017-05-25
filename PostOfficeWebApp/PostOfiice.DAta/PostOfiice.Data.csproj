@@ -99,13 +99,13 @@
     <Compile Include="Migrations\201705140516056_MainServiceGroupsTable.Designer.cs">
       <DependentUpon>201705140516056_MainServiceGroupsTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705220920551_changeTransactionDetail.cs" />
-    <Compile Include="Migrations\201705220920551_changeTransactionDetail.Designer.cs">
-      <DependentUpon>201705220920551_changeTransactionDetail.cs</DependentUpon>
+    <Compile Include="Migrations\201705250241091_revenusStatistic.cs" />
+    <Compile Include="Migrations\201705250241091_revenusStatistic.Designer.cs">
+      <DependentUpon>201705250241091_revenusStatistic.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705240937596_unitStatistic.cs" />
-    <Compile Include="Migrations\201705240937596_unitStatistic.Designer.cs">
-      <DependentUpon>201705240937596_unitStatistic.cs</DependentUpon>
+    <Compile Include="Migrations\201705250244435_unitStatistic.cs" />
+    <Compile Include="Migrations\201705250244435_unitStatistic.Designer.cs">
+      <DependentUpon>201705250244435_unitStatistic.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PostOfficeDbContext.cs" />
@@ -147,11 +147,11 @@
     <EmbeddedResource Include="Migrations\201705140516056_MainServiceGroupsTable.resx">
       <DependentUpon>201705140516056_MainServiceGroupsTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705220920551_changeTransactionDetail.resx">
-      <DependentUpon>201705220920551_changeTransactionDetail.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705250241091_revenusStatistic.resx">
+      <DependentUpon>201705250241091_revenusStatistic.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705240937596_unitStatistic.resx">
-      <DependentUpon>201705240937596_unitStatistic.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705250244435_unitStatistic.resx">
+      <DependentUpon>201705250244435_unitStatistic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

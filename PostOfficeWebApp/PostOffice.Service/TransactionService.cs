@@ -22,11 +22,12 @@ namespace PostOffice.Service
 
         IEnumerable<Transaction> GetAllByUserName(string userName);
 
+        IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate, string userName);
+
         IEnumerable<Transaction> GetAll(string keyword);
+      
 
         IEnumerable<Transaction> Search(string keyword, int page, int pageSize, string sort, out int totalRow);
-
-        
 
         Transaction GetById(int id);
 
@@ -137,6 +138,42 @@ namespace PostOffice.Service
             _transactionRepository.Update(transaction);
         }
 
-        
+        public IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate, string userName)
+        {
+            var user = _userRepository.getByUserName(userName);
+            var listGroup = _groupRepository.GetListGroupByUserId(user.Id);
+
+            bool IsManager = false;
+            bool IsAdministrator = false;
+
+            foreach (var item in listGroup)
+            {
+                string name = item.Name;
+                if (name == "Manager")
+                {
+                    IsManager = true;
+                }
+                if (name == "Administrator")
+                {
+                    IsAdministrator = true;
+                }
+            }
+            if (IsAdministrator)
+            {
+                return _transactionRepository.GetAllByTime(fromDate, toDate);
+            }
+            else
+            {
+                if (IsManager)
+                {
+                    return _transactionRepository.GetAllByTimeAndPOID(fromDate, toDate, user.POID);
+
+                }
+                else
+                {
+                    return _transactionRepository.GetAllByTimeAndUsername(fromDate, toDate, user.UserName);
+                }
+            }
+        }
     }
 }

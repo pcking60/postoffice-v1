@@ -6,11 +6,12 @@
     "ng-loading": "~0.0.5",
     "eonasdan-bootstrap-datetimepicker": "~4.17.47",
     "angular-ui-select": "~0.19.8",
-    "angular-sanitize": "~1.6.4"
-    
+    "angular-sanitize": "~1.6.4",
+    "angular-daterangepicker": "~0.2.2"
   },
   "resolutions": {
     "moment": ">=2.10.5",
-    "angular": ">=1.0.8"
+    "angular": ">=1.0.8",
+    "bootstrap-daterangepicker": "^2.0.0"
   }
 }

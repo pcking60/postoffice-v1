@@ -111,7 +111,8 @@ namespace PostOffice.Web.App_Start
                     identity.AddClaim(new Claim("userId", user.Id));
                     var props = new AuthenticationProperties(new Dictionary<string, string> {
                         { "fullName", user.FullName },
-                        { "userId", user.Id}
+                        { "userId", user.Id },
+                        { "GroupId", ClaimTypes.GroupSid}
                     });
                     context.Validated(new AuthenticationTicket(identity, props));
                 }
