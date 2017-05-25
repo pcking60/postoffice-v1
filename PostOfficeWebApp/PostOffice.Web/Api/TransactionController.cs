@@ -48,7 +48,7 @@ namespace PostOffice.Web.Api
             });
         }
 
-        [Route("getallbytime")]
+        [Route("stattistic")]
         [HttpGet]
         public HttpResponseMessage GetAllByTime(HttpRequestMessage request, DateTime fromDate, DateTime toDate)
         {

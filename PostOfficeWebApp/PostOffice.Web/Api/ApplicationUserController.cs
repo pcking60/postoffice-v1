@@ -90,6 +90,21 @@ namespace PostOffice.Web.Api
             });
         }
 
+        [Route("getuserbypoid")]
+        [HttpGet]
+        public HttpResponseMessage GetAllParentID(HttpRequestMessage request)
+        {
+            return CreateHttpResponse(request, () =>
+            {//ham nay la sao ban
+                var user = _userService.getByUserName(User.Identity.Name);
+                var model = _userService.GetAllByPOID(user.POID);
+                var responseData = Mapper.Map<IEnumerable<ApplicationUser>, IEnumerable<ApplicationUserViewModel>>(model);
+
+                var response = request.CreateResponse(HttpStatusCode.OK, responseData);
+                return response;
+            });
+        }
+
         [Route("detail/{id}")]
         [HttpGet]
         [Authorize(Roles = "ViewUser")]

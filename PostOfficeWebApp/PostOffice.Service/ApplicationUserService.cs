@@ -12,6 +12,8 @@ namespace PostOffice.Service
     public interface IApplicationUserService {
         int getNoUserByPoID(int PoID);
 
+        IEnumerable<ApplicationUser> GetAllByPOID(int id);
+
         ApplicationUser getByUserName(string userName);
     }
     public class ApplicationUserService: IApplicationUserService
@@ -33,6 +35,11 @@ namespace PostOffice.Service
         public ApplicationUser getByUserName(string userName)
         {
             return _userRepository.getByUserName(userName);
+        }
+
+        public IEnumerable<ApplicationUser> GetAllByPOID(int id)
+        {
+            return _userRepository.GetAllByPoId(id);
         }
     }
 }
