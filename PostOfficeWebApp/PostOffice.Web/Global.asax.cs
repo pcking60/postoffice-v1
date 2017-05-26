@@ -1,4 +1,5 @@
-﻿using PostOffice.Web.Mappings;
+﻿using PostOffice.Web.Infrastructure.Core;
+using PostOffice.Web.Mappings;
 using System;
 using System.Web;
 using System.Web.Http;
@@ -18,6 +19,8 @@ namespace PostOffice.Web
             //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+           
         }
     }
 }

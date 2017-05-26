@@ -5,12 +5,10 @@ using PostOffice.Web.Infrastructure.Core;
 using PostOffice.Web.Infrastructure.Extensions;
 using PostOffice.Web.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
@@ -50,11 +48,11 @@ namespace PostOffice.Web.Api
 
         [Route("stattistic")]
         [HttpGet]
-        public HttpResponseMessage GetAllByTime(HttpRequestMessage request, DateTime fromDate, DateTime toDate)
+        public HttpResponseMessage GetAllByTime(HttpRequestMessage request, DateTime fromDate, DateTime toDate, string userId, int serviceId)
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _transactionService.GetAllByTime(fromDate, toDate, User.Identity.Name);
+                var model = _transactionService.GetAllByTime(fromDate, toDate, User.Identity.Name, userId, serviceId);
                 var responseData = Mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionViewModel>>(model);
                 foreach (var item in responseData)
                 {
@@ -71,9 +69,8 @@ namespace PostOffice.Web.Api
         [HttpGet]
         public decimal? GetEarnMoneyByUserName(string userName)
         {
-            
             decimal? totalEarn = _transactionDetailService.GetTotalEarnMoneyByUsername(userName);
-            return totalEarn;    
+            return totalEarn;
         }
 
         [Route("getall")]
@@ -107,7 +104,6 @@ namespace PostOffice.Web.Api
                 return response;
             });
         }
-        
 
         [Route("delete")]
         [HttpDelete]
@@ -122,15 +118,15 @@ namespace PostOffice.Web.Api
             {
                 var oldTransaction = _transactionService.GetById(id);
                 oldTransaction.Status = false;
-                var transactionDetails = _transactionDetailService.GetAllByTransactionId(oldTransaction.ID);                
+                var transactionDetails = _transactionDetailService.GetAllByTransactionId(oldTransaction.ID);
                 _transactionService.Update(oldTransaction);
                 foreach (var item in transactionDetails)
                 {
                     item.Status = false;
                 }
                 _transactionService.Save();
-                return Json(oldTransaction.ID);                     
-            }            
+                return Json(oldTransaction.ID);
+            }
         }
 
         [Route("update")]
@@ -138,7 +134,6 @@ namespace PostOffice.Web.Api
         [AllowAnonymous]
         public HttpResponseMessage Update(HttpRequestMessage request, TransactionViewModel transactionVM)
         {
-           
             if (!ModelState.IsValid)
             {
                 return request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
@@ -150,8 +145,8 @@ namespace PostOffice.Web.Api
 
                 var transactionDate = transactionVM.TransactionDate.Ticks / TimeSpan.TicksPerMillisecond;
 
-                bool isValid = (currentDate - transactionDate) > 86400 * 1000;
-               
+                bool isValid = (currentDate - transactionDate) > 172800 * 1000;
+
                 if (isValid)
                 {
                     return request.CreateResponse(HttpStatusCode.BadRequest);
@@ -181,14 +176,11 @@ namespace PostOffice.Web.Api
 
                     //ApplicationUser user = _userService.getByUserName(User.Identity.Name);
                     //var responseData = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user);
-                    //responseData.TotalEarn = _transactionDetailService.GetTotalEarnMoneyByUsername(user.UserName);                
+                    //responseData.TotalEarn = _transactionDetailService.GetTotalEarnMoneyByUsername(user.UserName);
                     return request.CreateResponse(HttpStatusCode.OK, responseTransactionDetail);
-                   // return Json(dbTransaction.ID);
+                    // return Json(dbTransaction.ID);
                 }
-                
             }
-                
-
         }
 
         [Route("getbyid/{id:int}")]
@@ -197,12 +189,12 @@ namespace PostOffice.Web.Api
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _transactionService.GetById(id);                
+                var model = _transactionService.GetById(id);
 
                 var responseData = Mapper.Map<Transaction, TransactionViewModel>(model);
 
                 responseData.ServiceName = _serviceService.GetById(model.ServiceId).Name;
-                
+
                 var response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;
             });
@@ -222,7 +214,7 @@ namespace PostOffice.Web.Api
                 else
                 {
                     var transaction = new Transaction();
-                    //var transactionDetails = transactionVM.TransactionDetails;                
+                    //var transactionDetails = transactionVM.TransactionDetails;
                     ICollection<TransactionDetail> transactionDetails = transactionVM.TransactionDetails;
                     var responseData = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(transactionDetails);
                     //transactionVM.TransactionDetails = new List<TransactionDetail>();
@@ -240,7 +232,6 @@ namespace PostOffice.Web.Api
                         dbTransactionDetail.UpdateTransactionDetail(item);
                         _transactionDetailService.Add(dbTransactionDetail);
                         _transactionDetailService.Save();
-
                     }
 
                     //foreach (var item in transactionDetails)
@@ -252,7 +243,7 @@ namespace PostOffice.Web.Api
                     //foreach (var item in responseData)
                     //{
                     //    var dbTransactionDetail = new TransactionDetail();
-                    //    dbTransactionDetail.UpdateTransactionDetail(item);                    
+                    //    dbTransactionDetail.UpdateTransactionDetail(item);
                     //    dbTransactionDetail.TransactionId = item.ID;
                     //    //_transactionDetailService.Add(dbTransactionDetail);
                     //}
@@ -260,11 +251,7 @@ namespace PostOffice.Web.Api
                     return request.CreateErrorResponse(HttpStatusCode.OK, transaction.ID.ToString());
                 }
             });
-            
-            
         }
-
-        
 
         [Route("deletemulti")]
         [HttpDelete]

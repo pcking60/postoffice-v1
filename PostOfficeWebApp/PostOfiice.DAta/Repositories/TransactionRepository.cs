@@ -3,6 +3,8 @@ using PostOffice.Model.Models;
 using PostOfiice.DAta.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -11,9 +13,27 @@ namespace PostOfiice.DAta.Repositories
     public interface ITransactionRepository : IRepository<Transaction>
     {
         IEnumerable<Transaction> GetAllByUserName(string userName);
-        IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate);
-        IEnumerable<Transaction> GetAllByTimeAndUsername(DateTime fromDate, DateTime toDate, string Username);
+
+        IEnumerable<Transaction> GetAll(DateTime fromDate, DateTime toDate);
+
+        IEnumerable<Transaction> GetAll(DateTime fromDate, DateTime toDate, string userId, int serviceId);
+
+        IEnumerable<Transaction> GetAll(DateTime fromDate, DateTime toDate, int serviceId);
+
+        IEnumerable<Transaction> GetAll(DateTime fromDate, DateTime toDate, string userId);
+
         IEnumerable<Transaction> GetAllByTimeAndPOID(DateTime fromDate, DateTime toDate, int id);
+
+        IEnumerable<Transaction> GetAllByTimeAndPOID(DateTime fromDate, DateTime toDate, int id, string userId, int serviceId);
+
+        IEnumerable<Transaction> GetAllByTimeAndPOID(DateTime fromDate, DateTime toDate, int id, string userId);
+
+        IEnumerable<Transaction> GetAllByTimeAndPOID(DateTime fromDate, DateTime toDate, int id, int serviceId);
+
+        IEnumerable<Transaction> GetAllByTimeAndUsername(DateTime fromDate, DateTime toDate, string Username, int serviceId);
+
+        IEnumerable<Transaction> GetAllByTimeAndUsername(DateTime fromDate, DateTime toDate, string Username);
+
         IEnumerable<RevenueStatisticViewModel> GetRevenueStatistic(string fromDate, string toDate);
     }
 
@@ -67,17 +87,57 @@ namespace PostOfiice.DAta.Repositories
             var query = from u in DbContext.Users
                         join ts in DbContext.Transactions
                         on u.Id equals ts.UserId
-                        where u.UserName==userName && (ts.TransactionDate >= fromDate && ts.TransactionDate <= toDate)
+                        where u.UserName == userName && (DbFunctions.TruncateTime(ts.TransactionDate) >= fromDate && DbFunctions.TruncateTime(ts.TransactionDate) <= toDate)
                         select ts;
             return query;
         }
 
-        public IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate)
+        public IEnumerable<Transaction> GetAllByTimeAndUsername(DateTime fromDate, DateTime toDate, string Username, int serviceId)
         {
             var query = from u in DbContext.Users
                         join ts in DbContext.Transactions
                         on u.Id equals ts.UserId
-                        where (ts.TransactionDate >= fromDate && ts.TransactionDate <= toDate)
+                        where u.UserName == Username && (DbFunctions.TruncateTime(ts.TransactionDate) >= fromDate && DbFunctions.TruncateTime(ts.TransactionDate) <= toDate) && ts.ServiceId == serviceId
+                        select ts;
+            return query;
+        }
+
+        public IEnumerable<Transaction> GetAll(DateTime fromDate, DateTime toDate)
+        {
+            var query = from u in DbContext.Users
+                        join ts in DbContext.Transactions
+                        on u.Id equals ts.UserId
+                        where (DbFunctions.TruncateTime(ts.TransactionDate) >= (fromDate) && DbFunctions.TruncateTime(ts.TransactionDate) <= (toDate))
+                        select ts;
+            return query;
+        }
+
+        public IEnumerable<Transaction> GetAll(DateTime fromDate, DateTime toDate, string userId, int serviceId)
+        {
+            var query = from u in DbContext.Users
+                        join ts in DbContext.Transactions
+                        on u.Id equals ts.UserId
+                        where (DbFunctions.TruncateTime(ts.TransactionDate) >= fromDate && DbFunctions.TruncateTime(ts.TransactionDate) <= toDate) && ts.ServiceId == serviceId && u.Id == userId
+                        select ts;
+            return query;
+        }
+
+        public IEnumerable<Transaction> GetAll(DateTime fromDate, DateTime toDate, int serviceId)
+        {
+            var query = from u in DbContext.Users
+                        join ts in DbContext.Transactions
+                        on u.Id equals ts.UserId
+                        where (DbFunctions.TruncateTime(ts.TransactionDate) >= fromDate && DbFunctions.TruncateTime(ts.TransactionDate) <= toDate) && ts.ServiceId == serviceId
+                        select ts;
+            return query;
+        }
+
+        public IEnumerable<Transaction> GetAll(DateTime fromDate, DateTime toDate, string userId)
+        {
+            var query = from u in DbContext.Users
+                        join ts in DbContext.Transactions
+                        on u.Id equals ts.UserId
+                        where (DbFunctions.TruncateTime(ts.TransactionDate) >= fromDate && DbFunctions.TruncateTime(ts.TransactionDate) <= toDate) && u.Id == userId
                         select ts;
             return query;
         }
@@ -87,7 +147,40 @@ namespace PostOfiice.DAta.Repositories
             var listTransaction = from u in this.DbContext.Users
                                   join ts in this.DbContext.Transactions
                                   on u.Id equals ts.UserId
-                                  where u.POID == id
+                                  where u.POID == id && (DbFunctions.TruncateTime(ts.TransactionDate) >= fromDate && DbFunctions.TruncateTime(ts.TransactionDate) <= toDate)
+                                  select ts;
+
+            return listTransaction;
+        }
+
+        public IEnumerable<Transaction> GetAllByTimeAndPOID(DateTime fromDate, DateTime toDate, int id, string userId, int serviceId)
+        {
+            var listTransaction = from u in this.DbContext.Users
+                                  join ts in this.DbContext.Transactions
+                                  on u.Id equals ts.UserId
+                                  where u.POID == id && (DbFunctions.TruncateTime(ts.TransactionDate) >= fromDate && DbFunctions.TruncateTime(ts.TransactionDate) <= toDate) && u.Id == userId && ts.ServiceId == serviceId
+                                  select ts;
+
+            return listTransaction;
+        }
+
+        public IEnumerable<Transaction> GetAllByTimeAndPOID(DateTime fromDate, DateTime toDate, int id, string userId)
+        {
+            var listTransaction = from u in this.DbContext.Users
+                                  join ts in this.DbContext.Transactions
+                                  on u.Id equals ts.UserId
+                                  where u.POID == id && (DbFunctions.TruncateTime(ts.TransactionDate) >= fromDate && DbFunctions.TruncateTime(ts.TransactionDate) <= toDate) && u.Id == userId
+                                  select ts;
+
+            return listTransaction;
+        }
+
+        public IEnumerable<Transaction> GetAllByTimeAndPOID(DateTime fromDate, DateTime toDate, int id, int serviceId)
+        {
+            var listTransaction = from u in this.DbContext.Users
+                                  join ts in this.DbContext.Transactions
+                                  on u.Id equals ts.UserId
+                                  where u.POID == id && (DbFunctions.TruncateTime(ts.TransactionDate) >= fromDate && DbFunctions.TruncateTime(ts.TransactionDate) <= toDate) && ts.ServiceId == serviceId
                                   select ts;
 
             return listTransaction;

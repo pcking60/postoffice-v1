@@ -22,7 +22,7 @@ namespace PostOffice.Service
 
         IEnumerable<Transaction> GetAllByUserName(string userName);
 
-        IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate, string userName);
+        IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate, string userName, string userId, int serviceId);
 
         IEnumerable<Transaction> GetAll(string keyword);
       
@@ -138,7 +138,7 @@ namespace PostOffice.Service
             _transactionRepository.Update(transaction);
         }
 
-        public IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate, string userName)
+        public IEnumerable<Transaction> GetAllByTime(DateTime fromDate, DateTime toDate, string userName, string userId, int serviceId)
         {
             var user = _userRepository.getByUserName(userName);
             var listGroup = _groupRepository.GetListGroupByUserId(user.Id);
@@ -160,13 +160,59 @@ namespace PostOffice.Service
             }
             if (IsAdministrator)
             {
-                return _transactionRepository.GetAllByTime(fromDate, toDate);
+                if(!string.IsNullOrEmpty(userId)&& serviceId!=0)
+                {
+                    return _transactionRepository.GetAll(fromDate, toDate, userId, serviceId);
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(userId) && serviceId==0)
+                    {
+                        return _transactionRepository.GetAll(fromDate, toDate);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(userId))
+                        {
+                            return _transactionRepository.GetAll(fromDate, toDate, serviceId);
+                        }
+                        else
+                        {
+                            return _transactionRepository.GetAll(fromDate, toDate, userId);
+
+                        }
+                    }
+                }
+                
             }
             else
             {
                 if (IsManager)
                 {
-                    return _transactionRepository.GetAllByTimeAndPOID(fromDate, toDate, user.POID);
+                    if (!string.IsNullOrEmpty(userId) && serviceId != 0)
+                    {
+                        return _transactionRepository.GetAllByTimeAndPOID(fromDate, toDate, user.POID, userId, serviceId);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(userId) && serviceId==0)
+                        {
+                            return _transactionRepository.GetAllByTimeAndPOID(fromDate, toDate, user.POID);
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(userId) )
+                            {
+                                return _transactionRepository.GetAllByTimeAndPOID(fromDate, toDate, user.POID, serviceId);
+                            }
+                            else
+                            {
+                                return _transactionRepository.GetAllByTimeAndPOID(fromDate, toDate, user.POID, userId);
+
+                            }
+                        }
+                    }
+
 
                 }
                 else

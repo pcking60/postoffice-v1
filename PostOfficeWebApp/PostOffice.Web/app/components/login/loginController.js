@@ -6,7 +6,7 @@
                 userName: "",
                 password: ""
             };
-
+           
             $scope.loginSubmit = function () {
                 authService.login($scope.loginData).then(function (response) {
                     if (response != null && response.error != undefined) {
@@ -14,6 +14,11 @@
                     }
                     else {
                         var stateService = $injector.get('$state');
+
+                        var isManager = false;
+                        var isAdministrator = false;
+                                                
+
                         if ($scope.loginData.userName == 'admin') {
                             stateService.go('home');
                         }

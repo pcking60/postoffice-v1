@@ -1,22 +1,20 @@
 ﻿using PostOffice.Model.Models;
 using PostOfiice.DAta.Infrastructure;
 using PostOfiice.DAta.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PostOffice.Service
 {
-    public interface IApplicationUserService {
+    public interface IApplicationUserService
+    {
         int getNoUserByPoID(int PoID);
 
         IEnumerable<ApplicationUser> GetAllByPOID(int id);
 
         ApplicationUser getByUserName(string userName);
     }
-    public class ApplicationUserService: IApplicationUserService
+
+    public class ApplicationUserService : IApplicationUserService
     {
         private IApplicationUserRepository _userRepository;
         private IUnitOfWork _unitOfWork;
@@ -27,6 +25,7 @@ namespace PostOffice.Service
             this._userRepository = user;
             this._unitOfWork = unitOfWork;
         }
+
         public int getNoUserByPoID(int PoID)
         {
             return _userRepository.getNoUserByPoID(PoID);

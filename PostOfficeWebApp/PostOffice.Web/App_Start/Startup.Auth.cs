@@ -5,8 +5,11 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json;
 using Owin;
 using PostOffice.Model.Models;
+using PostOffice.Service;
+using PostOffice.Web.Infrastructure.Core;
 using PostOfiice.DAta;
 using System;
 using System.Collections.Generic;
@@ -104,15 +107,20 @@ namespace PostOffice.Web.App_Start
                 }
                 if (user != null)
                 {
+                    var applicationGroupService = ServiceFactory.Get<IApplicationGroupService>();
+                    var listGroup = applicationGroupService.GetListGroupByUserId(user.Id);
+
+                   
                     ClaimsIdentity identity = await userManager.CreateIdentityAsync(
                                                            user,
                                                            DefaultAuthenticationTypes.ExternalBearer);
                     identity.AddClaim(new Claim("fullName", user.FullName));
                     identity.AddClaim(new Claim("userId", user.Id));
+                    identity.AddClaim(new Claim("permissions", JsonConvert.SerializeObject(listGroup)));
                     var props = new AuthenticationProperties(new Dictionary<string, string> {
                         { "fullName", user.FullName },
                         { "userId", user.Id },
-                        { "GroupId", ClaimTypes.GroupSid}
+                        {"permissions",JsonConvert.SerializeObject(listGroup)}
                     });
                     context.Validated(new AuthenticationTicket(identity, props));
                 }

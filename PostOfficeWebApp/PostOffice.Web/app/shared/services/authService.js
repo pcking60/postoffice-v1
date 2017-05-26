@@ -6,9 +6,21 @@ angular.module('postoffice.common')
 
         var _authentication = {
             isAuth: false,
-            userName: ""
-        };
-        
+            userName: "",
+            roles: []
+        };        
+
+
+        var _haveRole = function haveRole(roleName) {
+            var isValid = false;
+            var Roles = authServiceFactory.authentication.roles;
+            angular.forEach(Roles, function (role) {
+                if (role.Name == roleName) {
+                    isValid = true;
+                }
+            })
+            return isValid;
+        }
 
         var _login = function (loginData) {
 
@@ -22,6 +34,7 @@ angular.module('postoffice.common')
 
                 _authentication.isAuth = true;
                 _authentication.userName = loginData.userName;
+                _authentication.roles = response.data.permissions;
 
                 deferred.resolve(response);
 
@@ -34,7 +47,6 @@ angular.module('postoffice.common')
             return deferred.promise;
 
         };
-
         var _logOut = function () {
 
             localStorageService.remove('authorizationData');
@@ -42,9 +54,6 @@ angular.module('postoffice.common')
             _authentication.isAuth = false;
 
         };
-
-       
-
         var _fillAuthData = function () {
 
             var authData = localStorageService.get('authorizationData');
@@ -53,12 +62,13 @@ angular.module('postoffice.common')
                 _authentication.userName = authData.userName;
             }
 
-        }
-        
+        }        
+
         authServiceFactory.login = _login;
         authServiceFactory.logOut = _logOut;
         authServiceFactory.fillAuthData = _fillAuthData;
         authServiceFactory.authentication = _authentication;
+        authServiceFactory.haveRole = _haveRole;
 
         return authServiceFactory;
 }]);
