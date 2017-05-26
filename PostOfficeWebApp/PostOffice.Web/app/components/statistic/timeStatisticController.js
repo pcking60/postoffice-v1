@@ -35,14 +35,14 @@
                     notificationService.displayError('Không tải được danh sách dịch vụ.');
                 });
         }
-
+        //check role 
+        $scope.isManager = authService.haveRole('Manager');
+        $scope.isAdmin = authService.haveRole('Administrator');
         $scope.chartdata = [];
         $scope.TimeStatistic = TimeStatistic;
         function TimeStatistic() {
             var fromDate = $scope.test.date.startDate.format('MM-DD-YYYY');
             var toDate = $scope.test.date.endDate.format('MM-DD-YYYY');
-            ;
-            ;
             var config = {
                 params: {
                     //mm/dd/yyyy

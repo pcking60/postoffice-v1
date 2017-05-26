@@ -13,11 +13,7 @@
                         notificationService.displayError("Đăng nhập không đúng.");                        
                     }
                     else {
-                        var stateService = $injector.get('$state');
-
-                        var isManager = false;
-                        var isAdministrator = false;
-                                                
+                        var stateService = $injector.get('$state');                        
 
                         if ($scope.loginData.userName == 'admin') {
                             stateService.go('home');

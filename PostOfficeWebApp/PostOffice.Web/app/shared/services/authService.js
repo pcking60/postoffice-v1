@@ -34,7 +34,7 @@ angular.module('postoffice.common')
 
                 _authentication.isAuth = true;
                 _authentication.userName = loginData.userName;
-                _authentication.roles = response.data.permissions;
+                _authentication.roles = JSON.parse(response.data.permissions);
 
                 deferred.resolve(response);
 
