@@ -7,13 +7,15 @@ angular.module('postoffice.common')
         var _authentication = {
             isAuth: false,
             userName: "",
-            roles: []
+            roles: [],
+            isAdmin: false,
+            isManager: false
         };        
 
 
         var _haveRole = function haveRole(roleName) {
             var isValid = false;
-            var Roles = authServiceFactory.authentication.roles;
+            var Roles = _authentication.roles;
             angular.forEach(Roles, function (role) {
                 if (role.Name == roleName) {
                     isValid = true;
@@ -30,12 +32,16 @@ angular.module('postoffice.common')
 
             $http.post('/oauth/token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then(function (response) {
 
-                localStorageService.set('authorizationData', { token: response.data.access_token, userName: loginData.userName });
-
+                localStorageService.set('authorizationData', {
+                    token: response.data.access_token,
+                    userName: loginData.userName,
+                    roles : JSON.parse(response.data.permissions)                    
+                });
+                _authentication.roles = JSON.parse(response.data.permissions);
                 _authentication.isAuth = true;
                 _authentication.userName = loginData.userName;
-                _authentication.roles = JSON.parse(response.data.permissions);
-
+                
+                
                 deferred.resolve(response);
 
             }).catch(function (err, status) {
@@ -49,10 +55,13 @@ angular.module('postoffice.common')
         };
         var _logOut = function () {
 
-            localStorageService.remove('authorizationData');
-
+            localStorageService.remove('authorizationData');           
             _authentication.isAuth = false;
-
+            _authentication.userName= "";
+            _authentication.roles = [];
+            _authentication.isAdmin= false;
+            _authentication.isManager = false;
+           
         };
         var _fillAuthData = function () {
 
@@ -60,6 +69,7 @@ angular.module('postoffice.common')
             if (authData) {
                 _authentication.isAuth = true;
                 _authentication.userName = authData.userName;
+                _authentication.roles = authData.roles;                
             }
 
         }        

@@ -2,6 +2,7 @@
 using PostOfiice.DAta.Infrastructure;
 using PostOfiice.DAta.Repositories;
 using System.Collections.Generic;
+using System;
 
 namespace PostOffice.Service
 {
@@ -12,6 +13,9 @@ namespace PostOffice.Service
         IEnumerable<ApplicationUser> GetAllByPOID(int id);
 
         ApplicationUser getByUserName(string userName);
+
+        bool CheckRole(string userName, string roleName);
+        int getPoId(string userName);
     }
 
     public class ApplicationUserService : IApplicationUserService
@@ -39,6 +43,16 @@ namespace PostOffice.Service
         public IEnumerable<ApplicationUser> GetAllByPOID(int id)
         {
             return _userRepository.GetAllByPoId(id);
+        }
+
+        public bool CheckRole(string userName, string roleName)
+        {
+            return _userRepository.CheckRole(userName, roleName);
+        }
+
+        public int getPoId(string userName)
+        {
+            return _userRepository.getPoId(userName);
         }
     }
 }

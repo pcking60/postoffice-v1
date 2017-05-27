@@ -14,7 +14,8 @@
                     }
                     else {
                         var stateService = $injector.get('$state');                        
-
+                        
+                        
                         if ($scope.loginData.userName == 'admin') {
                             stateService.go('home');
                         }

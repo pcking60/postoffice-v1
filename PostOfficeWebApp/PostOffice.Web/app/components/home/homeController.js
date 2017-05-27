@@ -1,7 +1,7 @@
 ﻿(function (app) {
     app.controller('homeController', homeController);
-
-    function homeController() {
-
+    homeController.$inject = ['$scope', 'authService'];
+    function homeController($scope, authService) {
+        
     }
 })(angular.module('postoffice'));

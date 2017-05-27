@@ -12,17 +12,17 @@
             
             .state('transactions', {
                 url: "/transactions",
-                parent: 'userbase',
+                parent: 'base',
                 templateUrl: "/app/components/transactions/transactionsListView.html",
                 controller: "transactionsListController"
             }).state('add_transaction', {
                 url: "/add_transaction/:id",
-                parent: 'userbase',
+                parent: 'base',
                 templateUrl: "/app/components/transactions/transactionAddView.html",
                 controller: "transactionAddController"
             }).state('edit_transaction', {
                 url: "/edit_transaction/:id",
-                parent: 'userbase',
+                parent: 'base',
                 templateUrl: "/app/components/transactions/transactionEditView.html",
                 controller: "transactionEditController"
             });

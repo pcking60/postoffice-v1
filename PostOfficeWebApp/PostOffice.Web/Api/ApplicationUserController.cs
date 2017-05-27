@@ -53,7 +53,22 @@ namespace PostOffice.Web.Api
             {
                 HttpResponseMessage response = null;
                 int totalRow = 0;
-                var model = _userManager.Users;
+                IEnumerable<ApplicationUser> model = null;
+
+                //check user group
+                bool isManager = false;
+                bool isAdministrator = false;
+                isAdministrator = _userService.CheckRole(User.Identity.Name, "Administrator");
+                isManager = _userService.CheckRole(User.Identity.Name, "Manager");
+
+                if (isAdministrator)
+                {
+                    model = _userManager.Users;
+                }
+                if(isManager)
+                {
+                    model = _userService.GetAllByPOID(_userService.getPoId(User.Identity.Name));
+                }
                 IEnumerable<ApplicationUserViewModel> modelVm = Mapper.Map<IEnumerable<ApplicationUser>, IEnumerable<ApplicationUserViewModel>>(model);
 
                 foreach (var item in modelVm) {

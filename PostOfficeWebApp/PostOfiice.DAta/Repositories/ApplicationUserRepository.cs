@@ -14,6 +14,10 @@ namespace PostOfiice.DAta.Repositories
 
         int getNoUserByGroup(int GroupId);
 
+        int getPoId(string userName);
+
+        bool CheckRole(string userName, string roleName);
+
         ApplicationUser getByUserName(string userName);
     }
 
@@ -21,6 +25,26 @@ namespace PostOfiice.DAta.Repositories
     {
         public ApplicationUserRepository(IDbFactory dbFactory) : base(dbFactory)
         {
+        }
+
+        public bool CheckRole(string userName, string roleName)
+        {
+            var query = from u in DbContext.Users
+                        join ug in DbContext.ApplicationUserGroups
+                        on u.Id equals ug.UserId
+                        join g in DbContext.ApplicationGroups
+                        on ug.GroupId equals g.ID
+                        where u.UserName == userName
+                        select g;
+            var isValid = false;
+            foreach (var item in query)
+            {
+                if(item.Name==roleName)
+                {
+                    isValid = true;
+                }
+            }
+            return isValid;
         }
 
         public IEnumerable<ApplicationUser> GetAllByPoId(int id)
@@ -49,6 +73,20 @@ namespace PostOfiice.DAta.Repositories
         public int getNoUserByPoID(int PoID)
         {
             return this.DbContext.Users.Where(x => x.POID == PoID).Count();
+        }
+
+        public int getPoId(string userName)
+        {
+          
+            var query = DbContext.Users.Where(x => x.UserName == userName).FirstOrDefault();
+            if (query != null)
+            {
+                return query.POID;
+            }
+            else
+            {
+                return 0;
+            }    
         }
     }
 }

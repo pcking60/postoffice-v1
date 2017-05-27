@@ -45,7 +45,7 @@ angular.module('postoffice',
             })
             .state('user_dashboard', {
                 url: "/user_dashboard",
-                parent: 'userbase',
+                parent: 'base',
                 templateUrl: "/app/components/user_dashboard/userDashboardView.html",
                 controller: "userDashboardController"
             })

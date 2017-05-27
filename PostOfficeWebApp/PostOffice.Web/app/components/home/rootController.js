@@ -9,8 +9,15 @@
             $state.go('login');
         }
         $scope.authentication = authService.authentication;
+        if ($scope.authentication.isAuth)
+        {
+            $scope.isAdmin = authService.haveRole('Administrator');
+            $scope.isManager = authService.haveRole('Manager');           
+        }
+        
         $scope.sideBarBaseView = 'app/shared/views/sideBarBaseView.html';
         
+      
         //authenticationService.validateRequest();
     }
 })(angular.module('postoffice'));
