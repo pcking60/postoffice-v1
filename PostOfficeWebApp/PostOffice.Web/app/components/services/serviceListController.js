@@ -10,6 +10,22 @@
         $scope.search = search;
         $scope.deleteService = deleteService;
         $scope.loading = true;
+        $scope.exportExcel = exportExcel;
+        function exportExcel() {
+            var config = {
+                params: {
+                    filter: $scope.keyword
+                }
+            };
+            apiService.get('/api/service/ExportXls', config, function (response) {
+                if (response.status = 200) {
+                    window.location.href = response.data.Message;
+                }
+            }, function (error) {
+                notificationService.displayError(error);
+
+            });
+        }
         function deleteService(id) {
             $ngBootbox.confirm('Bạn có chắc xóa không?')
                 .then(
@@ -19,8 +35,7 @@
                                 params: {
                                     id: id
                                 }
-                            }
-
+                            };
                 apiService.del(
                     '/api/service/delete',
                     config,
@@ -49,9 +64,9 @@
                     page: page,
                     pageSize: 20
                 }
-            }
+            };
             apiService.get('/api/service/getall', config, function (result) {
-                if (result.data.TotalCount == 0) {
+                if (result.data.TotalCount === 0) {
                     notificationService.displayWarning("Chưa có dữ liệu");
                 }
                 $scope.loading = false;

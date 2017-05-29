@@ -14,7 +14,7 @@
             })
             .state('timeStatistic', {
                 url: "/timeStatistic",
-                parent: 'userbase',
+                parent: 'base',
                 templateUrl: "/app/components/statistic/timeStatisticView.html",
                 controller: "timeStatisticController"
             });

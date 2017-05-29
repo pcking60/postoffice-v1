@@ -1,13 +1,18 @@
 ﻿using AutoMapper;
+using PostOffice.Common;
+using PostOffice.Common.ViewModels;
 using PostOffice.Service;
 using PostOffice.Web.Infrastructure.Core;
 using PostOffice.Web.Infrastructure.Extensions;
 using PostOffice.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace PostOffice.Web.Api
@@ -16,6 +21,7 @@ namespace PostOffice.Web.Api
     [Authorize]
     public class ServiceController : ApiControllerBase
     {
+        #region
         private IServiceService _serviceService;
         private IServiceGroupService _serviceGroupService;
 
@@ -24,7 +30,7 @@ namespace PostOffice.Web.Api
             this._serviceService = service;
             this._serviceGroupService = serviceGroupService;
         }
-
+        #endregion
         [Route("edit")]
         [HttpPut]
         [Authorize(Roles = "UpdateService")]
@@ -40,6 +46,7 @@ namespace PostOffice.Web.Api
                 else
                 {
                     var dbService = _serviceService.GetById(serviceVm.ID);
+                    serviceVm.UpdatedBy = User.Identity.Name;                    
                     dbService.UpdateService(serviceVm);
                     _serviceService.Update(dbService);
                     _serviceService.Save();
@@ -103,6 +110,7 @@ namespace PostOffice.Web.Api
                 else
                 {
                     var newService = new PostOffice.Model.Models.Service();
+                    serviceVM.CreatedBy = User.Identity.Name;
                     newService.UpdateService(serviceVM);
                     _serviceService.Add(newService);
                     _serviceService.Save();
@@ -155,6 +163,37 @@ namespace PostOffice.Web.Api
                 var response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;
             });
+        }
+
+        [HttpGet]
+        [Route("ExportXls")]
+        public async Task<HttpResponseMessage> ExportXls(HttpRequestMessage request, string filter = null)
+        {
+            string fileName = string.Concat("Product_" + DateTime.Now.ToString("yyyyMMddhhmmsss") + ".xlsx");
+            var folderReport = ConfigHelper.GetByKey("ReportFolder");
+            string filePath = HttpContext.Current.Server.MapPath(folderReport);
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
+            }
+            string fullPath = Path.Combine(filePath, fileName);
+            try
+            {
+                var data = _serviceService.Getall(filter);
+                var responseData = Mapper.Map<IEnumerable<Model.Models.Service>, IEnumerable<ServiceViewModel>>(data);
+                foreach (var item in responseData)
+                {
+                    var sv = _serviceGroupService.GetById(item.GroupID);
+                    item.GroupName = sv.Name;
+                }
+                var result = Mapper.Map<IEnumerable<ServiceViewModel>, IEnumerable<ReportServiceViewModel>>(responseData);
+                await ReportHelper.GenerateXls(result.ToList(), fullPath);
+                return request.CreateErrorResponse(HttpStatusCode.OK, Path.Combine(folderReport, fileName));
+            }
+            catch (Exception ex)
+            {
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PostOffice.Common.ViewModels;
 using PostOffice.Model.Models;
 using PostOffice.Web.Models;
 
@@ -19,6 +20,8 @@ namespace PostOffice.Web.Mappings
             Mapper.CreateMap<PropertyService, PropertyServiceViewModel>();
             Mapper.CreateMap<Transaction, TransactionViewModel>();
             Mapper.CreateMap<TransactionDetail, TransactionDetailViewModel>();
+            Mapper.CreateMap<Model.Models.Service, ReportServiceViewModel>();
+            Mapper.CreateMap<ServiceViewModel, ReportServiceViewModel>();
         }
     }
 }
