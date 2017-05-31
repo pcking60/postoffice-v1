@@ -103,6 +103,11 @@
                             <!--<tr>
                                 <td colspan="9"><span class="pull-left">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount=totalCount||0}}</span></td>
                             </tr>-->
+                            <tr style="font-weight:bold">
+                                <td colspan="4" class="text-right">Tổng cộng: </td>
+                                <td class="text-right">{{test.totalQuantity | number}}</td>
+                                <td class="text-right">{{test.totalMoney | currency}}</td>
+                            </tr>
                         </tfoot>
                     </table>
                 </div>

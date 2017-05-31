@@ -6,7 +6,9 @@
     function timeStatisticController($scope, apiService, notificationService, $filter, authService) {
         $scope.statisticResult = [];
         $scope.test = {
-            users: []           
+            users: [],
+            totalQuantity: 0,
+            totalMoney: 0
         };
         $scope.test.ServiceId = 0;
         $scope.test.UserId = '';
@@ -55,6 +57,14 @@
             apiService.get('api/transactions/stattistic', config,
                 function (response) {
                     $scope.statisticResult = response.data;
+                    $scope.test.totalQuantity = 0;
+                    $scope.test.totalMoney = 0;
+                    angular.forEach($scope.statisticResult, function (item) {
+                        if (item.Status == true) {
+                            $scope.test.totalQuantity += item.Quantity;
+                            $scope.test.totalMoney += item.TotalMoney;
+                        }                        
+                    })
                     $scope.result = true;
                     console.log(response.data);                    
                 },

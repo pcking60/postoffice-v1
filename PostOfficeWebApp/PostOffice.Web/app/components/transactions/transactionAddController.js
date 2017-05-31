@@ -1,7 +1,7 @@
 ﻿(function (app) {
     app.controller('transactionAddController', transactionAddController);
-    transactionAddController.$inject = ['$scope', 'apiService', 'notificationService', '$state', 'commonService', '$stateParams'];
-    function transactionAddController($scope, apiService, notificationService, $state, commonService, $stateParams) {
+    transactionAddController.$inject = ['$scope', 'apiService', 'notificationService', '$state', 'commonService', '$stateParams', '$ngBootbox', '$timeout'];
+    function transactionAddController($scope, apiService, notificationService, $state, commonService, $stateParams, $ngBootbox, $timeout) {
         $scope.transaction = {
             Status: true,
             Service: null,
@@ -36,8 +36,14 @@
                 apiService.post('/api/transactions/create', $scope.transaction,
                     function (result) {
                         notificationService.displaySuccess('Giao dịch thành công');
-                        $state.go('transactions', {}, { reload: true });
-                        //$state.reload();
+                        $timeout(function () {
+                            $ngBootbox.confirm('Bạn có muốn tiếp tục nhập?').then(function () {
+                            }
+                            , function () {
+                                $state.go('transactions', {}, { reload: true });
+                                //$state.reload();                        
+                            });
+                        }, 500);
 
                     }, function (error) {
                         notificationService.displayError('Giao dịch thất bại');
