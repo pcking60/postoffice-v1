@@ -50,6 +50,7 @@
     <Compile Include="ReportHelper.cs" />
     <Compile Include="ViewModels\ReportServiceViewModel.cs" />
     <Compile Include="ViewModels\RevenueStatisticViewModel.cs" />
+    <Compile Include="ViewModels\statisticReportViewModel.cs" />
     <Compile Include="ViewModels\UnitStatisticViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
