@@ -8,7 +8,9 @@
         $scope.test = {
             users: [],
             totalQuantity: 0,
-            totalMoney: 0
+            totalMoney: 0,
+            totalEarn: 0,
+            totalVat: 0
         };
         $scope.test.ServiceId = 0;
         $scope.test.UserId = '';
@@ -59,10 +61,13 @@
                     $scope.statisticResult = response.data;
                     $scope.test.totalQuantity = 0;
                     $scope.test.totalMoney = 0;
+                    $scope.test.totalEarn = 0;
                     angular.forEach($scope.statisticResult, function (item) {
                         if (item.Status == true) {
                             $scope.test.totalQuantity += item.Quantity;
                             $scope.test.totalMoney += item.TotalMoney;
+                            $scope.test.totalEarn += item.EarnMoney;
+                            $scope.test.totalVat += (item.TotalMoney - item.EarnMoney);
                         }                        
                     })
                     $scope.result = true;
