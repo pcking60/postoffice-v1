@@ -4,12 +4,11 @@ using PostOfiice.DAta.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PostOffice.Service
 {
-    public interface ITransactionDetailService {
+    public interface ITransactionDetailService
+    {
         TransactionDetail Add(TransactionDetail transactionDetail);
 
         void Update(TransactionDetail transactionDetail);
@@ -23,7 +22,7 @@ namespace PostOffice.Service
         IEnumerable<TransactionDetail> GetAllByTransactionId(int transactionId);
 
         IEnumerable<TransactionDetail> Search(string keyword, int page, int pageSize, string sort, out int totalRow);
-        
+
         TransactionDetail GetById(int id);
 
         decimal? GetTotalMoneyByTransactionId(int id);
@@ -36,6 +35,7 @@ namespace PostOffice.Service
 
         void Save();
     }
+
     public class TransactionDetailService : ITransactionDetailService
     {
         private ITransactionDetailRepository _transactionDetailRepository;
@@ -43,14 +43,18 @@ namespace PostOffice.Service
         private IPropertyServiceRepository _propertyServiceRepository;
         private IApplicationUserRepository _userRepository;
         private IUnitOfWork _unitOfWork;
+        private IServiceRepository _serviceRepository;
 
-        public TransactionDetailService(ITransactionDetailRepository transactionDetailRepository, IApplicationUserRepository userRepository,  IPropertyServiceRepository propertyServiceRepository, ITransactionRepository transactionRepository, IUnitOfWork unitOfWork) {
+        public TransactionDetailService(IServiceRepository serviceRepository, ITransactionDetailRepository transactionDetailRepository, IApplicationUserRepository userRepository, IPropertyServiceRepository propertyServiceRepository, ITransactionRepository transactionRepository, IUnitOfWork unitOfWork)
+        {
             this._transactionDetailRepository = transactionDetailRepository;
             _propertyServiceRepository = propertyServiceRepository;
             _userRepository = userRepository;
             _transactionRepository = transactionRepository;
             this._unitOfWork = unitOfWork;
+            _serviceRepository = serviceRepository;
         }
+
         public TransactionDetail Add(TransactionDetail transactionDetail)
         {
             return _transactionDetailRepository.Add(transactionDetail);
@@ -68,7 +72,7 @@ namespace PostOffice.Service
 
         public IEnumerable<TransactionDetail> GetAll(string keyword)
         {
-            if(!string.IsNullOrEmpty(keyword))
+            if (!string.IsNullOrEmpty(keyword))
             {
                 return _transactionDetailRepository.GetMulti(x => x.MetaDescription.Contains(keyword));
             }
@@ -85,12 +89,22 @@ namespace PostOffice.Service
 
         public decimal? GetTotalEarnMoneyByTransactionId(int id)
         {
+            Transaction ts = _transactionRepository.GetSingleByID(id);
+            Model.Models.Service s = _serviceRepository.GetSingleByID(ts.ServiceId);
+            float? vat = s.VAT;
             decimal? earnTotal = 0;
             var listTransactionDetail = _transactionDetailRepository.GetMulti(x => x.TransactionId == id).ToList();
             foreach (var item in listTransactionDetail)
             {
                 decimal? percent = _propertyServiceRepository.GetSingleByID(item.PropertyServiceId).Percent;
-                earnTotal = earnTotal + percent * item.Money / Convert.ToDecimal(1.1);
+                if (vat > 0 && vat != null)
+                {
+                    earnTotal = earnTotal + percent * item.Money / Convert.ToDecimal(vat);
+                }
+                else
+                {
+                    earnTotal = earnTotal + percent * item.Money;
+                }
             }
             int? quantity = _transactionRepository.GetSingleByID(id).Quantity;
             return earnTotal;
@@ -99,13 +113,14 @@ namespace PostOffice.Service
         public decimal? GetTotalMoneyByTransactionId(int id)
         {
             //int? quantity = _transactionRepository.GetSingleByID(id).Quantity;
-            //decimal? totalMoney = quantity * _transactionDetailRepository.GetMulti(x => x.TransactionId == id).Sum(x => x.Money); 
-            string condition = "Sản lượng";   
-            var listTransactionDetails = _transactionDetailRepository.GetAllByCondition(condition);
+            //decimal? totalMoney = quantity * _transactionDetailRepository.GetMulti(x => x.TransactionId == id).Sum(x => x.Money);
+            string condition = "Sản lượng";
+            var listTransactionDetails = _transactionDetailRepository.GetAllByCondition(condition, id);
+            int count = listTransactionDetails.Count();
             decimal? sum = 0;
             foreach (var item in listTransactionDetails)
             {
-                sum += _transactionDetailRepository.GetMulti(x => x.TransactionId == id && x.ID ==item.ID).Sum(x => x.Money);
+                sum += _transactionDetailRepository.GetMulti(x => x.TransactionId == id && x.ID == item.ID).Sum(x => x.Money);
             }
             return sum;
         }
@@ -131,14 +146,14 @@ namespace PostOffice.Service
 
         public IEnumerable<TransactionDetail> GetAllByTransactionId(int transactionId)
         {
-           return _transactionDetailRepository.GetMulti(x => x.TransactionId == transactionId);
+            return _transactionDetailRepository.GetMulti(x => x.TransactionId == transactionId);
         }
 
         public decimal? GetTotalEarnMoneyByUsername(string userName)
         {
             decimal? earnTotal = 0;
             string userId = _userRepository.getByUserName(userName).Id;
-            var listTransactions = _transactionRepository.GetMulti(x => x.UserId == userId &&x.Status==true).ToList();
+            var listTransactions = _transactionRepository.GetMulti(x => x.UserId == userId && x.Status == true).ToList();
             foreach (var item in listTransactions)
             {
                 var listTransactionDetail = _transactionDetailRepository.GetMulti(x => x.TransactionId == item.ID).ToList();
@@ -147,7 +162,7 @@ namespace PostOffice.Service
                     decimal? percent = _propertyServiceRepository.GetSingleByID(item1.PropertyServiceId).Percent;
                     earnTotal = earnTotal + percent * item1.Money;
                 }
-                int? quantity = _transactionRepository.GetSingleByID(item.ID).Quantity;                
+                int? quantity = _transactionRepository.GetSingleByID(item.ID).Quantity;
             }
             return earnTotal;
         }

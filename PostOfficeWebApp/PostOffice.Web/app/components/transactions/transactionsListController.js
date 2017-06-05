@@ -7,7 +7,7 @@
         $scope.page = 0;
         $scope.pagesCount = 0;
         $scope.transactions = [];
-        $scope.getTransactions = getTransactions;
+        //$scope.getTransactions = getTransactions;
         $scope.keyword = '';
         $scope.search = search;
         $scope.deleteTransaction = deleteTransaction;
@@ -115,7 +115,7 @@
                 params: {
                     keyword : $scope.keyword,
                     page: page,
-                    pageSize: 20
+                    pageSize: 40
                 }
             }
             apiService.get('/api/transactions/getall', config, function (result) {

@@ -13,7 +13,7 @@ namespace PostOffice.Model.Models
         [DataType("nvarchar")]
         [MaxLength(128)]
         public string Name { get; set; }
-
+        
         public decimal? Percent { get; set; }
 
         [Required]
