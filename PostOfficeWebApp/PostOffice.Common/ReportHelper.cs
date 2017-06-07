@@ -120,14 +120,17 @@ namespace PostOffice.Common
                     //Create the worksheet
                     ExcelWorksheet ws = pck.Workbook.Worksheets.Add(nameof(T));
                     #region templateInfo
+                    //header
                     ws.Cells["A1:H1"].Merge = true;
                     ws.Cells["A1:H1"].Value = "TỔNG CÔNG TY BƯU ĐIỆN VIỆT NAM \n BƯU ĐIỆN TỈNH SÓC TRĂNG";
-                    ws.Cells["A1:H1"].Style.WrapText = true;
-                    ws.Cells["A3:H3"].Merge = true;
-                    ws.Cells["A3:H3"].Value = vm.FunctionName;
                     ws.Row(1).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     ws.Row(1).Height = 35;
                     ws.Row(1).Style.Font.Bold = true;
+
+                    //functionName
+                    ws.Cells["A1:H1"].Style.WrapText = true;
+                    ws.Cells["A3:H3"].Merge = true;
+                    ws.Cells["A3:H3"].Value = vm.FunctionName;                   
                     ws.Row(3).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     ws.Row(3).Style.Font.Size = 13;
                     ws.Row(3).Style.Font.Bold = true;

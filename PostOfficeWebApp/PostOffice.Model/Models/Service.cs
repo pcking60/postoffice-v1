@@ -23,8 +23,7 @@ namespace PostOffice.Model.Models
         [Required]
         public int GroupID { get; set; }        
 
-        [MaxLength(50)]
-        [Column(TypeName = "varchar")]
+        [MaxLength(50)]        
         public string Unit { get; set; }
 
         public decimal? BuyIn { get; set; }
