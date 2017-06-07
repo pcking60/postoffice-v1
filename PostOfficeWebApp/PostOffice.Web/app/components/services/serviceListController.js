@@ -6,6 +6,8 @@
         $scope.pagesCount = 0;
         $scope.services = [];
         $scope.getServices = getServices;
+        $scope.AllServices = [];
+        $scope.getAllServices = getAllServices;
         $scope.keyword = '';
         $scope.search = search;
         $scope.deleteService = deleteService;
@@ -79,6 +81,18 @@
                 console.log('Load service failed');
                 $scope.loading = false;
             });
-        } $scope.getServices();
+        };
+
+        function getAllServices() {
+            apiService.get('api/service/getallparents', null,
+                function (result) {
+                    $scope.AllServices = result.data;
+                },
+                function () {
+                    console.log('Load service failed');
+                });
+        };
+        $scope.getAllServices();
+        $scope.getServices();
     }
 })(angular.module('postoffice.services'));

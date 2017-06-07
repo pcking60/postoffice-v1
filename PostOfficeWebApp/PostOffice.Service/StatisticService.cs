@@ -1,6 +1,7 @@
 ﻿using PostOffice.Common.ViewModels;
 using PostOfiice.DAta.Repositories;
 using System.Collections.Generic;
+using System;
 
 namespace PostOffice.Service
 {
@@ -8,6 +9,7 @@ namespace PostOffice.Service
     {
         IEnumerable<RevenueStatisticViewModel> GetRevenueStatistic(string fromDate, string toDate);
         IEnumerable<UnitStatisticViewModel> GetUnitStatistic(string fromDate, string toDate);
+        IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate);
     }
 
     public class StatisticService : IStatisticService
@@ -28,6 +30,11 @@ namespace PostOffice.Service
         public IEnumerable<UnitStatisticViewModel> GetUnitStatistic(string fromDate, string toDate)
         {
             return _statisticRepository.GetUnitStatistic(fromDate, toDate);
+        }
+
+        public IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate)
+        {
+            return _statisticRepository.ReportFunction1(fromDate, toDate);
         }
     }
 }

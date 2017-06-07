@@ -215,6 +215,8 @@
     <Content Include="app\components\application_users\applicationUserListController.js" />
     <Content Include="app\components\application_users\applicationUserListView.html" />
     <Content Include="app\components\application_users\applicationUsers.module.js" />
+    <Content Include="app\components\statistic\reportsController.js" />
+    <Content Include="app\components\statistic\reportsView.html" />
     <Content Include="app\components\statistic\revenueStatisticController.js" />
     <Content Include="app\components\statistic\revenueStatisticView.html" />
     <Content Include="app\components\statistic\statistic.module.js" />

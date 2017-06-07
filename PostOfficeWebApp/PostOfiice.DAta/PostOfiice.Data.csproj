@@ -111,6 +111,10 @@
     <Compile Include="Migrations\201706050617004_changeDecimal.Designer.cs">
       <DependentUpon>201706050617004_changeDecimal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706060746061_reportFunction1.cs" />
+    <Compile Include="Migrations\201706060746061_reportFunction1.Designer.cs">
+      <DependentUpon>201706060746061_reportFunction1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PostOfficeDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -159,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706050617004_changeDecimal.resx">
       <DependentUpon>201706050617004_changeDecimal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706060746061_reportFunction1.resx">
+      <DependentUpon>201706060746061_reportFunction1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
