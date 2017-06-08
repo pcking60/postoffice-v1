@@ -28,18 +28,38 @@
                         </div>
                     </div>                    
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">Chọn đơn vị</label>
+                        <label for="inputPassword3" class="col-sm-3 control-label">Chọn huyện</label>
                         <div class="col-sm-6">
-                            <select name="staff" class="form-control" ng-model="report.unitId" ng-options="option.ID as option.Name for option in report.units">
-                                <option value="">Tất cả</option>
-                            </select>
-                            <input type="hidden" name="parentId" ng-model="report.unitId" />
+                            <ui-select them="select2"
+                                    ng-model="report.districtId"                                     
+                                    on-select="onSelectCallback($item, $model)">
+                                        <ui-select-match placeholder="chọn or tìm kiếm huyện nào đó">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="item.ID as item in report.districts | filter: $select.search">
+                                            <div ng-bind-html="item.Name | highlight: $select.search"></div>
+                                        </ui-select-choices>  
+                            </ui-select>
+                            <!--<input type="hidden" name="parentId" ng-model="report.unitId" />-->
                         </div>
-
                     </div>
-                    <div class="col-md-6">
-                        <div class="col-sm-6 col-sm-offset-6">
-                            <button type="submit" class="btn btn-info btn-flat bg-olive col-sm-6" ng-disabled="frmReport.$invalid">Xuất báo cáo</button>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">Chọn bưu cục</label>
+                        <div class="col-sm-6">
+                            <ui-select ng-model="report.unitId">
+                                <ui-select-match placeholder="chọn or tìm kiếm huyện nào đó">{{$select.selected.Name}}</ui-select-match>
+                                <ui-select-choices repeat="item.ID as item in report.units | filter: $select.search">
+                                    <small>
+                                        {{item.Name}}
+                                    </small>
+                                </ui-select-choices>
+                            </ui-select>
+                            <!--<input type="hidden" name="parentId" ng-model="report.unitId" />-->
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="col-sm-8 col-sm-offset-4">
+                            <span class="col-sm-4"><button type="submit" class="btn bg-orange btn-flat" ng-disabled="frmReport.$invalid">Xuất báo cáo</button></span>
+                            <span class="col-sm-4"><button type="reset" class="btn  btn-flat bg-olive " ng-click="Reset()">Làm mới</button></span>
+                            
                         </div>
                     </div>
                 </div>

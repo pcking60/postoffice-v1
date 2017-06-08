@@ -1,15 +1,17 @@
 ﻿(function (app) {
     app.controller('reportsController', reportsController);
 
-    reportsController.$inject = ['$scope', 'apiService', 'notificationService', '$filter', 'authService'];
+    reportsController.$inject = ['$scope', 'apiService', 'notificationService', '$filter', 'authService', '$stateParams'];
 
-    function reportsController($scope, apiService, notificationService, $filter, authService) {       
+    function reportsController($scope, apiService, notificationService, $filter, authService, $stateParams) {
         $scope.report = {
+            districts: [],
             units: [],
             functionId: 0,
-            unitId: 0
+            unitId: 0,
+            districtId: 0
         };
-        
+        $stateParams.id = 0;
         $scope.report.date = { startDate: null, endDate: null };
         $scope.functions =
             [
@@ -18,15 +20,39 @@
                 { Id: 3, Name: 'Báo cáo doanh thu tại đơn vị - test' },
 
             ]
-        $scope.getUnit = getUnit;     
-        function getUnit() {
+        $scope.getUnit = getUnit;
+        $scope.getDistrict = getDistrict;
+        $scope.Reset = Reset;
+        function getDistrict(){
             apiService.get('/api/district/getallparents',
+                null,
+                function (response) {
+                    $scope.report.districts = response.data;
+                }, function (response) {
+                    notificationService.displayError('Không tải được danh sách huyện.');
+                }
+            );
+        }
+        function getUnit() {
+            apiService.get('/api/po/getbydistrictid/ ' + $stateParams.id,
                 null,
                 function (response) {
                     $scope.report.units = response.data;
                 }, function (response) {
                     notificationService.displayError('Không tải được danh sách đơn vị.');
-                });
+                }
+            );
+        }
+
+        function Reset() {
+            $scope.report.districtId = 0;
+            $scope.report.unitId = 0;
+        }
+
+        $scope.onSelectCallback = function (item, model) {
+            $stateParams.id = item.ID;
+            $scope.report.unitId = 0;
+            getUnit();
         }
        
         $scope.Report = Report;
@@ -62,8 +88,7 @@
             )
         }
 
-        getUnit();
-
+        getDistrict();        
     }
 
 })(angular.module('postoffice.statistics'));

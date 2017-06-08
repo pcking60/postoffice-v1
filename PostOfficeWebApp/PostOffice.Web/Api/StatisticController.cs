@@ -66,7 +66,7 @@ namespace PostOffice.Web.Api
                 Directory.CreateDirectory(filePath);
             }
             string fullPath = Path.Combine(filePath, fileName);
-            ReportFunction1ViewModel vm = new ReportFunction1ViewModel();
+            ReportTemplate vm = new ReportTemplate();
             try
             {
                 #region customFill Test
@@ -96,7 +96,7 @@ namespace PostOffice.Web.Api
                 List<ReportFunction1> listData = rp.ToList();                
 
                 //test medthod customFill
-                await ReportHelper.ReportFunction1(listData, fullPath, vm);
+                await ReportHelper.RP1(listData, fullPath, vm);
 
                 return request.CreateErrorResponse(HttpStatusCode.OK, Path.Combine(folderReport, fileName));
             }

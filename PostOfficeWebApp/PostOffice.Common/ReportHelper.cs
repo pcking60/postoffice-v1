@@ -110,8 +110,11 @@ namespace PostOffice.Common
                 }
             });
         }
-
-        public static Task ReportFunction1<T>(List<T> datasource, string filePath, ReportFunction1ViewModel vm)
+        /*
+            code: RP1
+            name: Bảng kê thu tiền tại bưu cục - tổng hợp 
+        */
+        public static Task RP1<T>(List<T> datasource, string filePath, ReportTemplate vm)
         {
             return Task.Run(() =>
             {
@@ -135,42 +138,42 @@ namespace PostOffice.Common
                     ws.Row(3).Style.Font.Size = 13;
                     ws.Row(3).Style.Font.Bold = true;
 
-                    //ws.Cells["A4:B4"].Merge = true;
-                    //ws.Row(4).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                    //ws.Row(4).Style.Font.Bold = true;
-                    //ws.Cells["A4:B4"].Value = "Đơn vị báo cáo:";
-                    //ws.Cells["A4:B4"].Style.Indent = 1;
+                    ws.Cells["A4:B4"].Merge = true;
+                    ws.Row(4).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                    ws.Row(4).Style.Font.Bold = true;
+                    ws.Cells["A4:B4"].Value = "Huyện: ";
+                    ws.Cells["A4:B4"].Style.Indent = 1;
 
-                    //ws.Cells["A5:B5"].Merge = true;
-                    //ws.Row(5).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                    //ws.Row(5).Style.Font.Bold = true;
-                    //ws.Cells["A5:B5"].Value = "Thời gian báo cáo:";
-                    //ws.Cells["A5:B5"].Style.Indent = 1;
+                    ws.Cells["A5:B5"].Merge = true;
+                    ws.Row(5).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                    ws.Row(5).Style.Font.Bold = true;
+                    ws.Cells["A5:B5"].Value = "Bưu cục: ";
+                    ws.Cells["A5:B5"].Style.Indent = 1;
 
-                    //ws.Cells["A6:B6"].Merge = true;
-                    //ws.Row(6).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                    //ws.Row(6).Style.Font.Bold = true;
-                    //ws.Cells["A6:B6"].Value = "Dịch vụ báo cáo:";
-                    //ws.Cells["A6:B6"].Style.Indent = 1;
+                    ws.Cells["A6:B6"].Merge = true;
+                    ws.Row(6).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                    ws.Row(6).Style.Font.Bold = true;
+                    ws.Cells["A6:B6"].Value = "Thời gian:";
+                    ws.Cells["A6:B6"].Style.Indent = 1;
 
-                    //// Custom fill
-                    //ws.Cells["C4:H4"].Merge = true;
-                    //ws.Cells["C4:H4"].Style.Font.Bold = true;
-                    //ws.Cells["C4:H4"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                    //ws.Cells["C4:H4"].Style.Indent = 2;
-                    //ws.Cells["C4:H4"].Value = vm.PoName;
+                    // Custom fill
+                    ws.Cells["C4:H4"].Merge = true;
+                    ws.Cells["C4:H4"].Style.Font.Bold = true;
+                    ws.Cells["C4:H4"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    ws.Cells["C4:H4"].Style.Indent = 2;
+                    ws.Cells["C4:H4"].Value = vm.District;
 
-                    //ws.Cells["C5:H5"].Merge = true;
-                    //ws.Cells["C5:H5"].Style.Font.Bold = true;
-                    //ws.Cells["C5:H5"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                    //ws.Cells["C5:H5"].Style.Indent = 2;
-                    //ws.Cells["C5:H5"].Value = "Từ " + vm.fromDate + " đến " + vm.toDate;
+                    ws.Cells["C5:H5"].Merge = true;
+                    ws.Cells["C5:H5"].Style.Font.Bold = true;
+                    ws.Cells["C5:H5"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    ws.Cells["C5:H5"].Style.Indent = 2;
+                    ws.Cells["C5:H5"].Value = vm.Unit;
 
-                    //ws.Cells["C6:H6"].Merge = true;
-                    //ws.Cells["C6:H6"].Style.Font.Bold = true;
-                    //ws.Cells["C6:H6"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
-                    //ws.Cells["C6:H6"].Style.Indent = 2;
-                    //ws.Cells["C6:H6"].Value = vm.ServiceName;
+                    ws.Cells["C6:H6"].Merge = true;
+                    ws.Cells["C6:H6"].Style.Font.Bold = true;
+                    ws.Cells["C6:H6"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+                    ws.Cells["C6:H6"].Style.Indent = 2;
+                    ws.Cells["C6:H6"].Value = "Từ " + vm.FromDate + " đến " + vm.ToDate; ;
 
                     #endregion
                     int noRow = datasource.Count;

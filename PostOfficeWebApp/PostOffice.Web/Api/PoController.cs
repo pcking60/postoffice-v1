@@ -115,6 +115,21 @@ namespace PostOffice.Web.Api
             });
         }
 
+        [Route("getbydistrictid/{id:int}")]
+        [HttpGet]
+        public HttpResponseMessage GetByDistrictId(HttpRequestMessage request, int id)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _poService.GetAllPOByDistrictId(id);
+
+                var responseData = Mapper.Map<IEnumerable<PO>,IEnumerable<POViewModel>>(model);
+
+                var response = request.CreateResponse(HttpStatusCode.OK, responseData);
+                return response;
+            });
+        }
+
         [Route("create")]
         [HttpPost]
         [AllowAnonymous]
