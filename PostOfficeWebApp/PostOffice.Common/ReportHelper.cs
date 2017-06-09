@@ -112,7 +112,7 @@ namespace PostOffice.Common
         }
         /*
             code: RP1
-            name: Bảng kê thu tiền tại bưu cục - tổng hợp 
+            name: Bảng kê tổng hợp thu tiền tại bưu cục - tổng hợp 
         */
         public static Task RP1<T>(List<T> datasource, string filePath, ReportTemplate vm)
         {
@@ -161,19 +161,27 @@ namespace PostOffice.Common
                     ws.Cells["C4:H4"].Style.Font.Bold = true;
                     ws.Cells["C4:H4"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     ws.Cells["C4:H4"].Style.Indent = 2;
+                    if (vm.District == null)
+                    {
+                        vm.District = "Toàn tỉnh";
+                    }
                     ws.Cells["C4:H4"].Value = vm.District;
 
                     ws.Cells["C5:H5"].Merge = true;
                     ws.Cells["C5:H5"].Style.Font.Bold = true;
                     ws.Cells["C5:H5"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     ws.Cells["C5:H5"].Style.Indent = 2;
+                    if (vm.Unit == null)
+                    {
+                        vm.Unit = "Toàn tỉnh";
+                    }
                     ws.Cells["C5:H5"].Value = vm.Unit;
 
                     ws.Cells["C6:H6"].Merge = true;
                     ws.Cells["C6:H6"].Style.Font.Bold = true;
                     ws.Cells["C6:H6"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     ws.Cells["C6:H6"].Style.Indent = 2;
-                    ws.Cells["C6:H6"].Value = "Từ " + vm.FromDate + " đến " + vm.ToDate; ;
+                    ws.Cells["C6:H6"].Value = "Từ " + vm.FromDate.ToString("dd/MM/yyyy") + " đến " + vm.ToDate.ToString("dd/MM/yyyy"); ;
 
                     #endregion
                     int noRow = datasource.Count;
@@ -181,7 +189,8 @@ namespace PostOffice.Common
                     ws.Cells["A8"].LoadFromCollection<T>(datasource, true, TableStyles.Light1);
                     ws.Column(8).Style.Numberformat.Format = "dd/MM/yyyy";
                     ws.Cells.AutoFitColumns();
-
+                    ws.Cells["A8"].Value = "Tên danh mục";
+                    ws.Cells["B8"].Value = "Tổng doanh thu";
                     ws.Cells[noRow + 10, 6, noRow + 10, 8].Merge = true;
                     ws.Cells[noRow + 10, 6, noRow + 10, 8].Value = "Người lập báo cáo";
                     ws.Cells[noRow + 10, 6, noRow + 10, 8].Style.Font.Bold = true;

@@ -6,6 +6,9 @@ namespace PostOffice.Common.ViewModels
     {      
         public string Name { get; set; }
         public decimal TotalMoney { get; set; }
+        public decimal VAT { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Revenue { get; set; }
         
     }
 }

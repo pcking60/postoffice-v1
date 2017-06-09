@@ -14,7 +14,8 @@
         };
         $scope.test.ServiceId = 0;
         $scope.test.UserId = '';
-        $scope.test.date = { startDate: null, endDate: null };
+        $scope.test.date = { startDate: moment(), endDate: moment() };
+       
         $scope.getListUser = getListUser;
         $scope.getService = getService;
 

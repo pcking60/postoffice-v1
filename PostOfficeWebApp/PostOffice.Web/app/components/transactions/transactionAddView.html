@@ -44,7 +44,8 @@
                         <ng-form name="userFieldForm">
                             <label for="inputPassword3" class="col-sm-3 control-label">{{prop.Name}}</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" name="propertyValue" ng-model="prop.Money" required />
+                                <input type="number" class="form-control col-sm-7" name="propertyValue" ng-model="prop.Money" required />
+                                <span class="text-blue" ng-hide="userFieldForm.propertyValue.$invalid">Bạn vừa nhập vào: {{prop.Money | number}}</span>
                                 <span ng-show="userFieldForm.propertyValue.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                             </div>
                         </ng-form>                        
@@ -54,6 +55,7 @@
                         <label for="inputEmail3" class="col-sm-3 control-label">Số lượng</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" ng-model="transaction.Quantity" required name="quantity">
+                            <span class="text-blue" ng-hide="frmAddTransaction.quantity.$invalid">Bạn vừa nhập vào: {{transaction.Quantity | number}}</span>
                             <span ng-show="frmAddTransaction.quantity.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                         </div>
                     </div>

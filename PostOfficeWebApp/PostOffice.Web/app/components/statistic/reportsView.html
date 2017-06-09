@@ -17,6 +17,7 @@
                             <select name="staff" class="form-control" ng-model="report.functionId" ng-options="option.Id as option.Name for option in functions">
                                 <option value="">Tất cả</option>
                             </select>
+                            <span ng-show="frmReport.staff.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                             <input type="hidden" name="parentId" ng-model="report.functionId" />
                         </div>
                     </div>
@@ -35,7 +36,10 @@
                                     on-select="onSelectCallback($item, $model)">
                                         <ui-select-match placeholder="chọn or tìm kiếm huyện nào đó">{{$select.selected.Name}}</ui-select-match>
                                         <ui-select-choices repeat="item.ID as item in report.districts | filter: $select.search">
-                                            <div ng-bind-html="item.Name | highlight: $select.search"></div>
+                                            <small>
+                                                {{item.Name | highlight: $select.search}}
+                                            </small>
+                                            <!--<div ng-bind-html="item.Name | highlight: $select.search"></div>-->
                                         </ui-select-choices>  
                             </ui-select>
                             <!--<input type="hidden" name="parentId" ng-model="report.unitId" />-->
@@ -57,7 +61,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="col-sm-8 col-sm-offset-4">
-                            <span class="col-sm-4"><button type="submit" class="btn bg-orange btn-flat" ng-disabled="frmReport.$invalid">Xuất báo cáo</button></span>
+                            <span class="col-sm-4"><button type="submit" class="btn bg-orange btn-flat" ng-disabled="frmReport.$invalid" style="opacity:1">Xuất báo cáo</button></span>
                             <span class="col-sm-4"><button type="reset" class="btn  btn-flat bg-olive " ng-click="Reset()">Làm mới</button></span>
                             
                         </div>

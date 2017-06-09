@@ -20,11 +20,13 @@ namespace PostOffice.Web.Api
     {
         private IStatisticService _statisticService;
         private IDistrictService _districtService;
+        private IPOService _poService;
 
-        public StatisticController(IErrorService errorService, IStatisticService statisticService, IDistrictService districtService) : base(errorService)
+        public StatisticController(IErrorService errorService, IStatisticService statisticService, IDistrictService districtService, IPOService poService) : base(errorService)
         {
             _statisticService = statisticService;
             _districtService = districtService;
+            _poService = poService;
         }
 
         [Route("getrevenue")]
@@ -56,7 +58,7 @@ namespace PostOffice.Web.Api
         }
         [HttpGet]
         [Route("reportFunction1")]
-        public async Task<HttpResponseMessage> ReportFunction1(HttpRequestMessage request, string fromDate, string toDate, int functionId, int unitId)
+        public async Task<HttpResponseMessage> ReportFunction1(HttpRequestMessage request, string fromDate, string toDate, int districtId, int functionId, int unitId)
         {
             string fileName = string.Concat("Money_" + DateTime.Now.ToString("yyyyMMddhhmmsss") + ".xlsx");
             var folderReport = ConfigHelper.GetByKey("ReportFolder");
@@ -72,10 +74,15 @@ namespace PostOffice.Web.Api
                 #region customFill Test
                 vm.FromDate = DateTime.Parse(fromDate);
                 vm.ToDate = DateTime.Parse(toDate);
-                District obj = new District();
-                if (unitId != 0)
+                District district = new District();
+                PO po = new PO();
+                if (districtId != 0)
                 {
-                   obj = _districtService.GetById(unitId);
+                    district = _districtService.GetById(districtId);
+                }
+                if(unitId!=0)
+                {
+                    po = _poService.GetByID(unitId);
                 }
                 switch (functionId)
                 {
@@ -87,12 +94,39 @@ namespace PostOffice.Web.Api
                         break; 
 
                 }
-                vm.Unit = obj.Name;
+                if (district != null)
+                {
+                    vm.District = district.Name;
+                }
+                if (po != null)
+                {
+                    vm.Unit = po.Name;
+                }
+                
                 vm.CreatedBy = User.Identity.Name;
 
                 #endregion
+
+                #region Bussiness
+                IEnumerable<ReportFunction1> rp = Enumerable.Empty<ReportFunction1>();
+
+                if ( districtId == 0 && unitId == 0)
+                {
+                    rp = _statisticService.ReportFunction1(fromDate, toDate);
+                }
+                else
+                {
+                    if(districtId!=0&& unitId == 0)
+                    {
+                        rp = _statisticService.ReportFunction1(fromDate, toDate, districtId);
+                    }
+                    else
+                    {
+                        rp = _statisticService.ReportFunction1(fromDate, toDate, districtId, unitId);
+                    }
+                }
+                #endregion
                 
-                IEnumerable<ReportFunction1> rp = _statisticService.ReportFunction1(fromDate, toDate);
                 List<ReportFunction1> listData = rp.ToList();                
 
                 //test medthod customFill

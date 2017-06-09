@@ -65,6 +65,7 @@
                     //mm/dd/yyyy
                     fromDate: fromDate,
                     toDate: toDate,
+                    districtId: $scope.report.districtId || 0,
                     functionId: $scope.report.functionId || 0,
                     unitId: $scope.report.unitId || 0                    
                 }
@@ -75,7 +76,6 @@
                     if (response.status = 200) {
                         window.location.href = response.data.Message;
                     }
-
                 },
                 function (response) {
                     if (response.status == 500) {

@@ -6,8 +6,8 @@
             "debug": false,
             "positionClass": "toast-top-center",
             "onclick": null,
-            "fadeIn": 300,
-            "fadeOut": 1000,
+            "showDuration": 300,
+            "hideDuration": 1000,
             "timeOut": 3000,
             "extendedTimeOut": 1000
         };

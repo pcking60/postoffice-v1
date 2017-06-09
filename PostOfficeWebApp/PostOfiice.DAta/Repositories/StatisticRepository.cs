@@ -11,6 +11,8 @@ namespace PostOfiice.DAta.Repositories
     {
         IEnumerable<UnitStatisticViewModel> GetUnitStatistic(string fromDate, string toDate);
         IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate);
+        IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId);
+        IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId, int unitId);
     }
 
     public class StatisticRepository : RepositoryBase<UnitStatisticViewModel>, IStatisticRepository
@@ -35,6 +37,25 @@ namespace PostOfiice.DAta.Repositories
                 new SqlParameter("@toDate",toDate)
             };
             return DbContext.Database.SqlQuery<ReportFunction1>("reportFunction1 @fromDate,@toDate", parameters);
+        }
+        public IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId)
+        {
+            var parameters = new SqlParameter[] {
+                new SqlParameter("@fromDate", fromDate),
+                new SqlParameter("@toDate",toDate),
+                new SqlParameter("@districtId", districtId)
+            };
+            return DbContext.Database.SqlQuery<ReportFunction1>("reportFunction1_1 @fromDate,@toDate,@districtId", parameters);
+        }
+        public IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId, int unitId)
+        {
+            var parameters = new SqlParameter[] {
+                new SqlParameter("@fromDate", fromDate),
+                new SqlParameter("@toDate",toDate),
+                new SqlParameter("@districtId", districtId),
+                new SqlParameter("@unitId", unitId)
+            };
+            return DbContext.Database.SqlQuery<ReportFunction1>("reportFunction1_2 @fromDate,@toDate,@districtId,@unitId", parameters);
         }
     }
 }

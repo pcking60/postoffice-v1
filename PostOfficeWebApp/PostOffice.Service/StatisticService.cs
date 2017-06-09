@@ -10,6 +10,8 @@ namespace PostOffice.Service
         IEnumerable<RevenueStatisticViewModel> GetRevenueStatistic(string fromDate, string toDate);
         IEnumerable<UnitStatisticViewModel> GetUnitStatistic(string fromDate, string toDate);
         IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate);
+        IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId);
+        IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId, int unitId);
     }
 
     public class StatisticService : IStatisticService
@@ -35,6 +37,14 @@ namespace PostOffice.Service
         public IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate)
         {
             return _statisticRepository.ReportFunction1(fromDate, toDate);
+        }
+        public IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId)
+        {
+            return _statisticRepository.ReportFunction1(fromDate, toDate, districtId);
+        }
+        public IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId, int unitId)
+        {
+            return _statisticRepository.ReportFunction1(fromDate, toDate, districtId, unitId);
         }
     }
 }
