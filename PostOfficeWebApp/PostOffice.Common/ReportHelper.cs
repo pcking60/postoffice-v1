@@ -19,7 +19,11 @@ namespace PostOffice.Common
                 {
                     //Create the worksheet
                     ExcelWorksheet ws = pck.Workbook.Worksheets.Add(nameof(T));
-                    ws.Cells["A1"].LoadFromCollection<T>(datasource, true, TableStyles.Light1);
+                    ws.Cells["A1:H1"].Merge = true;
+                    ws.Cells["A2:H2"].Merge = true;
+                    ws.Cells["A1"].Value = "TỔNG CÔNG TY BƯU ĐIỆN VIỆT NAM";
+                    ws.Cells["A2"].Value = "BƯU ĐIỆN TỈNH SÓC TRĂNG";
+                    ws.Cells["A4"].LoadFromCollection<T>(datasource, true, TableStyles.Light1);
                     ws.Column(8).Style.Numberformat.Format = "dd/MM/yyyy";
                     ws.Cells.AutoFitColumns();
                     pck.Save();
