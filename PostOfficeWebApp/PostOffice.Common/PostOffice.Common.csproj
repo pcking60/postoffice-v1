@@ -48,8 +48,12 @@
     <Compile Include="ConfigHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportHelper.cs" />
+    <Compile Include="ViewModels\ReportFunction1.cs" />
+    <Compile Include="ViewModels\ReportFunction1ViewModel.cs" />
     <Compile Include="ViewModels\ReportServiceViewModel.cs" />
+    <Compile Include="ViewModels\ReportTemplate.cs" />
     <Compile Include="ViewModels\RevenueStatisticViewModel.cs" />
+    <Compile Include="ViewModels\statisticReportViewModel.cs" />
     <Compile Include="ViewModels\UnitStatisticViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

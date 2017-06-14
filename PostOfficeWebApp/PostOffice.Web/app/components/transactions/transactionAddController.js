@@ -1,14 +1,15 @@
 ﻿(function (app) {
     app.controller('transactionAddController', transactionAddController);
-    transactionAddController.$inject = ['$scope', 'apiService', 'notificationService', '$state', 'commonService', '$stateParams'];
-    function transactionAddController($scope, apiService, notificationService, $state, commonService, $stateParams) {
+    transactionAddController.$inject = ['$scope', 'apiService', 'notificationService', '$state', 'commonService', '$stateParams', '$ngBootbox', '$timeout'];
+    function transactionAddController($scope, apiService, notificationService, $state, commonService, $stateParams, $ngBootbox, $timeout) {
         $scope.transaction = {
             Status: true,
             Service: null,
             Quantity: null,
             TransactionDate: null,
             Properties: [],
-            TransactionDetails: []
+            TransactionDetails: [],
+            Services: []
         }
 
         $scope.AddTransaction = AddTransaction;
@@ -23,7 +24,8 @@
             }
             else
             {
-                $scope.transaction.Properties.forEach(function (item, index) {
+                $scope.transaction.TransactionDetails = [];
+                $scope.transaction.Properties.forEach(function (item, index) {                   
                     $scope.transaction.TransactionDetails.push({
                         Money: item.Money,
                         PropertyServiceId: item.ID,
@@ -36,14 +38,25 @@
                 apiService.post('/api/transactions/create', $scope.transaction,
                     function (result) {
                         notificationService.displaySuccess('Giao dịch thành công');
-                        $state.go('transactions', {}, { reload: true });
-                        //$state.reload();
+                        $timeout(function () {
+                            $ngBootbox.confirm('Bạn có muốn tiếp tục nhập?').then(function () {
+                            }
+                            , function () {
+                                $state.go('transactions', {}, { reload: true });
+                                //$state.reload();                        
+                            });
+                        }, 500);
 
                     }, function (error) {
                         notificationService.displayError('Giao dịch thất bại');
                     });
             }            
         }
+        $scope.onSelectCallback = function (item, model) {
+            $stateParams.id = item.ID;
+            loadServiceDetail();
+            getPropertyServices();
+        };
 
         function getPropertyServices() {
             apiService.get('/api/property_services/getbyserviceid/' + $stateParams.id, null, function (result) {
@@ -56,7 +69,16 @@
 
         function loadServiceDetail() {
             apiService.get('/api/service/getbyid/' + $stateParams.id, null, function (result) {
-                $scope.transaction.Service = result.data
+                $scope.transaction.Service = result.data;
+                $scope.transaction.Service.Name = result.data.ID;
+            }, function (error) {
+                notificationService.displayError(error.data)
+            });
+        }
+
+        function loadServices() {
+            apiService.get('/api/service/getallparents', null, function (result) {
+                $scope.transaction.Services = result.data
             }, function (error) {
                 notificationService.displayError(error.data)
             });
@@ -66,5 +88,7 @@
         
         loadServiceDetail();
         getPropertyServices();
+        loadServices();
+       
     }
 })(angular.module('postoffice.transactions'));

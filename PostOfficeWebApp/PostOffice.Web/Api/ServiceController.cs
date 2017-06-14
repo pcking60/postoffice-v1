@@ -124,7 +124,7 @@ namespace PostOffice.Web.Api
 
         [Route("getall")]
         [HttpGet]
-        public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword, int page, int pageSize = 20)
+        public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword, int page, int pageSize = 40)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -178,8 +178,17 @@ namespace PostOffice.Web.Api
                 Directory.CreateDirectory(filePath);
             }
             string fullPath = Path.Combine(filePath, fileName);
+            statisticReportViewModel vm = new statisticReportViewModel();
             try
             {
+                #region customFill Test
+                vm.fromDate = new DateTime(2017, 5, 1);
+                vm.toDate = new DateTime(2017, 5, 31);
+                vm.ServiceName = "Tất cả";
+                vm.UserName = User.Identity.Name;
+                vm.PoName = "Mỹ Xuyên";
+                #endregion
+
                 var data = _serviceService.Getall(filter);
                 var responseData = Mapper.Map<IEnumerable<Model.Models.Service>, IEnumerable<ServiceViewModel>>(data);
                 foreach (var item in responseData)
@@ -188,7 +197,10 @@ namespace PostOffice.Web.Api
                     item.GroupName = sv.Name;
                 }
                 var result = Mapper.Map<IEnumerable<ServiceViewModel>, IEnumerable<ReportServiceViewModel>>(responseData);
-                await ReportHelper.GenerateXls(result.ToList(), fullPath);
+
+                //test medthod customFill
+                await ReportHelper.StatisticXls(result.ToList(), fullPath, vm);
+
                 return request.CreateErrorResponse(HttpStatusCode.OK, Path.Combine(folderReport, fileName));
             }
             catch (Exception ex)

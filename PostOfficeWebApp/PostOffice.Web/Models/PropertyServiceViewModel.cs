@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace PostOffice.Web.Models
 {
@@ -7,7 +8,7 @@ namespace PostOffice.Web.Models
         public int ID { get; set; }
 
         public string Name { get; set; }
-
+       
         public decimal? Percent { get; set; }
 
         public int ServiceID { get; set; }

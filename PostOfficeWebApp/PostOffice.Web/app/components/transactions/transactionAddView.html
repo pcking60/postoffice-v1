@@ -22,15 +22,30 @@
                 <div class="col-md-8 col-md-offset-1">
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-3 control-label">Dịch vụ</label>
-                        <div class="col-sm-9">                                                     
+                        <!--<div class="col-sm-9">                                                     
                             <input type="text" class="form-control" name="service" readonly ng-model="transaction.Service.Name" />                            
+                        </div>-->
+                        <div class="col-sm-9">
+                            <ui-select 
+                                    ng-model="transaction.Service.Name" 
+                                    ng-disabled="ctrl.disabled" 
+                                    on-select="onSelectCallback($item, $model)" 
+                                    title="Chọn dịch vụ">
+                                        <ui-select-match placeholder="chọn or tìm kiếm dịch vụ trong nhóm..">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="item.ID as item in transaction.Services | filter: $select.search">
+                                            <small>
+                                                {{item.Name}}
+                                            </small>
+                                        </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>                                       
                     <div class="form-group" ng-repeat="prop in transaction.Properties">
                         <ng-form name="userFieldForm">
                             <label for="inputPassword3" class="col-sm-3 control-label">{{prop.Name}}</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" name="propertyValue" ng-model="prop.Money" required />
+                                <input type="number" class="form-control col-sm-7" name="propertyValue" ng-model="prop.Money" required />
+                                <span class="text-blue" ng-hide="userFieldForm.propertyValue.$invalid">Bạn vừa nhập vào: {{prop.Money | number}}</span>
                                 <span ng-show="userFieldForm.propertyValue.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                             </div>
                         </ng-form>                        
@@ -40,6 +55,7 @@
                         <label for="inputEmail3" class="col-sm-3 control-label">Số lượng</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" ng-model="transaction.Quantity" required name="quantity">
+                            <span class="text-blue" ng-hide="frmAddTransaction.quantity.$invalid">Bạn vừa nhập vào: {{transaction.Quantity | number}}</span>
                             <span ng-show="frmAddTransaction.quantity.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                         </div>
                     </div>
@@ -76,7 +92,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-                <button ui-sref="main_service_groups" class="btn btn-default">Hủy</button>
+                <button ui-sref="transactions" class="btn btn-default">Hủy</button>
                 <button type="submit" ng-disabled="frmAddTransaction.$invalid" class="btn btn-info pull-right">Lưu</button>
             </div>
             <!-- /.box-footer -->

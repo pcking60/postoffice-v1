@@ -121,6 +121,7 @@ namespace PostOffice.Web.Infrastructure.Extensions
             service.Status = serviceVM.Status;
             service.UpdatedBy = serviceVM.UpdatedBy;
             service.UpdatedDate = serviceVM.UpdatedDate;
+            service.Unit = serviceVM.Unit;
         }
 
         public static void UpdatePropertyService(this PropertyService prop, PropertyServiceViewModel vm)

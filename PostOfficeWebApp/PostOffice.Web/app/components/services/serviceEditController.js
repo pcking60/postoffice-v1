@@ -2,9 +2,7 @@
     app.controller('serviceEditController', serviceEditController);
     serviceEditController.$inject = ['$scope', 'apiService', 'notificationService', '$state', '$stateParams', 'commonService'];
     function serviceEditController($scope, apiService, notificationService, $state, $stateParams, commonService) {
-        $scope.service = {
-            CreatedDate: new Date(),
-            Status: true,
+        $scope.service = {     
         }
         $scope.EditService = EditService;
 

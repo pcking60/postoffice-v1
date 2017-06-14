@@ -17,7 +17,14 @@
                 parent: 'base',
                 templateUrl: "/app/components/statistic/timeStatisticView.html",
                 controller: "timeStatisticController"
-            });
+            })
+            .state('reports', {
+                url: "/reports",
+                parent: "base",
+                templateUrl: "app/components/statistic/reportsView.html",
+                controller: "reportsController"
+            })
+        ;
             
     }
 })();
