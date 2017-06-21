@@ -24,6 +24,8 @@ namespace PostOffice.Model.Models
 
         [Required]
         public DateTimeOffset TransactionDate { get; set; }
+        
+        public bool IsCash { get; set; }
 
         public virtual ICollection<TransactionDetail> TransactionDetails { get; set; }
     }

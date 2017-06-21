@@ -123,6 +123,14 @@
     <Compile Include="Migrations\201706090904584_reportFunction1.Designer.cs">
       <DependentUpon>201706090904584_reportFunction1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706200228577_UpdateTransactionTable.cs" />
+    <Compile Include="Migrations\201706200228577_UpdateTransactionTable.Designer.cs">
+      <DependentUpon>201706200228577_UpdateTransactionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706200800496_RP1Statistic.cs" />
+    <Compile Include="Migrations\201706200800496_RP1Statistic.Designer.cs">
+      <DependentUpon>201706200800496_RP1Statistic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PostOfficeDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -180,6 +188,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706090904584_reportFunction1.resx">
       <DependentUpon>201706090904584_reportFunction1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706200228577_UpdateTransactionTable.resx">
+      <DependentUpon>201706200228577_UpdateTransactionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706200800496_RP1Statistic.resx">
+      <DependentUpon>201706200800496_RP1Statistic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

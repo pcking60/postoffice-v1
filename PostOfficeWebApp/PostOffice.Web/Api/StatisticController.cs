@@ -57,8 +57,8 @@ namespace PostOffice.Web.Api
             });
         }
         [HttpGet]
-        [Route("reportFunction1")]
-        public async Task<HttpResponseMessage> ReportFunction1(HttpRequestMessage request, string fromDate, string toDate, int districtId, int functionId, int unitId)
+        [Route("rp1")]
+        public async Task<HttpResponseMessage> RP1(HttpRequestMessage request, string fromDate, string toDate, int districtId, int functionId, int unitId)
         {
             string fileName = string.Concat("Money_" + DateTime.Now.ToString("yyyyMMddhhmmsss") + ".xlsx");
             var folderReport = ConfigHelper.GetByKey("ReportFolder");
@@ -69,6 +69,7 @@ namespace PostOffice.Web.Api
             }
             string fullPath = Path.Combine(filePath, fileName);
             ReportTemplate vm = new ReportTemplate();
+            IEnumerable<RP1Advance> rp1Advance;
             try
             {
                 #region customFill Test
@@ -76,6 +77,7 @@ namespace PostOffice.Web.Api
                 vm.ToDate = DateTime.Parse(toDate);
                 District district = new District();
                 PO po = new PO();
+                rp1Advance = _statisticService.RP1Advance();
                 if (districtId != 0)
                 {
                     district = _districtService.GetById(districtId);
@@ -107,30 +109,38 @@ namespace PostOffice.Web.Api
 
                 #endregion
 
-                #region Bussiness
-                IEnumerable<ReportFunction1> rp = Enumerable.Empty<ReportFunction1>();
+                #region Bussiness medthod 1
+                //IEnumerable<ReportFunction1> rp = Enumerable.Empty<ReportFunction1>();
 
-                if ( districtId == 0 && unitId == 0)
-                {
-                    rp = _statisticService.ReportFunction1(fromDate, toDate);
-                }
-                else
-                {
-                    if(districtId!=0&& unitId == 0)
-                    {
-                        rp = _statisticService.ReportFunction1(fromDate, toDate, districtId);
-                    }
-                    else
-                    {
-                        rp = _statisticService.ReportFunction1(fromDate, toDate, districtId, unitId);
-                    }
-                }
+                //if ( districtId == 0 && unitId == 0)
+                //{
+                //    rp = _statisticService.ReportFunction1(fromDate, toDate);
+                //}
+                //else
+                //{
+                //    if(districtId!=0&& unitId == 0)
+                //    {
+                //        rp = _statisticService.ReportFunction1(fromDate, toDate, districtId);
+                //    }
+                //    else
+                //    {
+                //        rp = _statisticService.ReportFunction1(fromDate, toDate, districtId, unitId);
+                //    }
+                //}
                 #endregion
-                
-                List<ReportFunction1> listData = rp.ToList();                
+                #region Bussiness method 2
+                IEnumerable<ReportFunction1> rp = Enumerable.Empty<ReportFunction1>();
+                rp = _statisticService.RP1(fromDate, toDate, districtId, unitId);
+                #endregion
+                List<ReportFunction1> listData = new List<ReportFunction1>();
+                if (rp!=null)
+                {
+                    listData = rp.ToList();
+                }
+                                 
 
                 //test medthod customFill
-                await ReportHelper.RP1(listData, fullPath, vm);
+                await ReportHelper.RP1(listData, fullPath, vm, rp1Advance);
 
                 return request.CreateErrorResponse(HttpStatusCode.OK, Path.Combine(folderReport, fileName));
             }

@@ -15,7 +15,7 @@
         $scope.report.date = { startDate: null, endDate: null };
         $scope.functions =
             [
-                { Id: 1, Name: 'Báo cáo Bảng kê thu tiền tại đơn vị' },
+                { Id: 1, Name: 'Bảng kê thu tiền tại bưu cục' },
                 { Id: 2, Name: 'Báo cáo tiền lương tại đơn vị - test' },
                 { Id: 3, Name: 'Báo cáo doanh thu tại đơn vị - test' },
 
@@ -70,7 +70,7 @@
                     unitId: $scope.report.unitId || 0                    
                 }
             }
-            apiService.get('api/statistic/reportFunction1', config,
+            apiService.get('api/statistic/rp1', config,
                 function (response) {
                     $scope.loading = true;
                     if (response.status = 200) {

@@ -12,6 +12,8 @@ namespace PostOffice.Service
         IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate);
         IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId);
         IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId, int unitId);
+        IEnumerable<ReportFunction1> RP1(string fromDate, string toDate, int districtId, int unitId);
+        IEnumerable<RP1Advance> RP1Advance();
     }
 
     public class StatisticService : IStatisticService
@@ -45,6 +47,16 @@ namespace PostOffice.Service
         public IEnumerable<ReportFunction1> ReportFunction1(string fromDate, string toDate, int districtId, int unitId)
         {
             return _statisticRepository.ReportFunction1(fromDate, toDate, districtId, unitId);
+        }
+
+        public IEnumerable<ReportFunction1> RP1(string fromDate, string toDate, int districtId, int unitId)
+        {
+            return _statisticRepository.RP1(fromDate, toDate, districtId, unitId);
+        }
+
+        public IEnumerable<RP1Advance> RP1Advance() 
+        {
+            return _statisticRepository.RP1Advance();
         }
     }
 }
