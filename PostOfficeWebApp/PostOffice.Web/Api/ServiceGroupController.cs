@@ -68,7 +68,7 @@ namespace PostOffice.Web.Api
 
                 var model = _serviceGroupService.GetAll(keyword);
                 totalRow = model.Count();
-                var query = model.OrderByDescending(x => x.CreatedDate).Skip(page * pageSize).Take(pageSize);
+                var query = model.OrderBy(x => x.Name).Skip(page * pageSize).Take(pageSize);
 
                 var responseData = Mapper.Map<IEnumerable<ServiceGroup>, IEnumerable<ServiceGroupViewModel>>(query);
 

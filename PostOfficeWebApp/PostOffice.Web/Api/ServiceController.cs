@@ -131,7 +131,7 @@ namespace PostOffice.Web.Api
                 int totalRow = 0;
                 var model = _serviceService.Getall(keyword);
                 totalRow = model.Count();
-                var query = model.OrderByDescending(x => x.CreatedDate).Skip(page * pageSize).Take(pageSize);
+                var query = model.OrderBy(x => x.Name).Skip(page * pageSize).Take(pageSize);
                 var responseData = Mapper.Map<IEnumerable<PostOffice.Model.Models.Service>, IEnumerable<ServiceViewModel>>(query);
 
                 foreach (var item in responseData)
@@ -159,7 +159,8 @@ namespace PostOffice.Web.Api
             return CreateHttpResponse(request, () =>
             {//ham nay la sao ban
                 var model = _serviceService.Getall();
-                var responseData = Mapper.Map<IEnumerable<Model.Models.Service>, IEnumerable<ServiceViewModel>>(model);
+                var query = model.OrderBy(x => x.Name);
+                var responseData = Mapper.Map<IEnumerable<Model.Models.Service>, IEnumerable<ServiceViewModel>>(query);
 
                 var response = request.CreateResponse(HttpStatusCode.OK, responseData);
                 return response;
