@@ -4,14 +4,16 @@
     function transactionAddController($scope, apiService, notificationService, $state, commonService, $stateParams, $ngBootbox, $timeout) {
         $scope.transaction = {
             Status: true,
+            Users: null,
             Service: null,
             Quantity: null,
             TransactionDate: null,
+            UserId: null,
             Properties: [],
             TransactionDetails: [],
             Services: []
         }
-
+        $scope.getListUser = getListUser;
         $scope.AddTransaction = AddTransaction;
         function AddTransaction() {
             $scope.transaction.ServiceId = $scope.transaction.Service.ID;           
@@ -32,8 +34,7 @@
                         Status: true,
                         TransactionId: -1
                     });
-                });
-               
+                });                
                 // trong cái này mình đã chứa đủ dữ liệu rồi 
                 apiService.post('/api/transactions/create', $scope.transaction,
                     function (result) {
@@ -57,6 +58,10 @@
             loadServiceDetail();
             getPropertyServices();
         };
+
+        onSelectStaffCallback = function ($item, $model) {
+            $stateParams.id = item.Id;
+        }
 
         function getPropertyServices() {
             apiService.get('/api/property_services/getbyserviceid/' + $stateParams.id, null, function (result) {
@@ -86,8 +91,19 @@
         var dateTo = new Date();
 
         
+        function getListUser() {
+            apiService.get('/api/applicationUser/getuserbypoid',
+                null,
+                function (response) {
+                    $scope.transaction.Users = response.data;
+                }, function (response) {
+                    notificationService.displayError('Không tải được danh sách nhân viên.');
+                });
+        }
+
         loadServiceDetail();
         getPropertyServices();
+        getListUser();
         loadServices();
        
     }

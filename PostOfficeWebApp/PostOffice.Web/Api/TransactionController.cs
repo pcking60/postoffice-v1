@@ -56,6 +56,7 @@ namespace PostOffice.Web.Api
                 var responseData = Mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionViewModel>>(model);
                 foreach (var item in responseData)
                 {
+                    item.VAT = _serviceService.GetById(item.ServiceId).VAT;
                     item.ServiceName = _serviceService.GetById(item.ServiceId).Name;
                     item.TotalMoney = _transactionDetailService.GetTotalMoneyByTransactionId(item.ID);
                     item.EarnMoney = _transactionDetailService.GetTotalEarnMoneyByTransactionId(item.ID);
@@ -82,7 +83,7 @@ namespace PostOffice.Web.Api
                 var userName = User.Identity.Name;
                 var model = _transactionService.GetAllByUserName(userName);
                 totalRow = model.Count();
-                var query = model.OrderBy(x => x.ID).Skip(page * pageSize).Take(pageSize);
+                var query = model.OrderByDescending(x => x.Status).ThenBy(x=>x.ID).Skip(page * pageSize).Take(pageSize);
 
                 var responseData = Mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionViewModel>>(query);
 
@@ -218,7 +219,10 @@ namespace PostOffice.Web.Api
                     ICollection<TransactionDetail> transactionDetails = transactionVM.TransactionDetails;
                     var responseData = Mapper.Map<IEnumerable<TransactionDetail>, IEnumerable<TransactionDetailViewModel>>(transactionDetails);
                     //transactionVM.TransactionDetails = new List<TransactionDetail>();
-                    transactionVM.UserId = _userService.getByUserName(User.Identity.Name).Id;
+                    if(transactionVM.UserId==null)
+                    {
+                        transactionVM.UserId = _userService.getByUserName(User.Identity.Name).Id;
+                    }                    
                     transactionVM.CreatedBy = User.Identity.Name;
                     transaction.UpdateTransaction(transactionVM);
                     _transactionService.Add(transaction);

@@ -71,7 +71,7 @@
                         </span>
                     </div>
                 </div>-->
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label class="col-sm-3 control-label">Ngày sinh</label>
                     <div class="col-sm-9">
                         <datetimepicker ng-model="transaction.TransactionDate"
@@ -83,14 +83,20 @@
                                         show-spinners="true"
                                         min-date="minDate"
                                         max-date="maxDate">
-                            <!-- Use date-ng-click="open($event, opened)" to override date ng-click -->
+                             Use date-ng-click="open($event, opened)" to override date ng-click 
                         </datetimepicker>
                     </div>                    
-                </div>
+                </div>-->
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Ngày sinh</label>
-                    <div class="col-sm-9">
-                        <input date-range-picker class="form-control date-picker" type="text" ng-model="test.BirthDay" />
+                    <div class="col-sm-9" >
+                        <md-content layout-padding ng-cloak>
+                            <div layout-gt-xs="row">
+                                <div flex-gt-xs>
+                                    <md-datepicker ng-model="account.BirthDay" md-placeholder="Enter date" ></md-datepicker>
+                                </div>
+                            </div>
+                        </md-content>                        
                     </div>                        
                 </div>
                     <div class="form-group">

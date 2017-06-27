@@ -97,7 +97,7 @@
                                 <td style="vertical-align:middle" class="text-center">{{item.Quantity | number}}</td>
                                 <td style="vertical-align:middle" class="text-right">{{item.TotalMoney | currency}}</td>
                                 <td style="vertical-align:middle" class="text-right">{{item.EarnMoney | currency}}</td>
-                                <td style="vertical-align:middle" class="text-right">{{item.TotalMoney - item.EarnMoney | currency}}</td>
+                                <td style="vertical-align:middle" class="text-right">{{item.TotalMoney - item.TotalMoney / item.VAT | currency}}</td>
                                 <td style="vertical-align:middle" class="text-center"><span ng-class="{'badge bg-red': item.Status==false, 'badge bg-green':item.Status==true}">{{item.Status | statusFilter}}</span></td>
                                 
                             </tr>

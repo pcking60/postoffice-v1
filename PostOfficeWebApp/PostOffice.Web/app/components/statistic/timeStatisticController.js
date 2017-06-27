@@ -68,7 +68,7 @@
                             $scope.test.totalQuantity += item.Quantity;
                             $scope.test.totalMoney += item.TotalMoney;
                             $scope.test.totalEarn += item.EarnMoney;
-                            $scope.test.totalVat += (item.TotalMoney - item.EarnMoney);
+                            $scope.test.totalVat += (item.TotalMoney - item.TotalMoney/item.VAT);
                         }                        
                     })
                     $scope.result = true;

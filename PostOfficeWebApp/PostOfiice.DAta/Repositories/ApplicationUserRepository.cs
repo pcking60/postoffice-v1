@@ -54,7 +54,8 @@ namespace PostOfiice.DAta.Repositories
 
         public ApplicationUser getByUserName(string userName)
         {
-            var user = this.DbContext.Users.Where(x => x.UserName.Contains(userName)).FirstOrDefault();
+            ApplicationUser user = new ApplicationUser();
+            user = this.DbContext.Users.Where(x => x.UserName.Equals(userName)).FirstOrDefault();
             return user;
         }
 

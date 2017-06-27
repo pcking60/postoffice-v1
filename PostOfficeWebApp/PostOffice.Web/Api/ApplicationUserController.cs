@@ -65,10 +65,19 @@ namespace PostOffice.Web.Api
                 {
                     model = _userManager.Users;
                 }
-                if(isManager)
+                else
                 {
-                    model = _userService.GetAllByPOID(_userService.getPoId(User.Identity.Name));
-                }
+                    if (!isAdministrator && isManager)
+                    {
+                        model = _userService.GetAllByPOID(_userService.getPoId(User.Identity.Name));
+                    }
+                    else
+                    {
+                        var res = Request.CreateResponse(HttpStatusCode.Moved);
+                        res.Headers.Location = new Uri("localhost:60709/admin");
+                        return res;
+                    }
+                }                
                 IEnumerable<ApplicationUserViewModel> modelVm = Mapper.Map<IEnumerable<ApplicationUser>, IEnumerable<ApplicationUserViewModel>>(model);
 
                 foreach (var item in modelVm) {

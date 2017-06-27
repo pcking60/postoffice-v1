@@ -7,10 +7,11 @@
 
     function applicationUserAddController($scope, apiService, notificationService, $location, commonService) {
         $scope.account = {
-            Groups: []
+            Groups: [],
+            BirthDay: new Date()
         }
-        $scope.test = {};
-        $scope.test.BirthDay = { startDate: null, endDate: null };        
+        //$scope.test = {};
+        //$scope.test.BirthDay = { startDate: null, endDate: null };        
         
         $scope.addAccount = addAccount;
 

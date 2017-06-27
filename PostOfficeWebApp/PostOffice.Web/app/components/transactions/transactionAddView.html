@@ -20,26 +20,27 @@
         <form class="form-horizontal" novalidate name="frmAddTransaction" role="form" ng-submit="AddTransaction()">
             <div class="box-body">
                 <div class="col-md-8 col-md-offset-1">
+                    <!-- Service -->
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-3 control-label">Dịch vụ</label>
-                        <!--<div class="col-sm-9">                                                     
-                            <input type="text" class="form-control" name="service" readonly ng-model="transaction.Service.Name" />                            
+                        <!--<div class="col-sm-9">
+                            <input type="text" class="form-control" name="service" readonly ng-model="transaction.Service.Name" />
                         </div>-->
                         <div class="col-sm-9">
-                            <ui-select 
-                                    ng-model="transaction.Service.Name" 
-                                    ng-disabled="ctrl.disabled" 
-                                    on-select="onSelectCallback($item, $model)" 
-                                    title="Chọn dịch vụ">
-                                        <ui-select-match placeholder="chọn or tìm kiếm dịch vụ trong nhóm..">{{$select.selected.Name}}</ui-select-match>
-                                        <ui-select-choices repeat="item.ID as item in transaction.Services | filter: $select.search">
-                                            <small>
-                                                {{item.Name}}
-                                            </small>
-                                        </ui-select-choices>
+                            <ui-select ng-model="transaction.Service.Name"
+                                       ng-disabled="ctrl.disabled"
+                                       on-select="onSelectCallback($item, $model)"
+                                       title="Chọn dịch vụ">
+                                <ui-select-match placeholder="chọn or tìm kiếm dịch vụ trong nhóm..">{{$select.selected.Name}}</ui-select-match>
+                                <ui-select-choices repeat="item.ID as item in transaction.Services | filter: $select.search">
+                                    <small>
+                                        {{item.Name}}
+                                    </small>
+                                </ui-select-choices>
                             </ui-select>
                         </div>
-                    </div>                                       
+                    </div>
+                    <!-- Properties -->
                     <div class="form-group" ng-repeat="prop in transaction.Properties">
                         <ng-form name="userFieldForm">
                             <label for="inputPassword3" class="col-sm-3 control-label">{{prop.Name}}</label>
@@ -48,8 +49,8 @@
                                 <span class="text-blue" ng-hide="userFieldForm.propertyValue.$invalid">Bạn vừa nhập vào: {{prop.Money | number}}</span>
                                 <span ng-show="userFieldForm.propertyValue.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                             </div>
-                        </ng-form>                        
-                    </div>      
+                        </ng-form>
+                    </div>
                     <!-- Quantity-->
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-3 control-label">Số lượng</label>
@@ -59,24 +60,41 @@
                             <span ng-show="frmAddTransaction.quantity.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                         </div>
                     </div>
-
+                    <!-- TransactionDate -->
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Ngày giao dịch</label>
                         <div class='input-group date col-sm-9' id='datetimepicker1'>
-                            <input type='datetime' name="transactionDate" class="form-control" ng-model="transaction.TransactionDate" />    
-                            <!--<span ng-show="frmAddTransaction.transactionDate.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>--> 
+                            <input type='datetime' name="transactionDate" class="form-control" ng-model="transaction.TransactionDate" />
+                            <!--<span ng-show="frmAddTransaction.transactionDate.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>-->
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
-                        </div>                        
+                        </div>
                     </div>
-                     
+
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">Nhân viên thực hiện</label>                      
+                        <div class="col-sm-9">
+                            <ui-select ng-model="transaction.UserId"
+                                       ng-disabled="ctrl.disabled"
+                                       on-select="onSelectStaffCallback($item, $model)"
+                                       title="Chọn dịch vụ">
+                                <ui-select-match placeholder="chọn or gõ để tìm kiếm nhân viên ..">{{$select.selected.FullName}}</ui-select-match>
+                                <ui-select-choices repeat="item.Id as item in transaction.Users | filter: $select.search">
+                                    <small>
+                                        {{item.FullName}}
+                                    </small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
                     <!--<div class="form-group">
                         <label class="col-sm-3 control-label">Ngày giao dịch</label>
                         <div class="col-sm-9" ng-cloak>
                             <md-content>
                                 <md-datepicker format="HH:mm:ss" ng-model="transaction.TransactionDate" md-placeholder="Enter date"></md-datepicker>
-                            </md-content>                           
+                            </md-content>
                         </div>
                     </div>-->
                     <div class="form-group">
@@ -101,11 +119,11 @@
 </section>
 
 <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datetimepicker({
-                    maxDate: moment(),
-                    minDate: moment().subtract(2, 'day'),
-                    
-                });
-            });
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            maxDate: moment(),
+            minDate: moment().subtract(2, 'day'),
+
+        });
+    });
 </script>
