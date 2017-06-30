@@ -71,6 +71,8 @@
     <Compile Include="ServiceGroupService.cs" />
     <Compile Include="ServiceService.cs" />
     <Compile Include="StatisticService.cs" />
+    <Compile Include="TKBDHistoryService.cs" />
+    <Compile Include="TKBDService.cs" />
     <Compile Include="TransactionDetailService.cs" />
     <Compile Include="TransactionService.cs" />
   </ItemGroup>

@@ -29,6 +29,9 @@ namespace PostOfiice.DAta
         public DbSet<ApplicationRole> ApplicationRoles { set; get; }
         public DbSet<ApplicationRoleGroup> ApplicationRoleGroups { set; get; }
         public DbSet<ApplicationUserGroup> ApplicationUserGroups { set; get; }
+
+        public DbSet<TKBDHistory> TKBDHistories { get; set; }
+        public DbSet<TKBDAmount> TKBDAmounts { get; set; }
         
         public DbSet<Percent> Percents { set; get; }
         public DbSet<PropertyService> PropertyServices { set; get; }

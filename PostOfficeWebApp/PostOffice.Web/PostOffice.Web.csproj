@@ -223,6 +223,9 @@
     <Content Include="app\components\statistic\timeStatisticController.js" />
     <Content Include="app\components\statistic\timeStatisticView.html" />
     <Content Include="app\components\statistic\unitStatisticController.js" />
+    <Content Include="app\components\tkbd\tkbd.module.js" />
+    <Content Include="app\components\tkbd\tkbdListController.js" />
+    <Content Include="app\components\tkbd\tkbdListView.html" />
     <Content Include="app\components\transactions\transactionAddController.js" />
     <Content Include="app\components\transactions\transactionAddView.html" />
     <Content Include="app\components\transactions\transactionEditController.js" />
@@ -4973,6 +4976,7 @@
     <Compile Include="Api\ServiceController.cs" />
     <Compile Include="Api\ServiceGroupController.cs" />
     <Compile Include="Api\StatisticController.cs" />
+    <Compile Include="Api\TKBDController.cs" />
     <Compile Include="Api\TransactionController.cs" />
     <Compile Include="Api\TransactionDetailController.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -4999,6 +5003,7 @@
     <Compile Include="Models\PropertyServiceViewModel.cs" />
     <Compile Include="Models\ServiceGroupViewModel.cs" />
     <Compile Include="Models\ServiceViewModel.cs" />
+    <Compile Include="Models\TKBDAmountViewModel.cs" />
     <Compile Include="Models\TransactionDetailViewModel.cs" />
     <Compile Include="Models\TransactionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

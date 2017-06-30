@@ -131,6 +131,10 @@
     <Compile Include="Migrations\201706200800496_RP1Statistic.Designer.cs">
       <DependentUpon>201706200800496_RP1Statistic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706290942403_TKBD.cs" />
+    <Compile Include="Migrations\201706290942403_TKBD.Designer.cs">
+      <DependentUpon>201706290942403_TKBD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PostOfficeDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -147,6 +151,8 @@
     <Compile Include="Repositories\ServiceGroupRepository.cs" />
     <Compile Include="Repositories\ServiceRepository.cs" />
     <Compile Include="Repositories\StatisticRepository.cs" />
+    <Compile Include="Repositories\TKBDHistoryRepository.cs" />
+    <Compile Include="Repositories\TKBDRepository.cs" />
     <Compile Include="Repositories\TransactionDetailRepository.cs" />
     <Compile Include="Repositories\TransactionRepository.cs" />
   </ItemGroup>
@@ -194,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706200800496_RP1Statistic.resx">
       <DependentUpon>201706200800496_RP1Statistic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706290942403_TKBD.resx">
+      <DependentUpon>201706290942403_TKBD.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

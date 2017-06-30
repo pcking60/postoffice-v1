@@ -97,6 +97,8 @@
     <Compile Include="Models\PropertyService.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\ServiceGroup.cs" />
+    <Compile Include="Models\TKBDAmount.cs" />
+    <Compile Include="Models\TKBDHistory.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Error.cs" />
