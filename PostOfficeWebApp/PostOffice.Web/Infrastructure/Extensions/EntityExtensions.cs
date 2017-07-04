@@ -62,6 +62,25 @@ namespace PostOffice.Web.Infrastructure.Extensions
             tkbd.UpdatedDate = vm.UpdatedDate;
         }
 
+        public static void UpdateTKBDHistory(this TKBDHistory tkbd, TKBDHistoryViewModel vm)
+        {
+            tkbd.Id = vm.Id;
+            tkbd.Account = vm.Account;
+            tkbd.CustomerId = vm.CustomerId;
+            tkbd.CreatedBy = vm.CreatedBy;
+            tkbd.CreatedDate = vm.CreatedDate;
+            tkbd.MetaDescription = vm.MetaDescription;
+            tkbd.MetaKeyWord = vm.MetaKeyWord;
+            tkbd.Money = vm.Money;
+            tkbd.Name = vm.Name;
+            tkbd.Rate = vm.Rate;
+            tkbd.Status = vm.Status;
+            tkbd.TransactionDate = vm.TransactionDate;
+            tkbd.UpdatedBy = vm.UpdatedBy;
+            tkbd.UpdatedDate = vm.UpdatedDate;
+            tkbd.UserId = vm.UserId;
+        }
+
         public static void UpdatePO(this PO po, POViewModel vm)
         {
             po.Code = vm.Code;

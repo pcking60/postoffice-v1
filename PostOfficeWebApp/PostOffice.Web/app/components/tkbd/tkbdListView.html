@@ -15,6 +15,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <button class="btn btn-success" ng-click="update()">Cập nhật</button>
+                    <button class="btn btn-success" ui-sref="tkbd_import">Import File</button>                   
                 </div>
             </div>
             <br />
@@ -39,9 +40,8 @@
                                 <th><input type="text" class="form-control input-sm" ng-model="SmartSearch.Account" placeholder="auto search"></th>
                                 <th><input type="text" class="form-control input-sm" ng-model="SmartSearch.Amount" placeholder="auto search"></th>
                                 <th></th>
-                                <th></th>                              
                                 <th></th>
-
+                                <th></th>
                             </tr>
                         </thead>
                         <tr ng-repeat="item in tkbds|filter: SmartSearch">
@@ -51,7 +51,7 @@
                             <td class="text-center">{{item.Account}}</td>
                             <td class="text-center">{{item.Amount}}</td>
                             <td class="text-center">{{item.DTTL}}</td>
-                            <td sclass="text-center">{{item.TransactionDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>                       
+                            <td sclass="text-center">{{item.TransactionDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-primary" ><i class="fa fa-pencil"></i></button>
                                 <button class="btn btn-sm btn-danger center" ><i class="fa fa-trash"></i></button>

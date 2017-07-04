@@ -85,7 +85,7 @@ angular.module('postoffice.tkbd')
                 //}
 
                 function update() {
-                    apiService.get('/api/tkbd/update', null, function (result) {                        
+                    apiService.get('/api/tkbd/update', null, function (result) {
                         console.log(result.data.TotalCount);
                         $scope.loading = false;
                         $scope.tkbds = result.data.Items;
@@ -124,8 +124,4 @@ angular.module('postoffice.tkbd')
                     });
                 }
                 $scope.getTkbds();
-
             }]);
-
-
-

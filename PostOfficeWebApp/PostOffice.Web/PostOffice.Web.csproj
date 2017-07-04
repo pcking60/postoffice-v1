@@ -224,6 +224,8 @@
     <Content Include="app\components\statistic\timeStatisticView.html" />
     <Content Include="app\components\statistic\unitStatisticController.js" />
     <Content Include="app\components\tkbd\tkbd.module.js" />
+    <Content Include="app\components\tkbd\tkbdImportListController.js" />
+    <Content Include="app\components\tkbd\tkbdImportListView.html" />
     <Content Include="app\components\tkbd\tkbdListController.js" />
     <Content Include="app\components\tkbd\tkbdListView.html" />
     <Content Include="app\components\transactions\transactionAddController.js" />
@@ -283,6 +285,7 @@
     <Content Include="app\components\user_dashboard\userDashboardController.js" />
     <Content Include="app\components\user_dashboard\userDashboardView.html" />
     <Content Include="app\shared\directives\asDateDirective.js" />
+    <Content Include="app\shared\directives\customDirective.js" />
     <Content Include="app\shared\directives\pagerDirective.html" />
     <Content Include="app\shared\directives\pagerDirective.js" />
     <Content Include="app\shared\filters\statusFilter.js" />
@@ -5004,6 +5007,7 @@
     <Compile Include="Models\ServiceGroupViewModel.cs" />
     <Compile Include="Models\ServiceViewModel.cs" />
     <Compile Include="Models\TKBDAmountViewModel.cs" />
+    <Compile Include="Models\TKBDHistoryViewModel.cs" />
     <Compile Include="Models\TransactionDetailViewModel.cs" />
     <Compile Include="Models\TransactionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
