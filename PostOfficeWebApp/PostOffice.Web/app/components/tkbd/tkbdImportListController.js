@@ -20,16 +20,16 @@
             $http({
                 method: 'POST',
                 url: "/api/tkbd/import",
-                headers: { 'Content-Type': undefined },
+                headers: { 'Content-Type': undefined },                
                 transformRequest: function (data) {
                     var formData = new FormData();
                     for (var i = 0; i < data.files.length; i++)
                     {
                         formData.append("file" + i, data.files[i]);
                     }
+                    
                     return formData;
                 },
-
                 data: {files: $scope.files}
             }).then(function (result, status, headers, config) {
                 notificationService.displaySuccess(result.data);

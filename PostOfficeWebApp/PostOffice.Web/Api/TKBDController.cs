@@ -23,11 +23,13 @@ namespace PostOffice.Web.Api
     {
         private ITKBDService _tkbdService;
         private ITKBDHistoryService _tkbdHistoryService;
+        private IApplicationUserService _applicationUserService;
 
-        public TKBDController(IErrorService errorService, ITKBDService tkbdService, ITKBDHistoryService tkbdHistoryService) : base(errorService)
+        public TKBDController(IErrorService errorService, ITKBDService tkbdService, ITKBDHistoryService tkbdHistoryService, IApplicationUserService applicationUserService) : base(errorService)
         {
             this._tkbdService = tkbdService;
             this._tkbdHistoryService = tkbdHistoryService;
+            _applicationUserService = applicationUserService;
         }
 
         [Route("getall")]
@@ -75,54 +77,69 @@ namespace PostOffice.Web.Api
             }
 
             var provider = new MultipartFormDataStreamProvider(root);
-          
+            Stream reqStream = Request.Content.ReadAsStreamAsync().Result;
+            MemoryStream tempStream = new MemoryStream();
+            reqStream.CopyTo(tempStream);
+
+            tempStream.Seek(0, SeekOrigin.End);
+            StreamWriter writer = new StreamWriter(tempStream);
+            writer.WriteLine();
+            writer.Flush();
+            tempStream.Position = 0;
+
+            StreamContent streamContent = new StreamContent(tempStream);
+            foreach (var header in Request.Content.Headers)
+            {
+                streamContent.Headers.Add(header.Key, header.Value);
+            }
             try
             {
-                var test = await Request.Content.ReadAsMultipartAsync(provider);
-                //await Request.Content.ReadAsMultipartAsync(provider);
-                //return Request.CreateResponse(HttpStatusCode.OK);
+                // Read the form data.
+                streamContent.LoadIntoBufferAsync().Wait();
+                //This is where it bugs out
+                var result = await streamContent.ReadAsMultipartAsync(provider);
+                //Upload files
+                int addedCount = 0;
+                foreach (MultipartFileData fileData in result.FileData)
+                {
+                    if (string.IsNullOrEmpty(fileData.Headers.ContentDisposition.FileName))
+                    {
+                        return Request.CreateResponse(HttpStatusCode.NotAcceptable, "Yêu cầu không đúng định dạng");
+                    }
+                    string fileName = fileData.Headers.ContentDisposition.FileName;
+                    if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
+                    {
+                        fileName = fileName.Trim('"');
+                    }
+                    if (fileName.Contains(@"/") || fileName.Contains(@"\"))
+                    {
+                        fileName = Path.GetFileName(fileName);
+                    }
+
+                    var fullPath = Path.Combine(root, fileName);
+                    File.Copy(fileData.LocalFileName, fullPath, true);
+
+                    //insert to DB
+                    //var 
+                    List<TKBDHistory> listItem = new List<TKBDHistory>();
+                    listItem = this.ReadTKBDFromExcel(fullPath);
+                    if (listItem.Count > 0)
+                    {
+                        foreach (var product in listItem)
+                        {
+                            _tkbdHistoryService.Add(product);
+                            addedCount++;
+                        }
+                        _tkbdHistoryService.Save();
+                    }
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, "Đã nhập thành công " + addedCount + " sản phẩm thành công.");
             }
             catch (Exception e)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
-            }
-
-            //Upload files
-            int addedCount = 0;
-
-            var result = await Request.Content.ReadAsMultipartAsync(provider);
-            foreach (MultipartFileData fileData in result.FileData)
-            {
-                if (string.IsNullOrEmpty(fileData.Headers.ContentDisposition.FileName))
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotAcceptable, "Yêu cầu không đúng định dạng");
-                }
-                string fileName = fileData.Headers.ContentDisposition.FileName;
-                if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
-                {
-                    fileName = fileName.Trim('"');
-                }
-                if (fileName.Contains(@"/") || fileName.Contains(@"\"))
-                {
-                    fileName = Path.GetFileName(fileName);
-                }
-
-                var fullPath = Path.Combine(root, fileName);
-                File.Copy(fileData.LocalFileName, fullPath, true);
-
-                //insert to DB
-                var listItem = this.ReadTKBDFromExcel(fullPath);
-                if (listItem.Count > 0)
-                {
-                    foreach (var product in listItem)
-                    {
-                        _tkbdHistoryService.Add(product);
-                        addedCount++;
-                    }
-                    _tkbdHistoryService.Save();
-                }
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, "Đã nhập thành công " + addedCount + " sản phẩm thành công.");
+            }            
+            
         }
 
         private List<TKBDHistory> ReadTKBDFromExcel(string fullPath)
@@ -135,6 +152,7 @@ namespace PostOffice.Web.Api
                 TKBDHistory tkbdHistory;
 
                 DateTimeOffset transactionDate;
+                DateTimeOffset tranDate;
                 decimal money;
                 decimal rate;  
 
@@ -145,18 +163,20 @@ namespace PostOffice.Web.Api
 
                     tkbdViewModel.Name = workSheet.Cells[i, 1].Value.ToString();
                     tkbdViewModel.CustomerId = workSheet.Cells[i, 2].Value.ToString();
-                    tkbdViewModel.Account = workSheet.Cells[i, 3].Value.ToString();                    
+                    tkbdViewModel.Account = workSheet.Cells[i, 3].Value.ToString();
                     if (DateTimeOffset.TryParse(workSheet.Cells[i, 4].Value.ToString(), out transactionDate))
                     {
-                        tkbdViewModel.TransactionDate = transactionDate;
+                        string temp = transactionDate.ToString("yyyy-MM-dd");
+                        DateTimeOffset.TryParse(temp, out tranDate);
+                        tkbdViewModel.TransactionDate = tranDate;
 
                     }
                     decimal.TryParse(workSheet.Cells[i, 5].Value.ToString().Replace(",", ""), out money);
                     tkbdViewModel.Money = money;
                     decimal.TryParse(workSheet.Cells[i, 6].Value.ToString().Replace(",", ""), out rate);
                     tkbdViewModel.Rate = rate;
-                    tkbdViewModel.UserId = workSheet.Cells[i, 7].Value.ToString();
-                    tkbdViewModel.CreatedBy = User.Identity.Name;                  
+                    tkbdViewModel.UserId = _applicationUserService.getByUserName(User.Identity.Name).Id;
+                    tkbdViewModel.CreatedBy = "Admin";                  
                     tkbdViewModel.Status = true;
                     tkbdHistory.UpdateTKBDHistory(tkbdViewModel);
                     listTKBD.Add(tkbdHistory);
@@ -183,8 +203,9 @@ namespace PostOffice.Web.Api
                     int c = tkbdHistories.Count();             
                     foreach (var item in tkbdHistories)
                     {
-                        TimeSpan s = DateTimeOffset.UtcNow.Subtract(item.TransactionDate);
-                        days = (int)s.TotalDays;
+                        //TimeSpan s = DateTimeOffset.UtcNow.Subtract(item.TransactionDate);
+                        //days = (int)s.TotalDays;
+                        days = 6;
                         TKBDAmountViewModel vm = new TKBDAmountViewModel();
                         vm.Status = true;
                         vm.Account = item.Account;

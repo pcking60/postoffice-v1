@@ -135,6 +135,10 @@
     <Compile Include="Migrations\201706290942403_TKBD.Designer.cs">
       <DependentUpon>201706290942403_TKBD.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707050924225_UpdateTableTKBDHistory.cs" />
+    <Compile Include="Migrations\201707050924225_UpdateTableTKBDHistory.Designer.cs">
+      <DependentUpon>201707050924225_UpdateTableTKBDHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PostOfficeDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -203,6 +207,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706290942403_TKBD.resx">
       <DependentUpon>201706290942403_TKBD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707050924225_UpdateTableTKBDHistory.resx">
+      <DependentUpon>201707050924225_UpdateTableTKBDHistory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

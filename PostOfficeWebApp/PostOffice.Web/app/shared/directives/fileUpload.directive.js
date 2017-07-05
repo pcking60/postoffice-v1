@@ -1,7 +1,6 @@
 ﻿(function (app) {
     'use strict';
-
-    app.directive('customDirective', function () {
+    app.directive('fileUpload', function () {
         return {
             scope: true,        //create a new scope
             link: function (scope, el, attrs) {

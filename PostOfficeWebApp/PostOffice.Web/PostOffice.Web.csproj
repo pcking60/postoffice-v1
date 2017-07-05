@@ -285,7 +285,6 @@
     <Content Include="app\components\user_dashboard\userDashboardController.js" />
     <Content Include="app\components\user_dashboard\userDashboardView.html" />
     <Content Include="app\shared\directives\asDateDirective.js" />
-    <Content Include="app\shared\directives\customDirective.js" />
     <Content Include="app\shared\directives\pagerDirective.html" />
     <Content Include="app\shared\directives\pagerDirective.js" />
     <Content Include="app\shared\filters\statusFilter.js" />
@@ -5425,6 +5424,7 @@
     <Content Include="Assets\admin\libs\mustache\wrappers\yui3\mustache.js.post" />
     <Content Include="Assets\admin\libs\mustache\wrappers\yui3\mustache.js.pre" />
     <Content Include="AppSettings.config" />
+    <Content Include="app\shared\directives\fileUpload.directive.js" />
     <None Include="Properties\PublishProfiles\postoffice.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
