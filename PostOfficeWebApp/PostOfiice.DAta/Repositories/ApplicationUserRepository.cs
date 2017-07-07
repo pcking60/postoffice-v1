@@ -19,6 +19,7 @@ namespace PostOfiice.DAta.Repositories
         bool CheckRole(string userName, string roleName);
 
         ApplicationUser getByUserName(string userName);
+        ApplicationUser getByUserId(string userId);
     }
 
     public class ApplicationUserRepository : RepositoryBase<ApplicationUser>, IApplicationUserRepository
@@ -89,5 +90,13 @@ namespace PostOfiice.DAta.Repositories
                 return 0;
             }    
         }
+
+        public ApplicationUser getByUserId(string userId)
+        {
+            ApplicationUser user = new ApplicationUser();
+            user = DbContext.Users.Where(x => x.Id == userId).FirstOrDefault();
+            return user;
+        }
+
     }
 }

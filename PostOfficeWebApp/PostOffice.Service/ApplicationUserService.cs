@@ -16,6 +16,7 @@ namespace PostOffice.Service
 
         bool CheckRole(string userName, string roleName);
         int getPoId(string userName);
+        ApplicationUser getByUserId(string userId);
     }
 
     public class ApplicationUserService : IApplicationUserService
@@ -53,6 +54,12 @@ namespace PostOffice.Service
         public int getPoId(string userName)
         {
             return _userRepository.getPoId(userName);
+        }
+
+
+        public ApplicationUser getByUserId(string userId)
+        {
+            return _userRepository.getByUserId(userId);
         }
     }
 }

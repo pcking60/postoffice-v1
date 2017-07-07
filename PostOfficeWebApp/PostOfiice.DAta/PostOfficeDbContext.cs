@@ -43,6 +43,7 @@ namespace PostOfiice.DAta
             builder.Entity<IdentityRole>().ToTable("ApplicationRoles");
             builder.Entity<IdentityUserClaim>().HasKey(i => i.UserId).ToTable("ApplicationUserClaims");
             builder.Entity<PropertyService>().Property(x => x.Percent).HasPrecision(18, 10);
+            builder.Entity<TKBDHistory>().Property(x => x.Rate).HasPrecision(18, 4);
         }
 
         public static PostOfficeDbContext Create()

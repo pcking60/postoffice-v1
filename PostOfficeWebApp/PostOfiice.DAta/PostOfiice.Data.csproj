@@ -107,6 +107,10 @@
     <Compile Include="Migrations\201705250244435_unitStatistic.Designer.cs">
       <DependentUpon>201705250244435_unitStatistic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705310332252_updateTKBDHistory.cs" />
+    <Compile Include="Migrations\201705310332252_updateTKBDHistory.Designer.cs">
+      <DependentUpon>201705310332252_updateTKBDHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201706050617004_changeDecimal.cs" />
     <Compile Include="Migrations\201706050617004_changeDecimal.Designer.cs">
       <DependentUpon>201706050617004_changeDecimal.cs</DependentUpon>
@@ -186,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705250244435_unitStatistic.resx">
       <DependentUpon>201705250244435_unitStatistic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705310332252_updateTKBDHistory.resx">
+      <DependentUpon>201705310332252_updateTKBDHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706050617004_changeDecimal.resx">
       <DependentUpon>201706050617004_changeDecimal.cs</DependentUpon>

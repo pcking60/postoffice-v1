@@ -47,6 +47,11 @@ namespace PostOffice.Web.Api
 
                 foreach (var item in responseData)
                 {
+                    item.Name = _tkbdHistoryService.GetByAccount(item.Account).FirstOrDefault().Name;
+                    item.Money = _tkbdHistoryService.GetByAccount(item.Account).Sum(x => x.Money);
+                    item.TransactionDate = _tkbdHistoryService.GetByAccount(item.Account).Where(x => x.TransactionDate.Value.Month == item.Month).OrderByDescending(x=>x.TransactionDate).FirstOrDefault().TransactionDate;
+                    string userId = _tkbdHistoryService.GetByAccount(item.Account).FirstOrDefault().UserId;                    
+                    item.TransactionUser = _applicationUserService.getByUserId(userId).FullName;
                 }
                 //ban test lai thu
                 var paginationSet = new PaginationSet<TKBDAmountViewModel>//sai ne ban.
@@ -175,8 +180,15 @@ namespace PostOffice.Web.Api
                     tkbdViewModel.Money = money;
                     decimal.TryParse(workSheet.Cells[i, 6].Value.ToString().Replace(",", ""), out rate);
                     tkbdViewModel.Rate = rate;
-                    tkbdViewModel.UserId = _applicationUserService.getByUserName(User.Identity.Name).Id;
-                    tkbdViewModel.CreatedBy = "Admin";                  
+                    if(_applicationUserService.getByUserName(workSheet.Cells[i, 7].Value.ToString()) != null)
+                    {
+                        tkbdViewModel.UserId = _applicationUserService.getByUserName(workSheet.Cells[i, 7].Value.ToString()).Id;
+                    }
+                    else
+                    {
+                        tkbdViewModel.UserId = "Người dùng không tồn tại";
+                    }                    
+                    tkbdViewModel.CreatedBy = User.Identity.Name;                  
                     tkbdViewModel.Status = true;
                     tkbdHistory.UpdateTKBDHistory(tkbdViewModel);
                     listTKBD.Add(tkbdHistory);
@@ -203,9 +215,9 @@ namespace PostOffice.Web.Api
                     int c = tkbdHistories.Count();             
                     foreach (var item in tkbdHistories)
                     {
-                        //TimeSpan s = DateTimeOffset.UtcNow.Subtract(item.TransactionDate);
-                        //days = (int)s.TotalDays;
-                        days = 6;
+                        TimeSpan s = DateTimeOffset.UtcNow.Subtract(item.TransactionDate??DateTimeOffset.UtcNow);
+                        days = (int)s.TotalDays;
+                        //days = 6;
                         TKBDAmountViewModel vm = new TKBDAmountViewModel();
                         vm.Status = true;
                         vm.Account = item.Account;
@@ -218,11 +230,11 @@ namespace PostOffice.Web.Api
                         {
                             if (days > 30)
                             {
-                                vm.Amount = money * item.Rate * 20 / 120 ?? 0;
+                                vm.Amount = money * item.Rate * 20 / 1200 ?? 0;
                             }
                             else
                             {
-                                vm.Amount = money * item.Rate * 20 * days / 120 / 30 ?? 0;
+                                vm.Amount = money * item.Rate * 20 * days / 1200 / 30 ?? 0;
                             }
                         }
                         else

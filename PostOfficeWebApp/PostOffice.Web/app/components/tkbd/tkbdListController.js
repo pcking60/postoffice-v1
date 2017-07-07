@@ -120,7 +120,7 @@ angular.module('postoffice.tkbd')
                     },
                     function () {
                         $scope.loading = false;
-                        console.log('Load districts failed');
+                        console.log('Load list TKBD failed');
                     });
                 }
                 $scope.getTkbds();

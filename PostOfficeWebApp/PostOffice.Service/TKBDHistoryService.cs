@@ -93,7 +93,7 @@ namespace PostOffice.Service
 
         public IEnumerable<TKBDHistory> GetAllDistinct()
         {
-            return _tkbdRepository.GetAll().GroupBy(x => x.Account).Select(y => y.First()).ToList();
+            return _tkbdRepository.GetAll().OrderBy(x=>x.TransactionDate).GroupBy(x => x.Account).Select(y => y.First()).ToList();
         }
 
         public void Update(TKBDHistory tkbd)
