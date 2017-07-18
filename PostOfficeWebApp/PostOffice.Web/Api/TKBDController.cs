@@ -49,7 +49,16 @@ namespace PostOffice.Web.Api
                 {
                     item.Name = _tkbdHistoryService.GetByAccount(item.Account).FirstOrDefault().Name;
                     item.Money = _tkbdHistoryService.GetByAccount(item.Account).Sum(x => x.Money);
-                    item.TransactionDate = _tkbdHistoryService.GetByAccount(item.Account).Where(x => x.TransactionDate.Value.Month == item.Month).OrderByDescending(x=>x.TransactionDate).FirstOrDefault().TransactionDate;
+                    var s =_tkbdHistoryService.GetByAccount(item.Account).Where(x => x.TransactionDate.Value.Month == item.Month).FirstOrDefault();
+                    if (s == null)
+                    {
+                        item.TransactionDate = _tkbdHistoryService.GetByAccount(item.Account).OrderByDescending(x => x.TransactionDate).FirstOrDefault().TransactionDate;
+                    }
+                    else
+                    {
+                        item.TransactionDate = s.TransactionDate;
+                    }
+                                       
                     string userId = _tkbdHistoryService.GetByAccount(item.Account).FirstOrDefault().UserId;                    
                     item.TransactionUser = _applicationUserService.getByUserId(userId).FullName;
                 }
