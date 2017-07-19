@@ -33,7 +33,7 @@
                 data: {files: $scope.files}
             }).then(function (result, status, headers, config) {
                 notificationService.displaySuccess(result.data);
-                $state.go('tkbds');
+                $state.go('tkbdhistory');
             }, function (data, status, headers, config) {
                 notificationService.displayError(data);
             })

@@ -12,6 +12,7 @@ namespace PostOffice.Web.Models
         public decimal? Money { get; set; }
         public decimal? Rate { get; set; }
         public string UserId { get; set; }
+        public string TransactionUser { get; set; }
 
         public string CreatedBy
         {

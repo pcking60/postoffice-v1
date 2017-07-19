@@ -224,6 +224,8 @@
     <Content Include="app\components\statistic\timeStatisticView.html" />
     <Content Include="app\components\statistic\unitStatisticController.js" />
     <Content Include="app\components\tkbd\tkbd.module.js" />
+    <Content Include="app\components\tkbd\TKBDHistory.html" />
+    <Content Include="app\components\tkbd\TKBDHistoryController.js" />
     <Content Include="app\components\tkbd\tkbdImportListController.js" />
     <Content Include="app\components\tkbd\tkbdImportListView.html" />
     <Content Include="app\components\tkbd\tkbdListController.js" />

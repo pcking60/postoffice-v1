@@ -13,5 +13,10 @@ angular.module('postoffice.tkbd', ['postoffice.common'])
                 templateUrl: "/app/components/tkbd/tkbdImportListView.html",
                 parent: 'base',
                 controller: "tkbdImportListController"
+            }).state('tkbdhistory', {
+                url: "/tkbdhistory",
+                templateUrl: "/app/components/tkbd/TKBDHistory.html",
+                parent: 'base',
+                controller: "TKBDHistoryController"
             });
     }])

@@ -74,6 +74,35 @@ namespace PostOffice.Web.Api
                 return response;
             });
         }
+        [Route("getallhistory")]
+        [HttpGet]
+        public HttpResponseMessage GetAllHistory(HttpRequestMessage request, int page, int pageSize = 20)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                int totalRow = 0;
+                var model = _tkbdHistoryService.GetAll();
+                totalRow = model.Count();
+                var query = model.OrderBy(x => x.Id).Skip(page * pageSize).Take(pageSize);
+
+                var responseData = Mapper.Map<IEnumerable<TKBDHistory>, IEnumerable<TKBDHistoryViewModel>>(query);
+
+                foreach (var item in responseData)
+                {
+                    item.TransactionUser = _applicationUserService.getByUserId(item.UserId).FullName;
+                }
+                             
+                var paginationSet = new PaginationSet<TKBDHistoryViewModel>
+                {
+                    Items = responseData,
+                    Page = page,
+                    TotalCount = totalRow,
+                    TotalPages = (int)Math.Ceiling((decimal)totalRow / pageSize)
+                };
+                var response = request.CreateResponse(HttpStatusCode.OK, paginationSet);
+                return response;
+            });
+        }
 
         [Route("import")]
         [HttpPost]
@@ -220,13 +249,22 @@ namespace PostOffice.Web.Api
                 else
                 {
                     int days = 0;
-                    var tkbdHistories = _tkbdHistoryService.GetAllDistinct();
+                    var tkbdHistories = _tkbdHistoryService.GetAllDistinct().Where(x=>x.TransactionDate.Value.Month==DateTime.Now.Month-1);
                     int c = tkbdHistories.Count();             
                     foreach (var item in tkbdHistories)
                     {
-                        TimeSpan s = DateTimeOffset.UtcNow.Subtract(item.TransactionDate??DateTimeOffset.UtcNow);
-                        days = (int)s.TotalDays;
-                        //days = 6;
+                        TimeSpan s = new TimeSpan();
+                        DateTimeOffset lastDay = new DateTime(item.TransactionDate.Value.Year, item.TransactionDate.Value.Month + 1, 1).AddDays(-1);
+                        if (lastDay > DateTime.Now)
+                        {
+                            s = DateTimeOffset.UtcNow.Subtract(item.TransactionDate ?? DateTimeOffset.UtcNow);
+                        }
+                        else
+                        {                            
+                            s = lastDay.Subtract(item.TransactionDate??DateTimeOffset.UtcNow);
+                        }
+                        
+                        days = (int)s.TotalDays;                        
                         TKBDAmountViewModel vm = new TKBDAmountViewModel();
                         vm.Status = true;
                         vm.Account = item.Account;
@@ -237,7 +275,7 @@ namespace PostOffice.Web.Api
 
                         if (money > 0)
                         {
-                            if (days > 30)
+                            if (days >= 30)
                             {
                                 vm.Amount = money * item.Rate * 20 / 1200 ?? 0;
                             }
