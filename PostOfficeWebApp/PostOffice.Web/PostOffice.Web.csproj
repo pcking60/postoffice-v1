@@ -5427,6 +5427,7 @@
     <Content Include="Assets\admin\libs\mustache\wrappers\yui3\mustache.js.pre" />
     <Content Include="AppSettings.config" />
     <Content Include="app\shared\directives\fileUpload.directive.js" />
+    <Content Include="Assets\admin\template\task %28Autosaved%29.xlsx" />
     <None Include="Properties\PublishProfiles\postoffice.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -5441,6 +5442,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Assets\admin\libs\angular-ui-router\release\" />
     <Folder Include="Assets\admin\libs\checklist-model\test\" />
+    <Folder Include="Assets\admin\libs\ngBootbox\typings\angularjs\" />
+    <Folder Include="Assets\admin\libs\ngBootbox\typings\jquery\" />
     <Folder Include="Reports\" />
     <Folder Include="Views\Service\" />
   </ItemGroup>
@@ -5467,9 +5470,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Assets\admin\libs\moment\moment.d.ts" />
-    <TypeScriptCompile Include="Assets\admin\libs\ngBootbox\typings\angularjs\angular.d.ts" />
-    <TypeScriptCompile Include="Assets\admin\libs\ngBootbox\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Assets\admin\libs\ngBootbox\typings\tsd.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

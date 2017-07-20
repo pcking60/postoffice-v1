@@ -16,6 +16,7 @@ namespace PostOffice.Service
         TKBDAmount Delete(int id);
 
         IEnumerable<TKBDAmount> GetAll();
+        IEnumerable<TKBDAmount> GetAllByMoney();
 
         IEnumerable<TKBDAmount> GetAllDistinct();
 
@@ -71,6 +72,11 @@ namespace PostOffice.Service
             {
                 return _tKBDRepository.GetAll();
             }
+        }
+
+        public IEnumerable<TKBDAmount> GetAllByMoney()
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<TKBDAmount> GetAllDistinct()

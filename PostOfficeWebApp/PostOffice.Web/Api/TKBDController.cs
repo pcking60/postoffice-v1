@@ -39,7 +39,7 @@ namespace PostOffice.Web.Api
             return CreateHttpResponse(request, () =>
             {
                 int totalRow = 0;
-                var model = _tkbdService.GetAll();
+                var model = _tkbdService.GetAll().Where(x=>x.Status==true);
                 totalRow = model.Count();
                 var query = model.OrderBy(x => x.Id).Skip(page * pageSize).Take(pageSize);
 
@@ -81,7 +81,8 @@ namespace PostOffice.Web.Api
             return CreateHttpResponse(request, () =>
             {
                 int totalRow = 0;
-                var model = _tkbdHistoryService.GetAll();
+                var userName = User.Identity.Name;
+                var model = _tkbdHistoryService.GetAllByUserName(userName);
                 totalRow = model.Count();
                 var query = model.OrderBy(x => x.Id).Skip(page * pageSize).Take(pageSize);
 
@@ -226,7 +227,8 @@ namespace PostOffice.Web.Api
                     {
                         tkbdViewModel.UserId = "Người dùng không tồn tại";
                     }                    
-                    tkbdViewModel.CreatedBy = User.Identity.Name;                  
+                    tkbdViewModel.CreatedBy = User.Identity.Name;
+                    tkbdViewModel.CreatedDate = DateTime.Now;           
                     tkbdViewModel.Status = true;
                     tkbdHistory.UpdateTKBDHistory(tkbdViewModel);
                     listTKBD.Add(tkbdHistory);
@@ -255,7 +257,7 @@ namespace PostOffice.Web.Api
                     {
                         decimal money = _tkbdHistoryService.GetByAccount(item.Account).Where(x => x.Status == true && x.TransactionDate.Value.Month <= DateTime.Now.Month - 1).Sum(x => x.Money) ?? 0;
                         
-                        if (item.Money <= 0)
+                        if (money <= 0)
                         {
                             var oldTransaction = _tkbdHistoryService.GetByAccount(item.Account);
                             foreach (var item1 in oldTransaction)

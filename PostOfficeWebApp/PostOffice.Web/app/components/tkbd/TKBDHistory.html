@@ -13,6 +13,7 @@
         <div class="box-body">
 
             <div class="row">                
+                <a href="/Assets//admin/template/task (Autosaved).xlsx" class="btn btn-flat bg-orange" >Download Template</a>
             </div>
             <br />
             <div class="row">
@@ -38,8 +39,8 @@
                                 <th><input type="text" class="form-control input-sm" ng-model="SmartSearch.Account" placeholder="auto search"></th>
                                 <th><input type="text" class="form-control input-sm" ng-model="SmartSearch.Money" placeholder="auto search"></th>
                                 <th><input type="text" class="form-control input-sm" ng-model="SmartSearch.Amount" placeholder="auto search"></th>
+                                <th><input type="text" class="form-control input-sm" ng-model="SmartSearch.CreatedBy" placeholder="auto search"></th>
                                 <th><input type="text" class="form-control input-sm" ng-model="SmartSearch.TransactionUser" placeholder="auto search"></th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tr ng-repeat="item in tkbds|filter: SmartSearch">

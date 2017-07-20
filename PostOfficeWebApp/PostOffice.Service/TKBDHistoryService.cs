@@ -25,6 +25,7 @@ namespace PostOffice.Service
 
         TKBDHistory GetById(int id);
         IEnumerable<TKBDHistory> GetByAccount(string acc);
+        IEnumerable<TKBDHistory> GetAllByUserName(string userName);
 
         void Save();
     }
@@ -32,12 +33,16 @@ namespace PostOffice.Service
     public class TKBDHistoryService : ITKBDHistoryService
     {
         private ITKBDHistoryRepository _tkbdRepository;
+        private IApplicationUserRepository _userRepository;
+        private IApplicationGroupRepository _groupRepository;
         private IUnitOfWork _unitOfWork;
 
-        public TKBDHistoryService(ITKBDHistoryRepository tKBDHistoryRepository, IUnitOfWork unitOfwork)
+        public TKBDHistoryService(ITKBDHistoryRepository tKBDHistoryRepository, IUnitOfWork unitOfwork, IApplicationUserRepository userRepository, IApplicationGroupRepository groupRepository)
         {
             this._tkbdRepository = tKBDHistoryRepository;
             this._unitOfWork = unitOfwork;
+            _userRepository = userRepository;
+            _groupRepository = groupRepository;
         }
 
         public TKBDHistory Add(TKBDHistory tkbd)
@@ -99,6 +104,44 @@ namespace PostOffice.Service
         public void Update(TKBDHistory tkbd)
         {
             _tkbdRepository.Update(tkbd);
+        }
+
+        public IEnumerable<TKBDHistory> GetAllByUserName(string userName)
+        {
+            var user = _userRepository.getByUserName(userName);
+            var listGroup = _groupRepository.GetListGroupByUserId(user.Id);
+
+            bool IsManager = false;
+            bool IsAdministrator = false;
+
+            foreach (var item in listGroup)
+            {
+                string name = item.Name;
+                if (name == "Manager")
+                {
+                    IsManager = true;
+                }
+                if (name == "Administrator")
+                {
+                    IsAdministrator = true;
+                }
+            }
+            if (IsAdministrator)
+            {
+                return _tkbdRepository.GetAll();
+            }
+            else
+            {
+                if (IsManager)
+                {
+                    return _tkbdRepository.GetAllByUserName(userName);
+
+                }
+                else
+                {
+                    return _tkbdRepository.GetMulti(x => x.UserId == user.Id).ToList();
+                }
+            }
         }
     }
 }
