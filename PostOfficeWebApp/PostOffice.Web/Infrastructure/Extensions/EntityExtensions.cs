@@ -32,6 +32,7 @@ namespace PostOffice.Web.Infrastructure.Extensions
             appUser.PhoneNumber = appUserViewModel.PhoneNumber;
             appUser.POID = appUserViewModel.POID;
             appUser.Status = appUserViewModel.Status;
+            appUser.PasswordHash = appUserViewModel.Password;
         }
 
         public static void UpdateDistrict(this District dis, DistrictViewModel vm) {

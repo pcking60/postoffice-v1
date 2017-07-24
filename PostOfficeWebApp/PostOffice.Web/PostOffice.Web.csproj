@@ -5403,7 +5403,6 @@
     <Content Include="Assets\admin\libs\moment\LICENSE" />
     <Content Include="Assets\admin\libs\moment\README.md" />
     <Content Include="Assets\admin\libs\mustache\.bower.json" />
-    <Content Include="Assets\admin\libs\mustache\bin\mustache" />
     <Content Include="Assets\admin\libs\mustache\bower.json" />
     <Content Include="Assets\admin\libs\mustache\CHANGELOG.md" />
     <Content Include="Assets\admin\libs\mustache\hooks\install-hooks.sh" />
@@ -5428,7 +5427,9 @@
     <Content Include="AppSettings.config" />
     <Content Include="app\shared\directives\fileUpload.directive.js" />
     <Content Include="Assets\admin\template\task %28Autosaved%29.xlsx" />
+    <None Include="Properties\PublishProfiles\DTTL.pubxml" />
     <None Include="Properties\PublishProfiles\postoffice.pubxml" />
+    <None Include="Properties\PublishProfiles\test-dttl.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5442,6 +5443,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Assets\admin\libs\angular-ui-router\release\" />
     <Folder Include="Assets\admin\libs\checklist-model\test\" />
+    <Folder Include="Assets\admin\libs\mustache\bin\" />
     <Folder Include="Assets\admin\libs\ngBootbox\typings\angularjs\" />
     <Folder Include="Assets\admin\libs\ngBootbox\typings\jquery\" />
     <Folder Include="Reports\" />

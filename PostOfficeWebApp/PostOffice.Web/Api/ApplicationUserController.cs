@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PostOffice.Common;
 using PostOffice.Model.Models;
 using PostOffice.Service;
 using PostOffice.Web.App_Start;
@@ -218,6 +219,7 @@ namespace PostOffice.Web.Api
         {
             if (ModelState.IsValid)
             {
+                applicationUserViewModel.Password = _userManager.PasswordHasher.HashPassword(applicationUserViewModel.Password);
                 var appUser = await _userManager.FindByIdAsync(applicationUserViewModel.Id);
                 try
                 {

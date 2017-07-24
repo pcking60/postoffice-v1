@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using PostOffice.Web.App_Start;
 using System.Net;
 using System.Net.Http;
@@ -62,5 +63,6 @@ namespace PostOffice.Web.Api
             var result = await SignInManager.PasswordSignInAsync(userName, password, rememberMe, shouldLockout: false);
             return request.CreateResponse(HttpStatusCode.OK, result);
         }
+               
     }
 }
