@@ -13,17 +13,23 @@
             parent: 'base',
             controller: "applicationUserListController"
         })
-            .state('add_application_user', {
-                url: "/add_application_user",
-                parent: 'base',
-                templateUrl: "/app/components/application_users/applicationUserAddView.html",
-                controller: "applicationUserAddController"
-            })
-            .state('edit_application_user', {
-                url: "/edit_application_user/:id",
-                templateUrl: "/app/components/application_users/applicationUserEditView.html",
-                controller: "applicationUserEditController",
-                parent: 'base',
-            });
+        .state('add_application_user', {
+            url: "/add_application_user",
+            parent: 'base',
+            templateUrl: "/app/components/application_users/applicationUserAddView.html",
+            controller: "applicationUserAddController"
+        })
+        .state('user_profile', {
+            url: "/user_profile",
+            parent: 'base',
+            templateUrl: "/app/components/application_users/userProfileView.html",
+            controller: "userProfileViewController"
+        })
+        .state('edit_application_user', {
+            url: "/edit_application_user/:id",
+            templateUrl: "/app/components/application_users/applicationUserEditView.html",
+            controller: "applicationUserEditController",
+            parent: 'base',
+        });
     }
 })();

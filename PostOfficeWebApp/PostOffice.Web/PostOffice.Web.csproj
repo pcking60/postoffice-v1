@@ -208,6 +208,7 @@
     <Content Include="app\components\application_roles\applicationRoleListController.js" />
     <Content Include="app\components\application_roles\applicationRoleListView.html" />
     <Content Include="app\components\application_roles\applicationRoles.module.js" />
+    <Content Include="app\components\application_users\activity.html" />
     <Content Include="app\components\application_users\applicationUserAddController.js" />
     <Content Include="app\components\application_users\applicationUserAddView.html" />
     <Content Include="app\components\application_users\applicationUserEditController.js" />
@@ -215,6 +216,9 @@
     <Content Include="app\components\application_users\applicationUserListController.js" />
     <Content Include="app\components\application_users\applicationUserListView.html" />
     <Content Include="app\components\application_users\applicationUsers.module.js" />
+    <Content Include="app\components\application_users\settings.html" />
+    <Content Include="app\components\application_users\userProfileView.html" />
+    <Content Include="app\components\application_users\userProfileViewController.js" />
     <Content Include="app\components\statistic\reportsController.js" />
     <Content Include="app\components\statistic\reportsView.html" />
     <Content Include="app\components\statistic\revenueStatisticController.js" />
