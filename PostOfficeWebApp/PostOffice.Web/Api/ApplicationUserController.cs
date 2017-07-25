@@ -149,14 +149,34 @@ namespace PostOffice.Web.Api
                 var applicationUserViewModel = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user.Result);
                 var listGroup = _appGroupService.GetListGroupByUserId(applicationUserViewModel.Id);
                 applicationUserViewModel.Groups = Mapper.Map<IEnumerable<ApplicationGroup>, IEnumerable<ApplicationGroupViewModel>>(listGroup);
-                              
-
-
-
                 return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
             }
         }
-        
+
+        [Route("userinfo")]
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage UserInfo(HttpRequestMessage request)
+        {
+            var id = _userService.getByUserName(User.Identity.Name).Id;
+            if (string.IsNullOrEmpty(id))
+            {
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, nameof(id) + " không có giá trị.");
+            }
+            var user = _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return request.CreateErrorResponse(HttpStatusCode.NoContent, "Không có dữ liệu");
+            }
+            else
+            {
+                var applicationUserViewModel = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user.Result);
+                var listGroup = _appGroupService.GetListGroupByUserId(applicationUserViewModel.Id);
+                applicationUserViewModel.Groups = Mapper.Map<IEnumerable<ApplicationGroup>, IEnumerable<ApplicationGroupViewModel>>(listGroup);                
+                return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
+            }
+        }
+
 
         [HttpPost]
         [Route("add")]
@@ -251,6 +271,35 @@ namespace PostOffice.Web.Api
                         return request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join(",", result.Errors));
                 }
                 catch (NameDuplicatedException dex)
+                {
+                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, dex.Message);
+                }
+            }
+            else
+            {
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+        }
+
+        [HttpPut]
+        [Route("updateInfo")]
+        [AllowAnonymous]
+        public async Task<HttpResponseMessage> UpdateInfo(HttpRequestMessage request, ApplicationUserViewModel applicationUserViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if(!string.IsNullOrEmpty(applicationUserViewModel.Password))
+                {
+                    applicationUserViewModel.Password = _userManager.PasswordHasher.HashPassword(applicationUserViewModel.Password);
+                }                
+                var appUser = await _userManager.FindByIdAsync(applicationUserViewModel.Id);
+                try
+                {
+                    appUser.UpdateUser(applicationUserViewModel);
+                    var result = await _userManager.UpdateAsync(appUser);                   
+                    return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);                   
+                }
+                catch (Exception dex)
                 {
                     return request.CreateErrorResponse(HttpStatusCode.BadRequest, dex.Message);
                 }

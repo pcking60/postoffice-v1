@@ -15,6 +15,7 @@ namespace PostOffice.Web.Models
         public int POID { get; set; }        
         public string PhoneNumber { set; get; }
         public bool Status { get; set; }
+        public string Address { get; set; }
 
         public IEnumerable<ApplicationGroupViewModel> Groups { set; get; }
 

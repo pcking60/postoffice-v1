@@ -128,7 +128,8 @@ namespace PostOffice.Common
                     //functionName
                     ws.Cells["A1:E1"].Style.WrapText = true;
                     ws.Cells["A3:E3"].Merge = true;
-                    ws.Cells["A3:E3"].Formula = "upper(" + vm.FunctionName + ")";
+                    ws.Cells["A3:E3"].Formula = "upper(\"" +vm.FunctionName.ToString() +"\")";
+
                     ws.Row(3).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     ws.Row(3).Style.Font.Size = 13;
                     ws.Row(3).Style.Font.Bold = true;

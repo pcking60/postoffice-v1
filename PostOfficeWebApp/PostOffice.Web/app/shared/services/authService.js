@@ -7,6 +7,7 @@ angular.module('postoffice.common')
         var _authentication = {
             isAuth: false,
             userName: "",
+            fullName: "",
             roles: [],
             isAdmin: false,
             isManager: false
@@ -35,13 +36,13 @@ angular.module('postoffice.common')
                 localStorageService.set('authorizationData', {
                     token: response.data.access_token,
                     userName: loginData.userName,
+                    fullName: response.data.fullName,
                     roles : JSON.parse(response.data.permissions)                    
                 });
                 _authentication.roles = JSON.parse(response.data.permissions);
                 _authentication.isAuth = true;
-                _authentication.userName = loginData.userName;
-                
-                
+                _authentication.userName = loginData.userName;                
+                _authentication.fullName = response.data.fullName;
                 deferred.resolve(response);
 
             }).catch(function (err, status) {
@@ -57,7 +58,8 @@ angular.module('postoffice.common')
 
             localStorageService.remove('authorizationData');           
             _authentication.isAuth = false;
-            _authentication.userName= "";
+            _authentication.userName =
+            _authentication.fullName = "";
             _authentication.roles = [];
             _authentication.isAdmin= false;
             _authentication.isManager = false;
@@ -69,6 +71,7 @@ angular.module('postoffice.common')
             if (authData) {
                 _authentication.isAuth = true;
                 _authentication.userName = authData.userName;
+                _authentication.fullName = authData.fullName;
                 _authentication.roles = authData.roles;                
             }
 

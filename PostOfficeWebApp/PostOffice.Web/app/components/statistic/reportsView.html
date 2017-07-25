@@ -28,7 +28,7 @@
                             <span ng-show="frmReport.name.$invalid" class="text-danger">Cần nhập thông tin vào đây</span>
                         </div>
                     </div>                    
-                    <div class="form-group">
+                    <div class="form-group" ng-hide="!isManager && !isAdmin">
                         <label for="inputPassword3" class="col-sm-3 control-label">Chọn huyện</label>
                         <div class="col-sm-6">
                             <ui-select them="select2"
@@ -45,7 +45,7 @@
                             <!--<input type="hidden" name="parentId" ng-model="report.unitId" />-->
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-hide="!isManager && !isAdmin">
                         <label for="inputPassword3" class="col-sm-3 control-label">Chọn bưu cục</label>
                         <div class="col-sm-6">
                             <ui-select ng-model="report.unitId">
