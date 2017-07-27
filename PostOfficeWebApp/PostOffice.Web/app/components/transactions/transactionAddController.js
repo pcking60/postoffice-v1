@@ -4,6 +4,7 @@
     function transactionAddController($scope, apiService, notificationService, $state, commonService, $stateParams, $ngBootbox, $timeout) {
         $scope.transaction = {
             Status: true,
+            IsCash: true,
             Users: null,
             Service: null,
             Quantity: null,

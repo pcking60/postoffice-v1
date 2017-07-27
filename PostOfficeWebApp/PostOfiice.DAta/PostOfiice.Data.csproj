@@ -143,6 +143,10 @@
     <Compile Include="Migrations\201707050924225_UpdateTableTKBDHistory.Designer.cs">
       <DependentUpon>201707050924225_UpdateTableTKBDHistory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707271503469_deleteColumnQuantity.cs" />
+    <Compile Include="Migrations\201707271503469_deleteColumnQuantity.Designer.cs">
+      <DependentUpon>201707271503469_deleteColumnQuantity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PostOfficeDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -217,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707050924225_UpdateTableTKBDHistory.resx">
       <DependentUpon>201707050924225_UpdateTableTKBDHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707271503469_deleteColumnQuantity.resx">
+      <DependentUpon>201707271503469_deleteColumnQuantity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

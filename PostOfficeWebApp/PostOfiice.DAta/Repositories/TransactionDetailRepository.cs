@@ -2,6 +2,7 @@
 using PostOfiice.DAta.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace PostOfiice.DAta.Repositories
 {
@@ -10,6 +11,8 @@ namespace PostOfiice.DAta.Repositories
         IEnumerable<TransactionDetail> GetAllByCondition(string condition);
 
         IEnumerable<TransactionDetail> GetAllByCondition(string condition, int transactionId);
+
+        decimal? GetQuantityByCondition(string condition, int transactionId);
     }
 
     public class TransactionDetailRepository : RepositoryBase<TransactionDetail>, ITransactionDetailRepository
@@ -38,6 +41,25 @@ namespace PostOfiice.DAta.Repositories
                         where ps.Name != condition && td.TransactionId == transactionId
                         select td;
             return query;
+        }
+
+        public decimal? GetQuantityByCondition(string condition, int transactionId)
+        {          
+            var query = from ps in DbContext.PropertyServices
+                        join td in DbContext.TransactionDetails
+                        on ps.ID equals td.PropertyServiceId
+                        where ps.Name == condition && td.TransactionId == transactionId
+                        select td;
+            int n = query.Count();
+            
+            if(n>0)
+            {
+                return query.FirstOrDefault().Money;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

@@ -33,6 +33,8 @@ namespace PostOffice.Service
 
         IEnumerable<TransactionDetail> GetAllByCondition(string condition);
 
+        decimal? GetQuantityByCondition(string condition, int transactionId);
+
         void Save();
     }
 
@@ -106,7 +108,7 @@ namespace PostOffice.Service
                     earnTotal = earnTotal + percent * item.Money;
                 }
             }
-            int? quantity = _transactionRepository.GetSingleByID(id).Quantity;
+            
             return earnTotal;
         }
 
@@ -156,13 +158,19 @@ namespace PostOffice.Service
             var listTransactions = _transactionRepository.GetMulti(x => x.UserId == userId && x.Status == true).ToList();
             foreach (var item in listTransactions)
             {
+                Model.Models.Service s = _serviceRepository.GetSingleByID(item.ServiceId);
                 var listTransactionDetail = _transactionDetailRepository.GetMulti(x => x.TransactionId == item.ID).ToList();
+                float? vat = s.VAT;
                 foreach (var item1 in listTransactionDetail)
                 {
                     decimal? percent = _propertyServiceRepository.GetSingleByID(item1.PropertyServiceId).Percent;
-                    earnTotal = earnTotal + percent * item1.Money;
-                }
-                int? quantity = _transactionRepository.GetSingleByID(item.ID).Quantity;
+                    if (vat > 0 && vat != null)
+                    {
+                        earnTotal = earnTotal + (percent * item1.Money / Convert.ToDecimal(vat));
+                    }
+                    else
+                        earnTotal = earnTotal + (percent * item1.Money/Convert.ToDecimal(vat));
+                }                
             }
             return earnTotal;
         }
@@ -170,6 +178,11 @@ namespace PostOffice.Service
         public IEnumerable<TransactionDetail> GetAllByCondition(string condition)
         {
             return _transactionDetailRepository.GetAllByCondition(condition);
+        }
+
+        public decimal? GetQuantityByCondition(string condition, int transactionId)
+        {
+            return _transactionDetailRepository.GetQuantityByCondition(condition, transactionId);
         }
     }
 }

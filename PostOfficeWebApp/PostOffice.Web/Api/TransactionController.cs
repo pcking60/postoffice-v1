@@ -82,6 +82,7 @@ namespace PostOffice.Web.Api
                 int totalRow = 0;
                 var userName = User.Identity.Name;
                 var model = _transactionService.GetAllByUserName(userName);
+                string condition = "Sản lượng";
                 totalRow = model.Count();
                 var query = model.OrderByDescending(x => x.Status).ThenBy(x=>x.ID).Skip(page * pageSize).Take(pageSize);
 
@@ -92,6 +93,7 @@ namespace PostOffice.Web.Api
                     item.ServiceName = _serviceService.GetById(item.ServiceId).Name;
                     item.TotalMoney = _transactionDetailService.GetTotalMoneyByTransactionId(item.ID);
                     item.EarnMoney = _transactionDetailService.GetTotalEarnMoneyByTransactionId(item.ID);
+                    item.Quantity = Convert.ToInt32(_transactionDetailService.GetQuantityByCondition(condition, item.ID));
                 }
 
                 var paginationSet = new PaginationSet<TransactionViewModel>

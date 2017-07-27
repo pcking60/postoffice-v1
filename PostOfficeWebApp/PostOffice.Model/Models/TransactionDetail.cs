@@ -18,7 +18,7 @@ namespace PostOffice.Model.Models
         public int PropertyServiceId { get; set; }
         
         public decimal? Money { get; set; }
-
+        
         [ForeignKey("TransactionId")]
         [Column(Order =1)]
         public virtual Transaction Transaction { get; set; }
